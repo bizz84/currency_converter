@@ -48,3 +48,6 @@ app.*.map.json
 .env
 *.env
 rest-api/.env
+
+# MCP Servers
+.mcp.json*
