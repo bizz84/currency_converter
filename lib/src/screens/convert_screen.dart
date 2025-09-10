@@ -44,15 +44,18 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   @override
   Widget build(BuildContext context) {
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Currency Converter'),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: RefreshIndicator(
+    return GestureDetector(
+      onTap: () {
+        // Hide keyboard when tapping outside
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Currency Converter'),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: RefreshIndicator(
           onRefresh: () async {
             // Invalidate the provider to force a refresh
             ref.invalidate(latestRatesProvider(baseCurrency));
@@ -62,7 +65,6 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
             });
           },
           child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -150,11 +152,11 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCurrencyPicker(false),
-        tooltip: 'Add Currency',
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showCurrencyPicker(false),
+          tooltip: 'Add Currency',
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
