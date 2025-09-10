@@ -1,6 +1,3 @@
-import 'package:currency_converter/src/data/currencies.dart';
-import 'package:currency_converter/src/data/currency_rates.dart';
-import 'package:currency_converter/src/data/time_series_rates.dart';
 import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,10 +26,7 @@ void main() {
           'amount': 1.0,
           'base': 'EUR',
           'date': '2024-01-15',
-          'rates': {
-            'USD': 1.0899,
-            'GBP': 0.8597,
-          },
+          'rates': {'USD': 1.0899, 'GBP': 0.8597},
         };
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
@@ -52,9 +46,7 @@ void main() {
           'amount': 1.0,
           'base': 'USD',
           'date': '2024-01-15',
-          'rates': {
-            'GBP': 0.7888,
-          },
+          'rates': {'GBP': 0.7888},
         };
 
         dioAdapter.onGet(
@@ -77,9 +69,7 @@ void main() {
           'amount': 100.0,
           'base': 'USD',
           'date': '2024-01-15',
-          'rates': {
-            'GBP': 78.88,
-          },
+          'rates': {'GBP': 78.88},
         };
 
         dioAdapter.onGet(
@@ -109,10 +99,7 @@ void main() {
           'amount': 1.0,
           'base': 'EUR',
           'date': date,
-          'rates': {
-            'USD': 1.1043,
-            'GBP': 0.8678,
-          },
+          'rates': {'USD': 1.1043, 'GBP': 0.8678},
         };
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
@@ -126,38 +113,37 @@ void main() {
         expect(result.rates['GBP'], 0.8678);
       });
 
-      test('should fetch historical rates with from and to parameters',
-          () async {
-        const date = '2024-01-01';
-        final path = '/$date';
-        final responseData = {
-          'amount': 1.0,
-          'base': 'USD',
-          'date': date,
-          'rates': {
-            'GBP': 0.7859,
-            'EUR': 0.9055,
-          },
-        };
+      test(
+        'should fetch historical rates with from and to parameters',
+        () async {
+          const date = '2024-01-01';
+          final path = '/$date';
+          final responseData = {
+            'amount': 1.0,
+            'base': 'USD',
+            'date': date,
+            'rates': {'GBP': 0.7859, 'EUR': 0.9055},
+          };
 
-        dioAdapter.onGet(
-          path,
-          (server) => server.reply(200, responseData),
-          queryParameters: {'from': 'USD', 'to': 'GBP,EUR'},
-        );
+          dioAdapter.onGet(
+            path,
+            (server) => server.reply(200, responseData),
+            queryParameters: {'from': 'USD', 'to': 'GBP,EUR'},
+          );
 
-        final result = await client.getHistoricalRates(
-          date,
-          from: 'USD',
-          to: 'GBP,EUR',
-        );
+          final result = await client.getHistoricalRates(
+            date,
+            from: 'USD',
+            to: 'GBP,EUR',
+          );
 
-        expect(result.amount, 1.0);
-        expect(result.base, 'USD');
-        expect(result.date, date);
-        expect(result.rates['GBP'], 0.7859);
-        expect(result.rates['EUR'], 0.9055);
-      });
+          expect(result.amount, 1.0);
+          expect(result.base, 'USD');
+          expect(result.date, date);
+          expect(result.rates['GBP'], 0.7859);
+          expect(result.rates['EUR'], 0.9055);
+        },
+      );
 
       test('should fetch historical rates with amount conversion', () async {
         const date = '2024-01-01';
@@ -166,9 +152,7 @@ void main() {
           'amount': 50.0,
           'base': 'USD',
           'date': date,
-          'rates': {
-            'GBP': 39.295,
-          },
+          'rates': {'GBP': 39.295},
         };
 
         dioAdapter.onGet(
@@ -222,44 +206,46 @@ void main() {
         expect(result.rates['2024-01-02']!['GBP'], 0.8634);
       });
 
-      test('should fetch time series rates with from and to parameters',
-          () async {
-        const startDate = '2024-01-01';
-        const endDate = '2024-01-07';
-        final path = '/$startDate..$endDate';
-        final responseData = {
-          'amount': 1.0,
-          'base': 'USD',
-          'start_date': startDate,
-          'end_date': endDate,
-          'rates': {
-            '2024-01-01': {'GBP': 0.7859},
-            '2024-01-02': {'GBP': 0.7890},
-            '2024-01-03': {'GBP': 0.7883},
-          },
-        };
+      test(
+        'should fetch time series rates with from and to parameters',
+        () async {
+          const startDate = '2024-01-01';
+          const endDate = '2024-01-07';
+          final path = '/$startDate..$endDate';
+          final responseData = {
+            'amount': 1.0,
+            'base': 'USD',
+            'start_date': startDate,
+            'end_date': endDate,
+            'rates': {
+              '2024-01-01': {'GBP': 0.7859},
+              '2024-01-02': {'GBP': 0.7890},
+              '2024-01-03': {'GBP': 0.7883},
+            },
+          };
 
-        dioAdapter.onGet(
-          path,
-          (server) => server.reply(200, responseData),
-          queryParameters: {'from': 'USD', 'to': 'GBP'},
-        );
+          dioAdapter.onGet(
+            path,
+            (server) => server.reply(200, responseData),
+            queryParameters: {'from': 'USD', 'to': 'GBP'},
+          );
 
-        final result = await client.getTimeSeriesRates(
-          startDate,
-          endDate,
-          from: 'USD',
-          to: 'GBP',
-        );
+          final result = await client.getTimeSeriesRates(
+            startDate,
+            endDate,
+            from: 'USD',
+            to: 'GBP',
+          );
 
-        expect(result.amount, 1.0);
-        expect(result.base, 'USD');
-        expect(result.startDate, startDate);
-        expect(result.endDate, endDate);
-        expect(result.rates['2024-01-01']!['GBP'], 0.7859);
-        expect(result.rates['2024-01-02']!['GBP'], 0.7890);
-        expect(result.rates['2024-01-03']!['GBP'], 0.7883);
-      });
+          expect(result.amount, 1.0);
+          expect(result.base, 'USD');
+          expect(result.startDate, startDate);
+          expect(result.endDate, endDate);
+          expect(result.rates['2024-01-01']!['GBP'], 0.7859);
+          expect(result.rates['2024-01-02']!['GBP'], 0.7890);
+          expect(result.rates['2024-01-03']!['GBP'], 0.7883);
+        },
+      );
     });
 
     group('getCurrencies', () {
