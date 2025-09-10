@@ -42,9 +42,8 @@
 - [x] Store selected currencies in state
 
 ## Phase 7: Network Integration with FrankfurterClient
-- [ ] Create `frankfurter_client_provider.dart` using `@riverpod` annotation
-- [ ] Create providers for:
-  - [ ] FrankfurterClient instance (using existing Dio provider from `dio_provider.dart`)
+- [ ] Update `frankfurter_client.dart` with new providers for:
+  - [x] FrankfurterClient instance (using existing Dio provider from `dio_provider.dart`)
   - [ ] Available currencies (`@riverpod` FutureProvider)
   - [ ] Latest exchange rates (`@riverpod` FutureProvider with family for base currency)
   - [ ] Exchange rate for currency pair (computed provider)

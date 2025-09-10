@@ -1,7 +1,12 @@
 import 'package:currency_converter/src/data/currencies.dart';
 import 'package:currency_converter/src/data/currency_rates.dart';
 import 'package:currency_converter/src/data/time_series_rates.dart';
+import 'package:currency_converter/src/utils/dio_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'frankfurter_client.g.dart';
 
 class FrankfurterClient {
   FrankfurterClient({required Dio dio}) : _dio = dio {
@@ -66,4 +71,9 @@ class FrankfurterClient {
     final response = await _dio.get<Map<String, dynamic>>('/currencies');
     return Currencies.fromJson(response.data!);
   }
+}
+
+@riverpod
+FrankfurterClient frankfurterClient(Ref ref) {
+  return FrankfurterClient(dio: ref.read(dioProvider));
 }
