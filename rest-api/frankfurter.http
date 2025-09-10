@@ -1,0 +1,49 @@
+### Frankfurter.dev API Tests (No API key required)
+
+### Get latest rates USD to GBP
+GET https://api.frankfurter.dev/v1/latest?from=USD&to=GBP
+
+###
+
+### Get latest rates USD to multiple currencies
+GET https://api.frankfurter.dev/v1/latest?from=USD&to=GBP,EUR,JPY,AUD
+
+###
+
+### Get latest rates with amount conversion
+GET https://api.frankfurter.dev/v1/latest?amount=100&from=USD&to=GBP
+
+###
+
+### Get historical rates for a specific date
+GET https://api.frankfurter.dev/v1/2024-01-01?from=USD&to=GBP,EUR
+
+###
+
+### Get time series data for date range
+GET https://api.frankfurter.dev/v1/2024-01-01..2024-01-31?from=USD&to=GBP
+
+###
+
+### Get all available currencies
+GET https://api.frankfurter.dev/v1/currencies
+
+###
+
+### Get latest rates for EUR base
+GET https://api.frankfurter.dev/v1/latest?from=EUR
+
+###
+
+### Test Error Handling - Invalid currency code
+GET https://api.frankfurter.dev/v1/latest?from=INVALID&to=USD
+
+###
+
+### Test Error Handling - Invalid date format
+GET https://api.frankfurter.dev/v1/invalid-date?from=USD&to=EUR
+
+###
+
+### Test Error Handling - Future date
+GET https://api.frankfurter.dev/v1/2030-01-01?from=USD&to=GBP

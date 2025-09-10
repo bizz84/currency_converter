@@ -30,7 +30,7 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
 ### How to use
 
 - Auth: none (no API key)
-- Base URL: [**https://frankfurter.app**](https://frankfurter.app/)
+- Base URL: [**https://api.frankfurter.dev/v1**](https://api.frankfurter.dev/v1/)
 - Endpoints
     - Latest rates
         - GET /latest?from=USD&to=GBP
@@ -40,8 +40,8 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
     - Convert helper (simple use)
         - GET /latest?amount=1&from=USD&to=GBP
 - Request examples
-    - Latest: [**https://frankfurter.app/latest?from=USD&to=GBP**](https://frankfurter.app/latest?from=USD&to=GBP)
-    - Timeseries: [**https://frankfurter.app/2023-01-01..2023-01-31?from=USD&to=GBP**](https://frankfurter.app/2023-01-01..2023-01-31?from=USD&to=GBP)
+    - Latest: [**https://api.frankfurter.dev/v1/latest?from=USD&to=GBP**](https://api.frankfurter.dev/v1/latest?from=USD&to=GBP)
+    - Timeseries: [**https://api.frankfurter.dev/v1/2023-01-01..2023-01-31?from=USD&to=GBP**](https://api.frankfurter.dev/v1/2023-01-01..2023-01-31?from=USD&to=GBP)
 - Response payloads (typical shapes)
     - Latest
         - {"amount": 1,"base": "USD","date": "YYYY-MM-DD","rates": { "GBP": 0.75, "EUR": 0.92, ... }}
@@ -133,7 +133,7 @@ Documentation notes
 
 - Frankfurter.dev
     - Latest request:
-        - GET [**https://frankfurter.app/latest?from=USD&to=GBP**](https://frankfurter.app/latest?from=USD&to=GBP)
+        - GET [**https://api.frankfurter.dev/v1/latest?from=USD&to=GBP**](https://api.frankfurter.dev/v1/latest?from=USD&to=GBP)
     - Response:
         - { "base": "USD", "date": "YYYY-MM-DD", "rates": { "GBP": 0.75, "EUR": 0.92 } }
     

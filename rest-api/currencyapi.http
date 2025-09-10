@@ -1,0 +1,27 @@
+### CurrencyAPI.com Tests (Requires API key)
+# API key is loaded from .env file
+@apiKey = {{$dotenv CURRENCYAPI_KEY}}
+
+### Get latest rates
+GET https://api.currencyapi.com/v3/latest?apikey={{apiKey}}&base_currency=USD&currencies=GBP,EUR,JPY
+
+###
+
+### Get historical rates for specific date
+GET https://api.currencyapi.com/v3/historical?apikey={{apiKey}}&base_currency=USD&currencies=GBP,EUR&date=2024-01-31
+
+###
+
+### Convert currency (if supported)
+GET https://api.currencyapi.com/v3/convert?apikey={{apiKey}}&from=USD&to=GBP&value=100
+
+###
+
+### Get list of available currencies
+GET https://api.currencyapi.com/v3/currencies?apikey={{apiKey}}
+
+###
+
+### Get rates for multiple base currencies
+GET https://api.currencyapi.com/v3/latest?apikey={{apiKey}}&base_currency=USD
+

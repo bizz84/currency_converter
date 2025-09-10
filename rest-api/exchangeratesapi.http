@@ -1,0 +1,26 @@
+### Exchangeratesapi.io API Tests (Requires API key)
+# API key is loaded from .env file
+@apiKey = {{$dotenv EXCHANGERATESAPI_KEY}}
+
+### Get latest rates with USD base
+GET https://api.exchangeratesapi.io/v1/latest?access_key={{apiKey}}&base=USD&symbols=GBP,EUR
+
+###
+
+### Get historical rates for specific date
+GET https://api.exchangeratesapi.io/v1/2024-01-01?access_key={{apiKey}}&base=USD&symbols=GBP,EUR
+
+###
+
+### Get time series data
+GET https://api.exchangeratesapi.io/v1/timeseries?access_key={{apiKey}}&start_date=2024-01-01&end_date=2024-01-31&base=USD&symbols=GBP,EUR
+
+###
+
+### Convert specific amount (if supported by plan)
+GET https://api.exchangeratesapi.io/v1/convert?access_key={{apiKey}}&from=USD&to=GBP&amount=100
+
+###
+
+### Get all supported symbols
+GET https://api.exchangeratesapi.io/v1/symbols?access_key={{apiKey}}
