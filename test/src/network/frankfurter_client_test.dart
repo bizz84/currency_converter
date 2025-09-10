@@ -1,3 +1,6 @@
+import 'package:currency_converter/src/data/currencies.dart';
+import 'package:currency_converter/src/data/currency_rates.dart';
+import 'package:currency_converter/src/data/time_series_rates.dart';
 import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,7 +39,11 @@ void main() {
 
         final result = await client.getLatestRates();
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'EUR');
+        expect(result.date, '2024-01-15');
+        expect(result.rates['USD'], 1.0899);
+        expect(result.rates['GBP'], 0.8597);
       });
 
       test('should fetch latest rates with from and to parameters', () async {
@@ -58,7 +65,10 @@ void main() {
 
         final result = await client.getLatestRates(from: 'USD', to: 'GBP');
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'USD');
+        expect(result.date, '2024-01-15');
+        expect(result.rates['GBP'], 0.7888);
       });
 
       test('should fetch latest rates with amount conversion', () async {
@@ -84,7 +94,10 @@ void main() {
           to: 'GBP',
         );
 
-        expect(result, responseData);
+        expect(result.amount, 100.0);
+        expect(result.base, 'USD');
+        expect(result.date, '2024-01-15');
+        expect(result.rates['GBP'], 78.88);
       });
     });
 
@@ -106,7 +119,11 @@ void main() {
 
         final result = await client.getHistoricalRates(date);
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'EUR');
+        expect(result.date, date);
+        expect(result.rates['USD'], 1.1043);
+        expect(result.rates['GBP'], 0.8678);
       });
 
       test('should fetch historical rates with from and to parameters',
@@ -135,7 +152,11 @@ void main() {
           to: 'GBP,EUR',
         );
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'USD');
+        expect(result.date, date);
+        expect(result.rates['GBP'], 0.7859);
+        expect(result.rates['EUR'], 0.9055);
       });
 
       test('should fetch historical rates with amount conversion', () async {
@@ -163,7 +184,10 @@ void main() {
           to: 'GBP',
         );
 
-        expect(result, responseData);
+        expect(result.amount, 50.0);
+        expect(result.base, 'USD');
+        expect(result.date, date);
+        expect(result.rates['GBP'], 39.295);
       });
     });
 
@@ -188,7 +212,14 @@ void main() {
 
         final result = await client.getTimeSeriesRates(startDate, endDate);
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'EUR');
+        expect(result.startDate, startDate);
+        expect(result.endDate, endDate);
+        expect(result.rates['2024-01-01']!['USD'], 1.1043);
+        expect(result.rates['2024-01-01']!['GBP'], 0.8678);
+        expect(result.rates['2024-01-02']!['USD'], 1.0950);
+        expect(result.rates['2024-01-02']!['GBP'], 0.8634);
       });
 
       test('should fetch time series rates with from and to parameters',
@@ -221,7 +252,13 @@ void main() {
           to: 'GBP',
         );
 
-        expect(result, responseData);
+        expect(result.amount, 1.0);
+        expect(result.base, 'USD');
+        expect(result.startDate, startDate);
+        expect(result.endDate, endDate);
+        expect(result.rates['2024-01-01']!['GBP'], 0.7859);
+        expect(result.rates['2024-01-02']!['GBP'], 0.7890);
+        expect(result.rates['2024-01-03']!['GBP'], 0.7883);
       });
     });
 
@@ -266,42 +303,65 @@ void main() {
 
         final result = await client.getCurrencies();
 
-        expect(result, responseData);
+        expect(result.currencies['USD'], 'United States Dollar');
+        expect(result.currencies['EUR'], 'Euro');
+        expect(result.currencies['GBP'], 'British Pound');
+        expect(result.currencies['JPY'], 'Japanese Yen');
+        expect(result.currencies.length, 31);
       });
     });
 
     group('URL construction', () {
       test('should construct correct URL for latest endpoint', () async {
         const path = '/latest';
-        final responseData = {'test': 'data'};
+        final responseData = {
+          'amount': 1.0,
+          'base': 'EUR',
+          'date': '2024-01-15',
+          'rates': {'USD': 1.09},
+        };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
         final result = await client.getLatestRates();
 
-        expect(result, responseData);
+        expect(result.toJson(), responseData);
       });
 
       test('should construct correct URL for historical endpoint', () async {
         const date = '2024-01-15';
         final path = '/$date';
-        final responseData = {'test': 'data'};
+        final responseData = {
+          'amount': 1.0,
+          'base': 'EUR',
+          'date': date,
+          'rates': {'USD': 1.09},
+        };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
         final result = await client.getHistoricalRates(date);
 
-        expect(result, responseData);
+        expect(result.toJson(), responseData);
       });
 
       test('should construct correct URL for time series endpoint', () async {
         const startDate = '2024-01-01';
         const endDate = '2024-01-31';
         final path = '/$startDate..$endDate';
-        final responseData = {'test': 'data'};
+        final responseData = {
+          'amount': 1.0,
+          'base': 'EUR',
+          'start_date': startDate,
+          'end_date': endDate,
+          'rates': {
+            '2024-01-01': {'USD': 1.09},
+          },
+        };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
         final result = await client.getTimeSeriesRates(startDate, endDate);
 
-        expect(result, responseData);
+        expect(result.toJson()['start_date'], startDate);
+        expect(result.toJson()['end_date'], endDate);
       });
 
       test('should construct correct URL for currencies endpoint', () async {
@@ -311,7 +371,7 @@ void main() {
 
         final result = await client.getCurrencies();
 
-        expect(result, responseData);
+        expect(result.toJson(), responseData);
       });
     });
   });

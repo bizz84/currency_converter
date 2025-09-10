@@ -1,3 +1,6 @@
+import 'package:currency_converter/src/data/currencies.dart';
+import 'package:currency_converter/src/data/currency_rates.dart';
+import 'package:currency_converter/src/data/time_series_rates.dart';
 import 'package:dio/dio.dart';
 
 class FrankfurterClient {
@@ -7,7 +10,7 @@ class FrankfurterClient {
 
   final Dio _dio;
 
-  Future<Map<String, dynamic>> getLatestRates({
+  Future<CurrencyRates> getLatestRates({
     String? from,
     String? to,
     double? amount,
@@ -21,10 +24,10 @@ class FrankfurterClient {
       '/latest',
       queryParameters: queryParameters,
     );
-    return response.data!;
+    return CurrencyRates.fromJson(response.data!);
   }
 
-  Future<Map<String, dynamic>> getHistoricalRates(
+  Future<CurrencyRates> getHistoricalRates(
     String date, {
     String? from,
     String? to,
@@ -39,10 +42,10 @@ class FrankfurterClient {
       '/$date',
       queryParameters: queryParameters,
     );
-    return response.data!;
+    return CurrencyRates.fromJson(response.data!);
   }
 
-  Future<Map<String, dynamic>> getTimeSeriesRates(
+  Future<TimeSeriesRates> getTimeSeriesRates(
     String startDate,
     String endDate, {
     String? from,
@@ -56,11 +59,11 @@ class FrankfurterClient {
       '/$startDate..$endDate',
       queryParameters: queryParameters,
     );
-    return response.data!;
+    return TimeSeriesRates.fromJson(response.data!);
   }
 
-  Future<Map<String, dynamic>> getCurrencies() async {
+  Future<Currencies> getCurrencies() async {
     final response = await _dio.get<Map<String, dynamic>>('/currencies');
-    return response.data!;
+    return Currencies.fromJson(response.data!);
   }
 }
