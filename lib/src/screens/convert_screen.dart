@@ -61,101 +61,93 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
               lastUpdated = DateTime.now();
             });
           },
-          child: Column(
-            children: [
-              // Main content area with scroll
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Base Currency Section
-                      BaseCurrencyCard(
-                        currency: baseCurrency,
-                        amount: amount,
-                        onCurrencyTap: () => _showCurrencyPicker(true),
-                        onAmountChanged: (value) {
-                          setState(() {
-                            amount = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 24),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Base Currency Section
+                BaseCurrencyCard(
+                  currency: baseCurrency,
+                  amount: amount,
+                  onCurrencyTap: () => _showCurrencyPicker(true),
+                  onAmountChanged: (value) {
+                    setState(() {
+                      amount = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 24),
 
-                      // Target Currencies Section with loading/error handling
-                      ratesAsync.when(
-                        data: (rates) => TargetCurrenciesSection(
-                          baseCurrency: baseCurrency,
-                          amount: amount,
-                          targetCurrencies: targetCurrencies,
-                          onRemoveCurrency: _removeCurrency,
-                          rates: rates,
-                        ),
-                        loading: () => const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(32.0),
-                            child: CircularProgressIndicator(),
+                // Target Currencies Section with loading/error handling
+                ratesAsync.when(
+                  data: (rates) => TargetCurrenciesSection(
+                    baseCurrency: baseCurrency,
+                    amount: amount,
+                    targetCurrencies: targetCurrencies,
+                    onRemoveCurrency: _removeCurrency,
+                    rates: rates,
+                  ),
+                  loading: () => const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  error: (error, stack) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: Colors.red,
                           ),
-                        ),
-                        error: (error, stack) => Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Icons.error_outline,
-                                  size: 48,
-                                  color: Colors.red,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'Failed to load exchange rates',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  error.toString(),
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    ref.invalidate(
-                                      latestRatesProvider(baseCurrency),
-                                    );
-                                  },
-                                  child: const Text('Retry'),
-                                ),
-                              ],
-                            ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Failed to load exchange rates',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium,
                           ),
-                        ),
+                          const SizedBox(height: 8),
+                          Text(
+                            error.toString(),
+                            style: Theme.of(context).textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              ref.invalidate(
+                                latestRatesProvider(baseCurrency),
+                              );
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 80), // Space for FAB
-                    ],
+                    ),
                   ),
                 ),
-              ),
-
-              // Last Updated Footer
-              LastUpdatedFooter(
-                lastUpdated: lastUpdated,
-                onRefresh: () {
-                  ref.invalidate(latestRatesProvider(baseCurrency));
-                  setState(() {
-                    lastUpdated = DateTime.now();
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Rates refreshed')),
-                  );
-                },
-              ),
-            ],
+                // Last Updated Footer
+                // LastUpdatedFooter(
+                //   lastUpdated: lastUpdated,
+                //   onRefresh: () {
+                //     ref.invalidate(latestRatesProvider(baseCurrency));
+                //     setState(() {
+                //       lastUpdated = DateTime.now();
+                //     });
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(content: Text('Rates refreshed')),
+                //     );
+                //   },
+                // ),
+                // const SizedBox(height: 80), // Space for FAB
+              ],
+            ),
           ),
         ),
       ),
