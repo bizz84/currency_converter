@@ -41,42 +41,64 @@
 - [ ] Limit maximum number of currencies (e.g., 10)
 - [x] Store selected currencies in state
 
-## Phase 7: Drag & Drop Reordering
+## Phase 7: Network Integration with FrankfurterClient
+- [ ] Create `frankfurter_client_provider.dart` using `@riverpod` annotation
+- [ ] Create providers for:
+  - [ ] FrankfurterClient instance (using existing Dio provider from `dio_provider.dart`)
+  - [ ] Available currencies (`@riverpod` FutureProvider)
+  - [ ] Latest exchange rates (`@riverpod` FutureProvider with family for base currency)
+  - [ ] Exchange rate for currency pair (computed provider)
+- [ ] Run `dart run build_runner build` to generate provider code
+- [ ] Wrap app with `ProviderScope` in main.dart
+- [ ] Convert `ConvertScreen` to `ConsumerStatefulWidget`
+- [ ] Replace FakeDataProvider with provider watches:
+  - [ ] Currency list from currencies provider
+  - [ ] Exchange rates from rates provider
+  - [ ] Currency flags can remain in FakeDataProvider or move to a map
+- [ ] Implement AsyncValue handling for loading/error/data states
+- [ ] Add RefreshIndicator for pull-to-refresh
+- [ ] Use `ref.invalidate()` to refresh rates
+- [ ] Add periodic refresh using Timer
+- [ ] Show CircularProgressIndicator during initial load
+- [ ] Display SnackBar or error widget on API failures
+- [ ] Cache rates using provider's built-in caching
+
+## Phase 8: Drag & Drop Reordering
 - [ ] Wrap currency list in `ReorderableListView`
 - [ ] Add drag handle to each tile
 - [ ] Implement reorder callback
 - [ ] Add haptic feedback on drag
 - [ ] Animate reordering transitions
 
-## Phase 8: Live Conversion Updates
+## Phase 9: Live Conversion Updates
 - [x] Implement real-time conversion as user types
 - [ ] Add debouncing for performance
 - [x] Update all target currencies simultaneously
 - [x] Handle edge cases (empty input, zero, invalid)
 - [x] Format output numbers appropriately
 
-## Phase 9: Fake Data Provider
+## Phase 10: Fake Data Provider
 - [x] Create `FakeDataProvider` class
 - [x] Add comprehensive currency list (30+ currencies)
 - [x] Generate realistic exchange rates
 - [x] Implement rate calculation logic
 - [ ] Add method to simulate rate updates
 
-## Phase 10: Visual Polish
+## Phase 11: Visual Polish
 - [ ] Add loading states and shimmer effects
 - [ ] Implement smooth animations for add/remove
 - [ ] Add empty state when no target currencies
 - [ ] Style with consistent spacing and typography
 - [ ] Ensure responsive layout for different screen sizes
 
-## Phase 11: Additional Features
-- [ ] Add "Last updated" timestamp
-- [ ] Implement pull-to-refresh gesture
+## Phase 12: Additional Features
+- [x] Add "Last updated" timestamp
+- [x] Implement pull-to-refresh gesture
 - [ ] Add refresh countdown timer
 - [ ] Show update animation when rates change
 - [ ] Add swap button between base and target currency
 
-## Phase 12: Testing & Refinement
+## Phase 13: Testing & Refinement
 - [ ] Test with various amounts (large, small, decimals)
 - [ ] Verify all currency conversions calculate correctly
 - [ ] Test reordering with different list sizes
