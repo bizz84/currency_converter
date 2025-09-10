@@ -1,17 +1,17 @@
 # Convert Screen Implementation Plan
 
 ## Phase 1: App Structure & Navigation
-- [ ] Replace default Flutter demo app with currency converter app
-- [ ] Set up bottom navigation bar with Convert and Charts tabs
-- [ ] Create placeholder screens for both tabs
-- [ ] Configure Material 3 theme with appropriate color scheme
-- [ ] Set up basic routing between screens
+- [x] Replace default Flutter demo app with currency converter app
+- [x] Set up bottom navigation bar with Convert and Charts tabs
+- [x] Create placeholder screens for both tabs
+- [x] Configure Material 3 theme with appropriate color scheme
+- [x] Set up basic routing between screens
 
 ## Phase 2: Convert Screen Layout
-- [ ] Create `ConvertScreen` stateful widget
-- [ ] Add app bar with title "Currency Converter"
-- [ ] Create main container with padding and scroll view
-- [ ] Set up basic column layout for screen sections
+- [x] Create `ConvertScreen` stateful widget
+- [x] Add app bar with title "Currency Converter"
+- [x] Create main container with padding and scroll view
+- [x] Set up basic column layout for screen sections
 
 ## Phase 3: Base Currency Section
 - [ ] Create base currency dropdown selector

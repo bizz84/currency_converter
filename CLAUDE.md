@@ -72,3 +72,4 @@ See `ai_specs/` directory for detailed requirements:
 - `api-spec.md` - API provider comparison and implementation notes
 - `network-layer.md` - Network client requirements
 - `network-layer-plan.md` - Implementation checklist
+- Create small reusable widgets rather than _buildWidgetX helper methods
