@@ -42,25 +42,25 @@
 - [x] Store selected currencies in state
 
 ## Phase 7: Network Integration with FrankfurterClient
-- [ ] Update `frankfurter_client.dart` with new providers for:
+- [x] Update `frankfurter_client.dart` with new providers for:
   - [x] FrankfurterClient instance (using existing Dio provider from `dio_provider.dart`)
-  - [ ] Available currencies (`@riverpod` FutureProvider)
-  - [ ] Latest exchange rates (`@riverpod` FutureProvider with family for base currency)
-  - [ ] Exchange rate for currency pair (computed provider)
-- [ ] Run `dart run build_runner build` to generate provider code
-- [ ] Wrap app with `ProviderScope` in main.dart
-- [ ] Convert `ConvertScreen` to `ConsumerStatefulWidget`
-- [ ] Replace FakeDataProvider with provider watches:
-  - [ ] Currency list from currencies provider
-  - [ ] Exchange rates from rates provider
-  - [ ] Currency flags can remain in FakeDataProvider or move to a map
-- [ ] Implement AsyncValue handling for loading/error/data states
-- [ ] Add RefreshIndicator for pull-to-refresh
-- [ ] Use `ref.invalidate()` to refresh rates
-- [ ] Add periodic refresh using Timer
-- [ ] Show CircularProgressIndicator during initial load
-- [ ] Display SnackBar or error widget on API failures
-- [ ] Cache rates using provider's built-in caching
+  - [x] Available currencies (`@riverpod` FutureProvider)
+  - [x] Latest exchange rates (`@riverpod` FutureProvider with family for base currency)
+  - [x] Exchange rate for currency pair (computed provider)
+- [x] Run `dart run build_runner build` to generate provider code
+- [x] Wrap app with `ProviderScope` in main.dart
+- [x] Convert `ConvertScreen` to `ConsumerStatefulWidget`
+- [x] Replace FakeDataProvider with provider watches:
+  - [x] Currency list from currencies provider
+  - [x] Exchange rates from rates provider
+  - [x] Currency flags can remain in FakeDataProvider or move to a map
+- [x] Implement AsyncValue handling for loading/error/data states
+- [x] Add RefreshIndicator for pull-to-refresh
+- [x] Use `ref.invalidate()` to refresh rates
+- [x] Add periodic refresh using Timer
+- [x] Show CircularProgressIndicator during initial load
+- [x] Display SnackBar or error widget on API failures
+- [x] Cache rates using provider's built-in caching
 
 ## Phase 8: Drag & Drop Reordering
 - [ ] Wrap currency list in `ReorderableListView`

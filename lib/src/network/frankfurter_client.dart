@@ -16,12 +16,12 @@ class FrankfurterClient {
   final Dio _dio;
 
   Future<CurrencyRates> getLatestRates({
-    String? from,
+    String? base,
     String? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (from != null) queryParameters['from'] = from;
+    if (base != null) queryParameters['from'] = base;
     if (to != null) queryParameters['to'] = to;
     if (amount != null) queryParameters['amount'] = amount;
 
@@ -34,12 +34,12 @@ class FrankfurterClient {
 
   Future<CurrencyRates> getHistoricalRates(
     String date, {
-    String? from,
+    String? base,
     String? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (from != null) queryParameters['from'] = from;
+    if (base != null) queryParameters['from'] = base;
     if (to != null) queryParameters['to'] = to;
     if (amount != null) queryParameters['amount'] = amount;
 
@@ -53,11 +53,11 @@ class FrankfurterClient {
   Future<TimeSeriesRates> getTimeSeriesRates(
     String startDate,
     String endDate, {
-    String? from,
+    String? base,
     String? to,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (from != null) queryParameters['from'] = from;
+    if (base != null) queryParameters['from'] = base;
     if (to != null) queryParameters['to'] = to;
 
     final response = await _dio.get<Map<String, dynamic>>(
@@ -76,4 +76,30 @@ class FrankfurterClient {
 @riverpod
 FrankfurterClient frankfurterClient(Ref ref) {
   return FrankfurterClient(dio: ref.read(dioProvider));
+}
+
+@riverpod
+Future<Currencies> availableCurrencies(Ref ref) async {
+  final client = ref.watch(frankfurterClientProvider);
+  return client.getCurrencies();
+}
+
+@riverpod
+Future<CurrencyRates> latestRates(Ref ref, String baseCurrency) async {
+  final client = ref.watch(frankfurterClientProvider);
+  return client.getLatestRates(base: baseCurrency);
+}
+
+@riverpod
+double exchangeRate(Ref ref, String baseCurrency, String targetCurrency) {
+  final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
+  
+  return ratesAsync.when(
+    data: (rates) {
+      if (baseCurrency == targetCurrency) return 1.0;
+      return rates.rates[targetCurrency] ?? 1.0;
+    },
+    loading: () => 1.0,
+    error: (_, __) => 1.0,
+  );
 }

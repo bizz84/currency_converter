@@ -1,25 +1,51 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/currency_selector.dart';
 import '../widgets/currency_picker_dialog.dart';
 import '../widgets/amount_input_field.dart';
 import '../providers/fake_data_provider.dart';
+import '../network/frankfurter_client.dart';
+import '../data/currency_rates.dart';
 
-class ConvertScreen extends StatefulWidget {
+class ConvertScreen extends ConsumerStatefulWidget {
   const ConvertScreen({super.key});
 
   @override
-  State<ConvertScreen> createState() => _ConvertScreenState();
+  ConsumerState<ConvertScreen> createState() => _ConvertScreenState();
 }
 
-class _ConvertScreenState extends State<ConvertScreen> {
+class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   // State variables
   String baseCurrency = 'USD';
   double amount = 100.0;
   List<String> targetCurrencies = ['EUR', 'GBP', 'JPY'];
   DateTime lastUpdated = DateTime.now();
+  Timer? _refreshTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set up automatic refresh every 60 seconds
+    _refreshTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
+      ref.invalidate(latestRatesProvider(baseCurrency));
+      setState(() {
+        lastUpdated = DateTime.now();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
+    final currenciesAsync = ref.watch(availableCurrenciesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Currency Converter'),
@@ -27,54 +53,112 @@ class _ConvertScreenState extends State<ConvertScreen> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Main content area with scroll
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Base Currency Section
-                    BaseCurrencyCard(
-                      currency: baseCurrency,
-                      amount: amount,
-                      onCurrencyTap: () => _showCurrencyPicker(true),
-                      onAmountChanged: (value) {
-                        setState(() {
-                          amount = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 24),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            // Invalidate the provider to force a refresh
+            ref.invalidate(latestRatesProvider(baseCurrency));
+            ref.invalidate(availableCurrenciesProvider);
 
-                    // Target Currencies Section
-                    TargetCurrenciesSection(
-                      baseCurrency: baseCurrency,
-                      amount: amount,
-                      targetCurrencies: targetCurrencies,
-                      onRemoveCurrency: _removeCurrency,
-                    ),
-                    const SizedBox(height: 80), // Space for FAB
-                  ],
+            setState(() {
+              lastUpdated = DateTime.now();
+            });
+          },
+          child: Column(
+            children: [
+              // Main content area with scroll
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Base Currency Section
+                      BaseCurrencyCard(
+                        currency: baseCurrency,
+                        amount: amount,
+                        onCurrencyTap: () => _showCurrencyPicker(true),
+                        onAmountChanged: (value) {
+                          setState(() {
+                            amount = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Target Currencies Section with loading/error handling
+                      ratesAsync.when(
+                        data: (rates) => TargetCurrenciesSection(
+                          baseCurrency: baseCurrency,
+                          amount: amount,
+                          targetCurrencies: targetCurrencies,
+                          onRemoveCurrency: _removeCurrency,
+                          rates: rates,
+                        ),
+                        loading: () => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(32.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        error: (error, stack) => Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  size: 48,
+                                  color: Colors.red,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Failed to load exchange rates',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  error.toString(),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    ref.invalidate(
+                                      latestRatesProvider(baseCurrency),
+                                    );
+                                  },
+                                  child: const Text('Retry'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 80), // Space for FAB
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // Last Updated Footer
-            LastUpdatedFooter(
-              lastUpdated: lastUpdated,
-              onRefresh: () {
-                setState(() {
-                  lastUpdated = DateTime.now();
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Rates refreshed')),
-                );
-              },
-            ),
-          ],
+              // Last Updated Footer
+              LastUpdatedFooter(
+                lastUpdated: lastUpdated,
+                onRefresh: () {
+                  ref.invalidate(latestRatesProvider(baseCurrency));
+                  setState(() {
+                    lastUpdated = DateTime.now();
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Rates refreshed')),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -172,6 +256,7 @@ class TargetCurrenciesSection extends StatelessWidget {
   final double amount;
   final List<String> targetCurrencies;
   final void Function(String) onRemoveCurrency;
+  final CurrencyRates? rates;
 
   const TargetCurrenciesSection({
     super.key,
@@ -179,6 +264,7 @@ class TargetCurrenciesSection extends StatelessWidget {
     required this.amount,
     required this.targetCurrencies,
     required this.onRemoveCurrency,
+    this.rates,
   });
 
   @override
@@ -200,6 +286,7 @@ class TargetCurrenciesSection extends StatelessWidget {
             currency: currency,
             baseCurrency: baseCurrency,
             amount: amount,
+            rate: rates?.rates[currency],
             onRemove: () => onRemoveCurrency(currency),
           ),
         ),
@@ -212,6 +299,7 @@ class CurrencyConversionTile extends StatelessWidget {
   final String currency;
   final String baseCurrency;
   final double amount;
+  final double? rate;
   final VoidCallback? onRemove;
 
   const CurrencyConversionTile({
@@ -219,13 +307,12 @@ class CurrencyConversionTile extends StatelessWidget {
     required this.currency,
     required this.baseCurrency,
     required this.amount,
+    this.rate,
     this.onRemove,
   });
 
   @override
   Widget build(BuildContext context) {
-    final rate = FakeDataProvider.getExchangeRate(baseCurrency, currency);
-    final convertedAmount = amount * rate;
     final flag = FakeDataProvider.getFlag(currency);
     final currencyName = FakeDataProvider.getCurrencyName(currency);
 
@@ -256,25 +343,45 @@ class CurrencyConversionTile extends StatelessWidget {
               ),
             ],
           ),
-          subtitle: Text(
-            '1 $baseCurrency = ${rate.toStringAsFixed(4)} $currency',
-          ),
+          subtitle: rate != null
+              ? Text('1 $baseCurrency = ${rate!.toStringAsFixed(4)} $currency')
+              : Text(
+                  'Rate unavailable',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    convertedAmount.toStringAsFixed(2),
+              if (rate != null)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      (amount * rate!).toStringAsFixed(2),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      currency,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    '—',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  Text(currency, style: Theme.of(context).textTheme.bodySmall),
-                ],
-              ),
+                ),
               if (onRemove != null) ...[
                 const SizedBox(width: 8),
                 IconButton(

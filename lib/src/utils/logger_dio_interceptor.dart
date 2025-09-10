@@ -32,12 +32,9 @@ class LoggerDioInterceptor implements Interceptor {
         name: _name,
       );
     }
-    // final rateLimitUsed = response.headers.value('x-ratelimit-used');
-    // final rateLimitRemaining = response.headers.value('x-ratelimit-remaining');
-    // log(
-    //   'Rate limit used: $rateLimitUsed, remaining: $rateLimitRemaining',
-    //   name: _name,
-    // );
+    if (response.data != null) {
+      log('Response: ${response.data}', name: _name);
+    }
     return handler.next(response);
   }
 

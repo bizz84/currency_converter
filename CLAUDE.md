@@ -73,3 +73,4 @@ See `ai_specs/` directory for detailed requirements:
 - `network-layer.md` - Network client requirements
 - `network-layer-plan.md` - Implementation checklist
 - Create small reusable widgets rather than _buildWidgetX helper methods
+- Assume build runner is running in watch mode

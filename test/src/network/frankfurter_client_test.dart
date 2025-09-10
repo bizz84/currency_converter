@@ -40,7 +40,7 @@ void main() {
         expect(result.rates['GBP'], 0.8597);
       });
 
-      test('should fetch latest rates with from and to parameters', () async {
+      test('should fetch latest rates with base and to parameters', () async {
         const path = '/latest';
         final responseData = {
           'amount': 1.0,
@@ -55,7 +55,7 @@ void main() {
           queryParameters: {'from': 'USD', 'to': 'GBP'},
         );
 
-        final result = await client.getLatestRates(from: 'USD', to: 'GBP');
+        final result = await client.getLatestRates(base: 'USD', to: 'GBP');
 
         expect(result.amount, 1.0);
         expect(result.base, 'USD');
@@ -80,7 +80,7 @@ void main() {
 
         final result = await client.getLatestRates(
           amount: 100,
-          from: 'USD',
+          base: 'USD',
           to: 'GBP',
         );
 
@@ -114,7 +114,7 @@ void main() {
       });
 
       test(
-        'should fetch historical rates with from and to parameters',
+        'should fetch historical rates with base and to parameters',
         () async {
           const date = '2024-01-01';
           final path = '/$date';
@@ -133,7 +133,7 @@ void main() {
 
           final result = await client.getHistoricalRates(
             date,
-            from: 'USD',
+            base: 'USD',
             to: 'GBP,EUR',
           );
 
@@ -164,7 +164,7 @@ void main() {
         final result = await client.getHistoricalRates(
           date,
           amount: 50,
-          from: 'USD',
+          base: 'USD',
           to: 'GBP',
         );
 
@@ -207,7 +207,7 @@ void main() {
       });
 
       test(
-        'should fetch time series rates with from and to parameters',
+        'should fetch time series rates with base and to parameters',
         () async {
           const startDate = '2024-01-01';
           const endDate = '2024-01-07';
@@ -233,7 +233,7 @@ void main() {
           final result = await client.getTimeSeriesRates(
             startDate,
             endDate,
-            from: 'USD',
+            base: 'USD',
             to: 'GBP',
           );
 
