@@ -44,7 +44,6 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   @override
   Widget build(BuildContext context) {
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-    final currenciesAsync = ref.watch(availableCurrenciesProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +56,6 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
           onRefresh: () async {
             // Invalidate the provider to force a refresh
             ref.invalidate(latestRatesProvider(baseCurrency));
-            ref.invalidate(availableCurrenciesProvider);
 
             setState(() {
               lastUpdated = DateTime.now();
