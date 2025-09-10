@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../widgets/currency_selector.dart';
+import '../widgets/currency_picker_dialog.dart';
+import '../widgets/amount_input_field.dart';
+import '../providers/fake_data_provider.dart';
 
 class ConvertScreen extends StatefulWidget {
   const ConvertScreen({super.key});
@@ -36,53 +40,79 @@ class _ConvertScreenState extends State<ConvertScreen> {
                     BaseCurrencyCard(
                       currency: baseCurrency,
                       amount: amount,
-                      onCurrencyTap: () {
-                        // TODO: Show currency picker
-                      },
+                      onCurrencyTap: () => _showCurrencyPicker(true),
                       onAmountChanged: (value) {
-                        // TODO: Update amount
+                        setState(() {
+                          amount = value;
+                        });
                       },
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Target Currencies Section
                     TargetCurrenciesSection(
                       baseCurrency: baseCurrency,
                       amount: amount,
                       targetCurrencies: targetCurrencies,
+                      onRemoveCurrency: _removeCurrency,
                     ),
                     const SizedBox(height: 80), // Space for FAB
                   ],
                 ),
               ),
             ),
-            
+
             // Last Updated Footer
             LastUpdatedFooter(
-                lastUpdated: lastUpdated,
-                onRefresh: () {
-                  setState(() {
-                    lastUpdated = DateTime.now();
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Rates refreshed')),
-                  );
-                },
-              ),
+              lastUpdated: lastUpdated,
+              onRefresh: () {
+                setState(() {
+                  lastUpdated = DateTime.now();
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Rates refreshed')),
+                );
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Show currency picker
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add currency functionality coming soon')),
-          );
-        },
-        child: const Icon(Icons.add),
+        onPressed: () => _showCurrencyPicker(false),
         tooltip: 'Add Currency',
+        child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _showCurrencyPicker(bool isBaseCurrency) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) => CurrencyPickerDialog(
+        selectedCurrency: isBaseCurrency ? baseCurrency : null,
+        excludedCurrencies: isBaseCurrency
+            ? null
+            : [baseCurrency, ...targetCurrencies],
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        if (isBaseCurrency) {
+          baseCurrency = result;
+        } else {
+          if (!targetCurrencies.contains(result)) {
+            targetCurrencies.add(result);
+          }
+        }
+      });
+    }
+  }
+
+  void _removeCurrency(String currency) {
+    setState(() {
+      targetCurrencies.remove(currency);
+    });
   }
 }
 
@@ -90,7 +120,7 @@ class BaseCurrencyCard extends StatelessWidget {
   final String currency;
   final double amount;
   final VoidCallback onCurrencyTap;
-  final ValueChanged<String> onAmountChanged;
+  final ValueChanged<double> onAmountChanged;
 
   const BaseCurrencyCard({
     super.key,
@@ -119,16 +149,12 @@ class BaseCurrencyCard extends StatelessWidget {
             Row(
               children: [
                 // Currency selector
-                CurrencySelector(
-                  currency: currency,
-                  flag: '🇺🇸',
-                  onTap: onCurrencyTap,
-                ),
+                CurrencySelector(currency: currency, onTap: onCurrencyTap),
                 const SizedBox(width: 16),
                 // Amount input
                 Expanded(
-                  child: AmountDisplay(
-                    amount: amount,
+                  child: AmountInputField(
+                    initialAmount: amount,
                     onChanged: onAmountChanged,
                   ),
                 ),
@@ -141,85 +167,18 @@ class BaseCurrencyCard extends StatelessWidget {
   }
 }
 
-class CurrencySelector extends StatelessWidget {
-  final String currency;
-  final String flag;
-  final VoidCallback onTap;
-
-  const CurrencySelector({
-    super.key,
-    required this.currency,
-    required this.flag,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).dividerColor),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Text(
-              flag,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              currency,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const Icon(Icons.arrow_drop_down),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AmountDisplay extends StatelessWidget {
-  final double amount;
-  final ValueChanged<String> onChanged;
-
-  const AmountDisplay({
-    super.key,
-    required this.amount,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).dividerColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        amount.toStringAsFixed(2),
-        style: Theme.of(context).textTheme.titleLarge,
-        textAlign: TextAlign.right,
-      ),
-    );
-  }
-}
-
 class TargetCurrenciesSection extends StatelessWidget {
   final String baseCurrency;
   final double amount;
   final List<String> targetCurrencies;
+  final void Function(String) onRemoveCurrency;
 
   const TargetCurrenciesSection({
     super.key,
     required this.baseCurrency,
     required this.amount,
     required this.targetCurrencies,
+    required this.onRemoveCurrency,
   });
 
   @override
@@ -236,11 +195,14 @@ class TargetCurrenciesSection extends StatelessWidget {
             ),
           ),
         ),
-        ...targetCurrencies.map((currency) => CurrencyConversionTile(
-          currency: currency,
-          baseCurrency: baseCurrency,
-          amount: amount,
-        )),
+        ...targetCurrencies.map(
+          (currency) => CurrencyConversionTile(
+            currency: currency,
+            baseCurrency: baseCurrency,
+            amount: amount,
+            onRemove: () => onRemoveCurrency(currency),
+          ),
+        ),
       ],
     );
   }
@@ -250,50 +212,79 @@ class CurrencyConversionTile extends StatelessWidget {
   final String currency;
   final String baseCurrency;
   final double amount;
+  final VoidCallback? onRemove;
 
   const CurrencyConversionTile({
     super.key,
     required this.currency,
     required this.baseCurrency,
     required this.amount,
+    this.onRemove,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder conversion rates
-    final rates = {
-      'EUR': 0.92,
-      'GBP': 0.79,
-      'JPY': 149.50,
-    };
-    final rate = rates[currency] ?? 1.0;
+    final rate = FakeDataProvider.getExchangeRate(baseCurrency, currency);
     final convertedAmount = amount * rate;
-    final flag = currency == 'EUR' ? '🇪🇺' : currency == 'GBP' ? '🇬🇧' : '🇯🇵';
+    final flag = FakeDataProvider.getFlag(currency);
+    final currencyName = FakeDataProvider.getCurrencyName(currency);
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: Text(
-          flag,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        title: Text(currency),
-        subtitle: Text('1 $baseCurrency = ${rate.toStringAsFixed(4)} $currency'),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              convertedAmount.toStringAsFixed(2),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+    return Dismissible(
+      key: Key(currency),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) => onRemove?.call(),
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 16),
+        color: Colors.red,
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      child: Card(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: ListTile(
+          leading: Text(flag, style: Theme.of(context).textTheme.headlineSmall),
+          title: Row(
+            children: [
+              Text(currency),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  currencyName,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            Text(
-              currency,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
+            ],
+          ),
+          subtitle: Text(
+            '1 $baseCurrency = ${rate.toStringAsFixed(4)} $currency',
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    convertedAmount.toStringAsFixed(2),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(currency, style: Theme.of(context).textTheme.bodySmall),
+                ],
+              ),
+              if (onRemove != null) ...[
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.close, size: 20),
+                  onPressed: onRemove,
+                  visualDensity: VisualDensity.compact,
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
@@ -326,12 +317,11 @@ class LastUpdatedFooter extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         border: Border(
-          top: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: 1,
-          ),
+          top: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       child: Row(
@@ -353,10 +343,7 @@ class LastUpdatedFooter extends StatelessWidget {
               ),
             ],
           ),
-          TextButton(
-            onPressed: onRefresh,
-            child: const Text('Refresh'),
-          ),
+          TextButton(onPressed: onRefresh, child: const Text('Refresh')),
         ],
       ),
     );

@@ -14,32 +14,32 @@
 - [x] Set up basic column layout for screen sections
 
 ## Phase 3: Base Currency Section
-- [ ] Create base currency dropdown selector
-- [ ] Add amount input field with numeric keyboard
-- [ ] Implement thousand separator formatting
-- [ ] Add currency flag/icon display
-- [ ] Style with card or elevated container
+- [x] Create base currency dropdown selector
+- [x] Add amount input field with numeric keyboard
+- [x] Implement thousand separator formatting
+- [x] Add currency flag/icon display
+- [x] Style with card or elevated container
 
 ## Phase 4: Currency Selector Component
-- [ ] Create reusable `CurrencySelector` widget
-- [ ] Implement dropdown with search functionality
-- [ ] Display currency code, name, and flag
+- [x] Create reusable `CurrencySelector` widget
+- [x] Implement dropdown with search functionality
+- [x] Display currency code, name, and flag
 - [ ] Add recently used currencies section
-- [ ] Implement currency filtering/search
+- [x] Implement currency filtering/search
 
 ## Phase 5: Target Currencies List
-- [ ] Create `CurrencyConversionTile` widget
-- [ ] Display currency info (flag, code, name)
-- [ ] Show exchange rate relative to base
-- [ ] Display converted amount
-- [ ] Add remove/delete button or swipe action
+- [x] Create `CurrencyConversionTile` widget
+- [x] Display currency info (flag, code, name)
+- [x] Show exchange rate relative to base
+- [x] Display converted amount
+- [x] Add remove/delete button or swipe action
 
 ## Phase 6: Multiple Currencies Feature
-- [ ] Implement "Add Currency" button (FAB or inline)
-- [ ] Create currency picker dialog/modal
-- [ ] Prevent duplicate currency selection
+- [x] Implement "Add Currency" button (FAB or inline)
+- [x] Create currency picker dialog/modal
+- [x] Prevent duplicate currency selection
 - [ ] Limit maximum number of currencies (e.g., 10)
-- [ ] Store selected currencies in state
+- [x] Store selected currencies in state
 
 ## Phase 7: Drag & Drop Reordering
 - [ ] Wrap currency list in `ReorderableListView`
@@ -49,17 +49,17 @@
 - [ ] Animate reordering transitions
 
 ## Phase 8: Live Conversion Updates
-- [ ] Implement real-time conversion as user types
+- [x] Implement real-time conversion as user types
 - [ ] Add debouncing for performance
-- [ ] Update all target currencies simultaneously
-- [ ] Handle edge cases (empty input, zero, invalid)
-- [ ] Format output numbers appropriately
+- [x] Update all target currencies simultaneously
+- [x] Handle edge cases (empty input, zero, invalid)
+- [x] Format output numbers appropriately
 
 ## Phase 9: Fake Data Provider
-- [ ] Create `FakeDataProvider` class
-- [ ] Add comprehensive currency list (30+ currencies)
-- [ ] Generate realistic exchange rates
-- [ ] Implement rate calculation logic
+- [x] Create `FakeDataProvider` class
+- [x] Add comprehensive currency list (30+ currencies)
+- [x] Generate realistic exchange rates
+- [x] Implement rate calculation logic
 - [ ] Add method to simulate rate updates
 
 ## Phase 10: Visual Polish
