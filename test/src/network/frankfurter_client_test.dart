@@ -31,7 +31,7 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getLatestRates();
+        final result = await client.getLatestRates(base: 'EUR');
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
@@ -104,7 +104,7 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date);
+        final result = await client.getHistoricalRates(date, base: 'EUR');
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
@@ -308,7 +308,7 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getLatestRates();
+        final result = await client.getLatestRates(base: 'EUR');
 
         expect(result.toJson(), responseData);
       });
@@ -324,7 +324,7 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date);
+        final result = await client.getHistoricalRates(date, base: 'EUR');
 
         expect(result.toJson(), responseData);
       });

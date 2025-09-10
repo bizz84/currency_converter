@@ -254,7 +254,7 @@ class TargetCurrenciesSection extends StatelessWidget {
   final double amount;
   final List<String> targetCurrencies;
   final void Function(String) onRemoveCurrency;
-  final CurrencyRates? rates;
+  final CurrencyRates rates;
 
   const TargetCurrenciesSection({
     super.key,
@@ -262,7 +262,7 @@ class TargetCurrenciesSection extends StatelessWidget {
     required this.amount,
     required this.targetCurrencies,
     required this.onRemoveCurrency,
-    this.rates,
+    required this.rates,
   });
 
   @override
@@ -284,7 +284,7 @@ class TargetCurrenciesSection extends StatelessWidget {
             currency: currency,
             baseCurrency: baseCurrency,
             amount: amount,
-            rate: rates?.rates[currency],
+            rate: currency == baseCurrency ? 1.0 : rates.rates[currency],
             onRemove: () => onRemoveCurrency(currency),
           ),
         ),
@@ -342,7 +342,9 @@ class CurrencyConversionTile extends StatelessWidget {
             ],
           ),
           subtitle: rate != null
-              ? Text('1 $baseCurrency = ${rate!.toStringAsFixed(4)} $currency')
+              ? Text(
+                  '1 $baseCurrency = ${rate!.toStringAsFixed(4)} $currency',
+                )
               : Text(
                   'Rate unavailable',
                   style: TextStyle(

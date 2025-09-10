@@ -16,12 +16,12 @@ class FrankfurterClient {
   final Dio _dio;
 
   Future<CurrencyRates> getLatestRates({
-    String? base,
+    required String base,
     String? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (base != null) queryParameters['from'] = base;
+    queryParameters['from'] = base;
     if (to != null) queryParameters['to'] = to;
     if (amount != null) queryParameters['amount'] = amount;
 
@@ -29,17 +29,23 @@ class FrankfurterClient {
       '/latest',
       queryParameters: queryParameters,
     );
+    // Include base rate with value 1.0 in the response
+    // final data = response.data!;
+    // final rates = Map<String, dynamic>.from(data['rates'] as Map);
+    // rates[base] = 1.0;
+    // data['rates'] = rates;
+    // return CurrencyRates.fromJson(data);
     return CurrencyRates.fromJson(response.data!);
   }
 
   Future<CurrencyRates> getHistoricalRates(
     String date, {
-    String? base,
+    required String base,
     String? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (base != null) queryParameters['from'] = base;
+    queryParameters['from'] = base;
     if (to != null) queryParameters['to'] = to;
     if (amount != null) queryParameters['amount'] = amount;
 
@@ -93,7 +99,7 @@ Future<CurrencyRates> latestRates(Ref ref, String baseCurrency) async {
 @riverpod
 double exchangeRate(Ref ref, String baseCurrency, String targetCurrency) {
   final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-  
+
   return ratesAsync.when(
     data: (rates) {
       if (baseCurrency == targetCurrency) return 1.0;
