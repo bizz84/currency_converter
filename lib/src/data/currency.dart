@@ -45,10 +45,9 @@ enum Currency {
     required this.flag,
   });
 
-  static Currency from(String code) {
-    return Currency.values.firstWhere(
-      (currency) => currency.name == code,
-      orElse: () => throw ArgumentError('Unknown currency code: $code'),
-    );
+  static Currency? from(String code) {
+    return Currency.values
+        .where((currency) => currency.name == code)
+        .firstOrNull;
   }
 }
