@@ -3,7 +3,6 @@ import 'package:currency_converter/src/data/currency_rates.dart';
 import 'package:currency_converter/src/data/time_series_rates.dart';
 import 'package:currency_converter/src/utils/dio_provider.dart';
 import 'package:dio/dio.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'frankfurter_client.g.dart';

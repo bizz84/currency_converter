@@ -6,312 +6,246 @@ part of 'frankfurter_client.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(frankfurterClient)
+const frankfurterClientProvider = FrankfurterClientProvider._();
+
+final class FrankfurterClientProvider
+    extends
+        $FunctionalProvider<
+          FrankfurterClient,
+          FrankfurterClient,
+          FrankfurterClient
+        >
+    with $Provider<FrankfurterClient> {
+  const FrankfurterClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'frankfurterClientProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$frankfurterClientHash();
+
+  @$internal
+  @override
+  $ProviderElement<FrankfurterClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FrankfurterClient create(Ref ref) {
+    return frankfurterClient(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FrankfurterClient value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FrankfurterClient>(value),
+    );
+  }
+}
+
 String _$frankfurterClientHash() => r'e4965f869f205e2f193ade82bf20044aaa292b68';
 
-/// See also [frankfurterClient].
-@ProviderFor(frankfurterClient)
-final frankfurterClientProvider =
-    AutoDisposeProvider<FrankfurterClient>.internal(
-      frankfurterClient,
-      name: r'frankfurterClientProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$frankfurterClientHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(availableCurrencies)
+const availableCurrenciesProvider = AvailableCurrenciesProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FrankfurterClientRef = AutoDisposeProviderRef<FrankfurterClient>;
+final class AvailableCurrenciesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Currencies>,
+          Currencies,
+          FutureOr<Currencies>
+        >
+    with $FutureModifier<Currencies>, $FutureProvider<Currencies> {
+  const AvailableCurrenciesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'availableCurrenciesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$availableCurrenciesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Currencies> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Currencies> create(Ref ref) {
+    return availableCurrencies(ref);
+  }
+}
+
 String _$availableCurrenciesHash() =>
     r'7108d6909effefeff040e36bb1937b54e95fdaeb';
 
-/// See also [availableCurrencies].
-@ProviderFor(availableCurrencies)
-final availableCurrenciesProvider =
-    AutoDisposeFutureProvider<Currencies>.internal(
-      availableCurrencies,
-      name: r'availableCurrenciesProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$availableCurrenciesHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AvailableCurrenciesRef = AutoDisposeFutureProviderRef<Currencies>;
-String _$latestRatesHash() => r'a838180400718d94731119492f458d69c5f24ae6';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [latestRates].
 @ProviderFor(latestRates)
-const latestRatesProvider = LatestRatesFamily();
+const latestRatesProvider = LatestRatesFamily._();
 
-/// See also [latestRates].
-class LatestRatesFamily extends Family<AsyncValue<CurrencyRates>> {
-  /// See also [latestRates].
-  const LatestRatesFamily();
+final class LatestRatesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CurrencyRates>,
+          CurrencyRates,
+          FutureOr<CurrencyRates>
+        >
+    with $FutureModifier<CurrencyRates>, $FutureProvider<CurrencyRates> {
+  const LatestRatesProvider._({
+    required LatestRatesFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'latestRatesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [latestRates].
-  LatestRatesProvider call(String baseCurrency) {
-    return LatestRatesProvider(baseCurrency);
+  @override
+  String debugGetCreateSourceHash() => _$latestRatesHash();
+
+  @override
+  String toString() {
+    return r'latestRatesProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  LatestRatesProvider getProviderOverride(
-    covariant LatestRatesProvider provider,
-  ) {
-    return call(provider.baseCurrency);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  $FutureProviderElement<CurrencyRates> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'latestRatesProvider';
-}
-
-/// See also [latestRates].
-class LatestRatesProvider extends AutoDisposeFutureProvider<CurrencyRates> {
-  /// See also [latestRates].
-  LatestRatesProvider(String baseCurrency)
-    : this._internal(
-        (ref) => latestRates(ref as LatestRatesRef, baseCurrency),
-        from: latestRatesProvider,
-        name: r'latestRatesProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$latestRatesHash,
-        dependencies: LatestRatesFamily._dependencies,
-        allTransitiveDependencies: LatestRatesFamily._allTransitiveDependencies,
-        baseCurrency: baseCurrency,
-      );
-
-  LatestRatesProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.baseCurrency,
-  }) : super.internal();
-
-  final String baseCurrency;
-
-  @override
-  Override overrideWith(
-    FutureOr<CurrencyRates> Function(LatestRatesRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: LatestRatesProvider._internal(
-        (ref) => create(ref as LatestRatesRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        baseCurrency: baseCurrency,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<CurrencyRates> createElement() {
-    return _LatestRatesProviderElement(this);
+  FutureOr<CurrencyRates> create(Ref ref) {
+    final argument = this.argument as String;
+    return latestRates(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is LatestRatesProvider && other.baseCurrency == baseCurrency;
+    return other is LatestRatesProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, baseCurrency.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LatestRatesRef on AutoDisposeFutureProviderRef<CurrencyRates> {
-  /// The parameter `baseCurrency` of this provider.
-  String get baseCurrency;
-}
+String _$latestRatesHash() => r'a838180400718d94731119492f458d69c5f24ae6';
 
-class _LatestRatesProviderElement
-    extends AutoDisposeFutureProviderElement<CurrencyRates>
-    with LatestRatesRef {
-  _LatestRatesProviderElement(super.provider);
+final class LatestRatesFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<CurrencyRates>, String> {
+  const LatestRatesFamily._()
+    : super(
+        retry: null,
+        name: r'latestRatesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  LatestRatesProvider call(String baseCurrency) =>
+      LatestRatesProvider._(argument: baseCurrency, from: this);
 
   @override
-  String get baseCurrency => (origin as LatestRatesProvider).baseCurrency;
+  String toString() => r'latestRatesProvider';
+}
+
+@ProviderFor(exchangeRate)
+const exchangeRateProvider = ExchangeRateFamily._();
+
+final class ExchangeRateProvider
+    extends $FunctionalProvider<double, double, double>
+    with $Provider<double> {
+  const ExchangeRateProvider._({
+    required ExchangeRateFamily super.from,
+    required (String, String) super.argument,
+  }) : super(
+         retry: null,
+         name: r'exchangeRateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$exchangeRateHash();
+
+  @override
+  String toString() {
+    return r'exchangeRateProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<double> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  double create(Ref ref) {
+    final argument = this.argument as (String, String);
+    return exchangeRate(ref, argument.$1, argument.$2);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(double value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<double>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ExchangeRateProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$exchangeRateHash() => r'bac3275d5d70e5093003a8d214addcc2db8768f1';
 
-/// See also [exchangeRate].
-@ProviderFor(exchangeRate)
-const exchangeRateProvider = ExchangeRateFamily();
-
-/// See also [exchangeRate].
-class ExchangeRateFamily extends Family<double> {
-  /// See also [exchangeRate].
-  const ExchangeRateFamily();
-
-  /// See also [exchangeRate].
-  ExchangeRateProvider call(String baseCurrency, String targetCurrency) {
-    return ExchangeRateProvider(baseCurrency, targetCurrency);
-  }
-
-  @override
-  ExchangeRateProvider getProviderOverride(
-    covariant ExchangeRateProvider provider,
-  ) {
-    return call(provider.baseCurrency, provider.targetCurrency);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'exchangeRateProvider';
-}
-
-/// See also [exchangeRate].
-class ExchangeRateProvider extends AutoDisposeProvider<double> {
-  /// See also [exchangeRate].
-  ExchangeRateProvider(String baseCurrency, String targetCurrency)
-    : this._internal(
-        (ref) =>
-            exchangeRate(ref as ExchangeRateRef, baseCurrency, targetCurrency),
-        from: exchangeRateProvider,
+final class ExchangeRateFamily extends $Family
+    with $FunctionalFamilyOverride<double, (String, String)> {
+  const ExchangeRateFamily._()
+    : super(
+        retry: null,
         name: r'exchangeRateProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$exchangeRateHash,
-        dependencies: ExchangeRateFamily._dependencies,
-        allTransitiveDependencies:
-            ExchangeRateFamily._allTransitiveDependencies,
-        baseCurrency: baseCurrency,
-        targetCurrency: targetCurrency,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  ExchangeRateProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.baseCurrency,
-    required this.targetCurrency,
-  }) : super.internal();
-
-  final String baseCurrency;
-  final String targetCurrency;
+  ExchangeRateProvider call(String baseCurrency, String targetCurrency) =>
+      ExchangeRateProvider._(
+        argument: (baseCurrency, targetCurrency),
+        from: this,
+      );
 
   @override
-  Override overrideWith(double Function(ExchangeRateRef provider) create) {
-    return ProviderOverride(
-      origin: this,
-      override: ExchangeRateProvider._internal(
-        (ref) => create(ref as ExchangeRateRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        baseCurrency: baseCurrency,
-        targetCurrency: targetCurrency,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeProviderElement<double> createElement() {
-    return _ExchangeRateProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ExchangeRateProvider &&
-        other.baseCurrency == baseCurrency &&
-        other.targetCurrency == targetCurrency;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, baseCurrency.hashCode);
-    hash = _SystemHash.combine(hash, targetCurrency.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'exchangeRateProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ExchangeRateRef on AutoDisposeProviderRef<double> {
-  /// The parameter `baseCurrency` of this provider.
-  String get baseCurrency;
-
-  /// The parameter `targetCurrency` of this provider.
-  String get targetCurrency;
-}
-
-class _ExchangeRateProviderElement extends AutoDisposeProviderElement<double>
-    with ExchangeRateRef {
-  _ExchangeRateProviderElement(super.provider);
-
-  @override
-  String get baseCurrency => (origin as ExchangeRateProvider).baseCurrency;
-  @override
-  String get targetCurrency => (origin as ExchangeRateProvider).targetCurrency;
-}
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -12,9 +12,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
-  riverpod: ^2.6.1
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  riverpod: ^3.0.0
+  flutter_riverpod: ^3.0.0
+  riverpod_annotation: ^3.0.0
 
 
 dev_dependencies:
@@ -22,8 +22,8 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
   http_mock_adapter: ^0.6.1
-  riverpod_generator: ^2.6.5
-  riverpod_lint: ^2.6.5
+  riverpod_generator: ^3.0.0
+  riverpod_lint: ^3.0.0
   build_runner: ^2.4.15
 
 flutter:
