@@ -19,9 +19,6 @@ class CurrencyConversionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flag = currency.flag;
-    final currencyName = currency.desc;
-
     return Dismissible(
       key: Key(currency.name),
       direction: DismissDirection.endToStart,
@@ -32,72 +29,48 @@ class CurrencyConversionTile extends StatelessWidget {
         color: Colors.red,
         child: const Icon(Icons.delete, color: Colors.white),
       ),
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 8),
+      child: Container(
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 1),
         child: ListTile(
-          leading: Text(flag, style: Theme.of(context).textTheme.headlineSmall),
-          title: Row(
-            children: [
-              Text(currency.name),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  currencyName,
-                  style: Theme.of(context).textTheme.bodySmall,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
-          subtitle: rate != null
-              ? Text(
-                  '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
-                )
-              : Text(
-                  'Rate unavailable',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+          leading: Text(
+            currency.flag,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          title: Text(
+            currency.name,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              if (rate != null)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      (amount * rate!).toStringAsFixed(2),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      currency.name,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text(
-                    '—',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+              if (rate != null) ...[
+                Text(
+                  '${currency.symbol} ${(amount * rate!).toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              if (onRemove != null) ...[
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  onPressed: onRemove,
-                  visualDensity: VisualDensity.compact,
+                const SizedBox(height: 2),
+                Text(
+                  '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ],
+              ] else
+                Text(
+                  '—',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
             ],
           ),
         ),
