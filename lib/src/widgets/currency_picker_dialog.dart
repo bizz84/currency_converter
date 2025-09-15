@@ -103,7 +103,7 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                       
                       return ListTile(
                         leading: Text(
-                          FakeDataProvider.getFlag(entry.key),
+                          kCurrencies[entry.key]?.flag ?? '🏳️',
                           style: const TextStyle(fontSize: 24),
                         ),
                         title: Text(entry.key),

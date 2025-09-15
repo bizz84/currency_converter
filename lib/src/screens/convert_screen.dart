@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/currency_selector.dart';
 import '../widgets/currency_picker_dialog.dart';
 import '../widgets/amount_input_field.dart';
-import '../providers/fake_data_provider.dart';
 import '../network/frankfurter_client.dart';
 import '../data/currency_rates.dart';
 

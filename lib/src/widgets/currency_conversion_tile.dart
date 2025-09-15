@@ -19,8 +19,9 @@ class CurrencyConversionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flag = FakeDataProvider.getFlag(currency);
-    final currencyName = FakeDataProvider.getCurrencyName(currency);
+    final currencyData = kCurrencies[currency];
+    final flag = currencyData?.flag ?? '🏳️';
+    final currencyName = currencyData?.name ?? currency;
 
     return Dismissible(
       key: Key(currency),

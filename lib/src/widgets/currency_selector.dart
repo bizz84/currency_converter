@@ -25,7 +25,7 @@ class CurrencySelector extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              FakeDataProvider.getFlag(currency),
+              kCurrencies[currency]?.flag ?? '🏳️',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(width: 8),
