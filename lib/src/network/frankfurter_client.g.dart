@@ -227,7 +227,7 @@ final class ExchangeRateProvider
   }
 }
 
-String _$exchangeRateHash() => r'2a8cd390b03d6dd20f83a957ed83fe822578162f';
+String _$exchangeRateHash() => r'14a38a425c7db9ad29d8000e544e0a97ebda8936';
 
 final class ExchangeRateFamily extends $Family
     with $FunctionalFamilyOverride<double, (Currency, Currency)> {

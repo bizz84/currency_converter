@@ -1,6 +1,5 @@
 import 'package:currency_converter/src/utils/logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

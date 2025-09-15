@@ -114,6 +114,6 @@ double exchangeRate(Ref ref, Currency baseCurrency, Currency targetCurrency) {
       return rates.rates[targetCurrency.name] ?? 1.0;
     },
     loading: () => 1.0,
-    error: (_, __) => 1.0,
+    error: (_, _) => 1.0,
   );
 }
