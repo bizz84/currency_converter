@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../providers/fake_data_provider.dart';
+import '../data/currency.dart';
 
 class CurrencySelector extends StatelessWidget {
-  final String currency;
+  final Currency currency;
   final VoidCallback onTap;
 
   const CurrencySelector({
@@ -25,12 +25,12 @@ class CurrencySelector extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              FakeDataProvider.getFlag(currency),
+              currency.flag,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(width: 8),
             Text(
-              currency,
+              currency.name,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Icon(Icons.arrow_drop_down),

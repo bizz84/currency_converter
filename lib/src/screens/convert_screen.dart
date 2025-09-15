@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:currency_converter/src/widgets/currency_conversion_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/currency.dart';
 import '../widgets/currency_selector.dart';
 import '../widgets/currency_picker_dialog.dart';
 import '../widgets/amount_input_field.dart';
-import '../providers/fake_data_provider.dart';
 import '../network/frankfurter_client.dart';
 import '../data/currency_rates.dart';
 
@@ -18,9 +18,9 @@ class ConvertScreen extends ConsumerStatefulWidget {
 
 class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   // State variables
-  String baseCurrency = 'USD';
+  Currency baseCurrency = Currency.USD;
   double amount = 100.0;
-  List<String> targetCurrencies = ['EUR', 'GBP', 'JPY'];
+  List<Currency> targetCurrencies = [Currency.EUR, Currency.GBP, Currency.JPY];
   DateTime lastUpdated = DateTime.now();
   Timer? _refreshTimer;
 
@@ -163,7 +163,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   }
 
   Future<void> _showCurrencyPicker(bool isBaseCurrency) async {
-    final result = await showDialog<String>(
+    final result = await showDialog<Currency>(
       context: context,
       builder: (context) => CurrencyPickerDialog(
         selectedCurrency: isBaseCurrency ? baseCurrency : null,
@@ -186,7 +186,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     }
   }
 
-  void _removeCurrency(String currency) {
+  void _removeCurrency(Currency currency) {
     setState(() {
       targetCurrencies.remove(currency);
     });
@@ -194,7 +194,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
 }
 
 class BaseCurrencyCard extends StatelessWidget {
-  final String currency;
+  final Currency currency;
   final double amount;
   final VoidCallback onCurrencyTap;
   final ValueChanged<double> onAmountChanged;
@@ -245,10 +245,10 @@ class BaseCurrencyCard extends StatelessWidget {
 }
 
 class TargetCurrenciesSection extends StatelessWidget {
-  final String baseCurrency;
+  final Currency baseCurrency;
   final double amount;
-  final List<String> targetCurrencies;
-  final void Function(String) onRemoveCurrency;
+  final List<Currency> targetCurrencies;
+  final void Function(Currency) onRemoveCurrency;
   final CurrencyRates rates;
 
   const TargetCurrenciesSection({
@@ -279,7 +279,7 @@ class TargetCurrenciesSection extends StatelessWidget {
             currency: currency,
             baseCurrency: baseCurrency,
             amount: amount,
-            rate: currency == baseCurrency ? 1.0 : rates.rates[currency],
+            rate: currency == baseCurrency ? 1.0 : rates.rates[currency.name],
             onRemove: () => onRemoveCurrency(currency),
           ),
         ),

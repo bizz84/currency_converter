@@ -7,8 +7,10 @@ class CurrencyRates {
   });
 
   final double amount;
+  // TODO: Change to Currency
   final String base;
   final String date;
+  // TODO: Change to Currency
   final Map<String, double> rates;
 
   factory CurrencyRates.fromJson(Map<String, dynamic> json) {

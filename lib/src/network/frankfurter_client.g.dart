@@ -108,7 +108,7 @@ final class LatestRatesProvider
     with $FutureModifier<CurrencyRates>, $FutureProvider<CurrencyRates> {
   const LatestRatesProvider._({
     required LatestRatesFamily super.from,
-    required String super.argument,
+    required Currency super.argument,
   }) : super(
          retry: null,
          name: r'latestRatesProvider',
@@ -135,7 +135,7 @@ final class LatestRatesProvider
 
   @override
   FutureOr<CurrencyRates> create(Ref ref) {
-    final argument = this.argument as String;
+    final argument = this.argument as Currency;
     return latestRates(ref, argument);
   }
 
@@ -150,10 +150,10 @@ final class LatestRatesProvider
   }
 }
 
-String _$latestRatesHash() => r'a838180400718d94731119492f458d69c5f24ae6';
+String _$latestRatesHash() => r'6d6a1f5d7ab69aea6097ba57051a4c0b0e1bc31e';
 
 final class LatestRatesFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<CurrencyRates>, String> {
+    with $FunctionalFamilyOverride<FutureOr<CurrencyRates>, Currency> {
   const LatestRatesFamily._()
     : super(
         retry: null,
@@ -163,7 +163,7 @@ final class LatestRatesFamily extends $Family
         isAutoDispose: true,
       );
 
-  LatestRatesProvider call(String baseCurrency) =>
+  LatestRatesProvider call(Currency baseCurrency) =>
       LatestRatesProvider._(argument: baseCurrency, from: this);
 
   @override
@@ -178,7 +178,7 @@ final class ExchangeRateProvider
     with $Provider<double> {
   const ExchangeRateProvider._({
     required ExchangeRateFamily super.from,
-    required (String, String) super.argument,
+    required (Currency, Currency) super.argument,
   }) : super(
          retry: null,
          name: r'exchangeRateProvider',
@@ -204,7 +204,7 @@ final class ExchangeRateProvider
 
   @override
   double create(Ref ref) {
-    final argument = this.argument as (String, String);
+    final argument = this.argument as (Currency, Currency);
     return exchangeRate(ref, argument.$1, argument.$2);
   }
 
@@ -227,10 +227,10 @@ final class ExchangeRateProvider
   }
 }
 
-String _$exchangeRateHash() => r'bac3275d5d70e5093003a8d214addcc2db8768f1';
+String _$exchangeRateHash() => r'14a38a425c7db9ad29d8000e544e0a97ebda8936';
 
 final class ExchangeRateFamily extends $Family
-    with $FunctionalFamilyOverride<double, (String, String)> {
+    with $FunctionalFamilyOverride<double, (Currency, Currency)> {
   const ExchangeRateFamily._()
     : super(
         retry: null,
@@ -240,7 +240,7 @@ final class ExchangeRateFamily extends $Family
         isAutoDispose: true,
       );
 
-  ExchangeRateProvider call(String baseCurrency, String targetCurrency) =>
+  ExchangeRateProvider call(Currency baseCurrency, Currency targetCurrency) =>
       ExchangeRateProvider._(
         argument: (baseCurrency, targetCurrency),
         from: this,

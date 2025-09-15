@@ -1,4 +1,5 @@
 import 'package:currency_converter/src/data/currencies.dart';
+import 'package:currency_converter/src/data/currency.dart';
 import 'package:currency_converter/src/data/currency_rates.dart';
 import 'package:currency_converter/src/data/time_series_rates.dart';
 import 'package:currency_converter/src/utils/dio_provider.dart';
@@ -14,14 +15,20 @@ class FrankfurterClient {
 
   final Dio _dio;
 
+  String? _currenciesToString(List<Currency>? currencies) {
+    if (currencies == null || currencies.isEmpty) return null;
+    return currencies.map((c) => c.name).join(',');
+  }
+
   Future<CurrencyRates> getLatestRates({
-    required String base,
-    String? to,
+    required Currency base,
+    List<Currency>? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    queryParameters['from'] = base;
-    if (to != null) queryParameters['to'] = to;
+    queryParameters['from'] = base.name;
+    final toParam = _currenciesToString(to);
+    if (toParam != null) queryParameters['to'] = toParam;
     if (amount != null) queryParameters['amount'] = amount;
 
     final response = await _dio.get<Map<String, dynamic>>(
@@ -39,13 +46,14 @@ class FrankfurterClient {
 
   Future<CurrencyRates> getHistoricalRates(
     String date, {
-    required String base,
-    String? to,
+    required Currency base,
+    List<Currency>? to,
     double? amount,
   }) async {
     final queryParameters = <String, dynamic>{};
-    queryParameters['from'] = base;
-    if (to != null) queryParameters['to'] = to;
+    queryParameters['from'] = base.name;
+    final toParam = _currenciesToString(to);
+    if (toParam != null) queryParameters['to'] = toParam;
     if (amount != null) queryParameters['amount'] = amount;
 
     final response = await _dio.get<Map<String, dynamic>>(
@@ -58,12 +66,13 @@ class FrankfurterClient {
   Future<TimeSeriesRates> getTimeSeriesRates(
     String startDate,
     String endDate, {
-    String? base,
-    String? to,
+    Currency? base,
+    List<Currency>? to,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (base != null) queryParameters['from'] = base;
-    if (to != null) queryParameters['to'] = to;
+    if (base != null) queryParameters['from'] = base.name;
+    final toParam = _currenciesToString(to);
+    if (toParam != null) queryParameters['to'] = toParam;
 
     final response = await _dio.get<Map<String, dynamic>>(
       '/$startDate..$endDate',
@@ -90,21 +99,21 @@ Future<Currencies> availableCurrencies(Ref ref) async {
 }
 
 @riverpod
-Future<CurrencyRates> latestRates(Ref ref, String baseCurrency) async {
+Future<CurrencyRates> latestRates(Ref ref, Currency baseCurrency) async {
   final client = ref.watch(frankfurterClientProvider);
   return client.getLatestRates(base: baseCurrency);
 }
 
 @riverpod
-double exchangeRate(Ref ref, String baseCurrency, String targetCurrency) {
+double exchangeRate(Ref ref, Currency baseCurrency, Currency targetCurrency) {
   final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
 
   return ratesAsync.when(
     data: (rates) {
       if (baseCurrency == targetCurrency) return 1.0;
-      return rates.rates[targetCurrency] ?? 1.0;
+      return rates.rates[targetCurrency.name] ?? 1.0;
     },
     loading: () => 1.0,
-    error: (_, __) => 1.0,
+    error: (_, _) => 1.0,
   );
 }

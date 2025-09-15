@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/data/currency.dart';
 import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,7 +32,7 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getLatestRates(base: 'EUR');
+        final result = await client.getLatestRates(base: Currency.EUR);
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
@@ -55,7 +56,7 @@ void main() {
           queryParameters: {'from': 'USD', 'to': 'GBP'},
         );
 
-        final result = await client.getLatestRates(base: 'USD', to: 'GBP');
+        final result = await client.getLatestRates(base: Currency.USD, to: [Currency.GBP]);
 
         expect(result.amount, 1.0);
         expect(result.base, 'USD');
@@ -80,8 +81,8 @@ void main() {
 
         final result = await client.getLatestRates(
           amount: 100,
-          base: 'USD',
-          to: 'GBP',
+          base: Currency.USD,
+          to: [Currency.GBP],
         );
 
         expect(result.amount, 100.0);
@@ -104,7 +105,7 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: 'EUR');
+        final result = await client.getHistoricalRates(date, base: Currency.EUR);
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
@@ -133,8 +134,8 @@ void main() {
 
           final result = await client.getHistoricalRates(
             date,
-            base: 'USD',
-            to: 'GBP,EUR',
+            base: Currency.USD,
+            to: [Currency.GBP, Currency.EUR],
           );
 
           expect(result.amount, 1.0);
@@ -164,8 +165,8 @@ void main() {
         final result = await client.getHistoricalRates(
           date,
           amount: 50,
-          base: 'USD',
-          to: 'GBP',
+          base: Currency.USD,
+          to: [Currency.GBP],
         );
 
         expect(result.amount, 50.0);
@@ -233,8 +234,8 @@ void main() {
           final result = await client.getTimeSeriesRates(
             startDate,
             endDate,
-            base: 'USD',
-            to: 'GBP',
+            base: Currency.USD,
+            to: [Currency.GBP],
           );
 
           expect(result.amount, 1.0);
@@ -289,11 +290,13 @@ void main() {
 
         final result = await client.getCurrencies();
 
-        expect(result.currencies['USD'], 'United States Dollar');
-        expect(result.currencies['EUR'], 'Euro');
-        expect(result.currencies['GBP'], 'British Pound');
-        expect(result.currencies['JPY'], 'Japanese Yen');
-        expect(result.currencies.length, 31);
+        expect(result.currencies.any((c) => c.name == 'USD'), true);
+        expect(result.currencies.any((c) => c.name == 'EUR'), true);
+        expect(result.currencies.any((c) => c.name == 'GBP'), true);
+        expect(result.currencies.any((c) => c.name == 'JPY'), true);
+        // The length will be less than or equal to the API response 
+        // since we only include currencies in our enum
+        expect(result.currencies.length, lessThanOrEqualTo(31));
       });
     });
 
@@ -308,7 +311,7 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getLatestRates(base: 'EUR');
+        final result = await client.getLatestRates(base: Currency.EUR);
 
         expect(result.toJson(), responseData);
       });
@@ -324,7 +327,7 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: 'EUR');
+        final result = await client.getHistoricalRates(date, base: Currency.EUR);
 
         expect(result.toJson(), responseData);
       });
