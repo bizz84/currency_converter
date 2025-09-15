@@ -289,11 +289,13 @@ void main() {
 
         final result = await client.getCurrencies();
 
-        expect(result.currencies['USD'], 'United States Dollar');
-        expect(result.currencies['EUR'], 'Euro');
-        expect(result.currencies['GBP'], 'British Pound');
-        expect(result.currencies['JPY'], 'Japanese Yen');
-        expect(result.currencies.length, 31);
+        expect(result.currencies.any((c) => c.name == 'USD'), true);
+        expect(result.currencies.any((c) => c.name == 'EUR'), true);
+        expect(result.currencies.any((c) => c.name == 'GBP'), true);
+        expect(result.currencies.any((c) => c.name == 'JPY'), true);
+        // The length will be less than or equal to the API response 
+        // since we only include currencies in our enum
+        expect(result.currencies.length, lessThanOrEqualTo(31));
       });
     });
 

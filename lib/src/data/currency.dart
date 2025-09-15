@@ -1,6 +1,6 @@
 enum Currency {
   // ignore_for_file: constant_identifier_names
-  USD(desc: 'US Dollar', symbol: '\$', flag: '🇺🇸'),
+  USD(desc: 'United States Dollar', symbol: '\$', flag: '🇺🇸'),
   EUR(desc: 'Euro', symbol: '€', flag: '🇪🇺'),
   GBP(desc: 'British Pound', symbol: '£', flag: '🇬🇧'),
   JPY(desc: 'Japanese Yen', symbol: '¥', flag: '🇯🇵'),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/currency.dart';
 import '../network/frankfurter_client.dart';
 
 class CurrencyPickerDialog extends ConsumerStatefulWidget {
@@ -40,14 +39,14 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
 
     return currenciesAsync.when(
       data: (currenciesData) {
-        final currencies = currenciesData.currencies.entries
+        final currencies = currenciesData.currencies
             .where(
-              (entry) =>
-                  !(widget.excludedCurrencies?.contains(entry.key) ?? false) &&
-                  (entry.key.toLowerCase().contains(
+              (currency) =>
+                  !(widget.excludedCurrencies?.contains(currency.name) ?? false) &&
+                  (currency.name.toLowerCase().contains(
                         _searchQuery.toLowerCase(),
                       ) ||
-                      entry.value.toLowerCase().contains(
+                      currency.desc.toLowerCase().contains(
                         _searchQuery.toLowerCase(),
                       )),
             )
@@ -107,22 +106,22 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                     shrinkWrap: true,
                     itemCount: currencies.length,
                     itemBuilder: (context, index) {
-                      final entry = currencies[index];
-                      final isSelected = entry.key == widget.selectedCurrency;
+                      final currency = currencies[index];
+                      final isSelected = currency.name == widget.selectedCurrency;
 
                       return ListTile(
                         leading: Text(
-                          Currency.from(entry.key).flag,
+                          currency.flag,
                           style: const TextStyle(fontSize: 24),
                         ),
-                        title: Text(entry.key),
-                        subtitle: Text(entry.value),
+                        title: Text(currency.name),
+                        subtitle: Text(currency.desc),
                         selected: isSelected,
                         selectedTileColor: Theme.of(
                           context,
                         ).colorScheme.primaryContainer,
                         onTap: () {
-                          Navigator.of(context).pop(entry.key);
+                          Navigator.of(context).pop(currency.name);
                         },
                       );
                     },
