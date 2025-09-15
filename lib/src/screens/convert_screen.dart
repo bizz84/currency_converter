@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:currency_converter/src/widgets/currency_conversion_tile.dart';
+import 'package:currency_converter/src/widgets/currency_section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/currency.dart';
@@ -66,10 +67,11 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
             });
           },
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                CurrencySectionHeader(title: 'From'),
+                const SizedBox(height: 12),
                 // Base Currency Section
                 BaseCurrencyCard(
                   currency: baseCurrency,
@@ -82,7 +84,6 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-
                 // Target Currencies Section with loading/error handling
                 ratesAsync.when(
                   data: (rates) => TargetCurrenciesSection(
@@ -209,33 +210,22 @@ class BaseCurrencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
+    return Container(
+      color: Colors.white,
+      margin: const EdgeInsets.only(bottom: 1),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Text(
-              'From',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+            // Currency selector
+            CurrencySelector(currency: currency, onTap: onCurrencyTap),
+            const SizedBox(width: 16),
+            // Amount input
+            Expanded(
+              child: AmountInputField(
+                initialAmount: amount,
+                onChanged: onAmountChanged,
               ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                // Currency selector
-                CurrencySelector(currency: currency, onTap: onCurrencyTap),
-                const SizedBox(width: 16),
-                // Amount input
-                Expanded(
-                  child: AmountInputField(
-                    initialAmount: amount,
-                    onChanged: onAmountChanged,
-                  ),
-                ),
-              ],
             ),
           ],
         ),
@@ -265,15 +255,8 @@ class TargetCurrenciesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(
-            'To',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ),
+        CurrencySectionHeader(title: 'To'),
+        const SizedBox(height: 12),
         ...targetCurrencies.map(
           (currency) => CurrencyConversionTile(
             currency: currency,
