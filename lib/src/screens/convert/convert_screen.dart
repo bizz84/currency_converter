@@ -19,9 +19,9 @@ class ConvertScreen extends ConsumerStatefulWidget {
 
 class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   // State variables
-  Currency baseCurrency = Currency.USD;
+  Currency baseCurrency = Currency.GBP;
   double amount = 100.0;
-  List<Currency> targetCurrencies = [Currency.EUR, Currency.GBP, Currency.JPY];
+  List<Currency> targetCurrencies = [Currency.EUR, Currency.USD, Currency.JPY];
   DateTime lastUpdated = DateTime.now();
   Timer? _refreshTimer;
 
