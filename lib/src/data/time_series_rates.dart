@@ -8,9 +8,11 @@ class TimeSeriesRates {
   });
 
   final double amount;
+  // TODO: Change to Currency
   final String base;
   final String startDate;
   final String endDate;
+  // TODO: Change to Currency
   final Map<String, Map<String, double>> rates;
 
   factory TimeSeriesRates.fromJson(Map<String, dynamic> json) {
