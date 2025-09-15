@@ -47,32 +47,46 @@ class CurrencyConversionTile extends StatelessWidget {
               currency.name,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                if (rate != null) ...[
-                  Text(
-                    '${currency.symbol} ${(amount * rate!).toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ] else
-                  Text(
-                    '—',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (rate != null) ...[
+                      Text(
+                        '${currency.symbol} ${(amount * rate!).toStringAsFixed(2)}',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ] else
+                      Text(
+                        '—',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                  ],
+                ),
+                const SizedBox(width: 16),
+                Icon(
+                  Icons.drag_handle,
+                  color: Colors.black38,
+                ),
               ],
             ),
           ),
