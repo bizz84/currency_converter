@@ -91,6 +91,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                     amount: amount,
                     targetCurrencies: targetCurrencies,
                     onRemoveCurrency: _removeCurrency,
+                    onAddCurrency: () => _showCurrencyPicker(false),
                     rates: rates,
                   ),
                   loading: () => const Center(
@@ -239,6 +240,7 @@ class TargetCurrenciesSection extends StatelessWidget {
   final double amount;
   final List<Currency> targetCurrencies;
   final void Function(Currency) onRemoveCurrency;
+  final VoidCallback onAddCurrency;
   final CurrencyRates rates;
 
   const TargetCurrenciesSection({
@@ -247,11 +249,24 @@ class TargetCurrenciesSection extends StatelessWidget {
     required this.amount,
     required this.targetCurrencies,
     required this.onRemoveCurrency,
+    required this.onAddCurrency,
     required this.rates,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (targetCurrencies.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32.0),
+          child: ElevatedButton(
+            onPressed: onAddCurrency,
+            child: const Text('Add a currency'),
+          ),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
