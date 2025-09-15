@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/fake_data_provider.dart';
+import '../data/currency.dart';
 import '../network/frankfurter_client.dart';
 
 class CurrencyPickerDialog extends ConsumerStatefulWidget {
@@ -14,7 +14,8 @@ class CurrencyPickerDialog extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<CurrencyPickerDialog> createState() => _CurrencyPickerDialogState();
+  ConsumerState<CurrencyPickerDialog> createState() =>
+      _CurrencyPickerDialogState();
 }
 
 class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
@@ -36,14 +37,20 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
   @override
   Widget build(BuildContext context) {
     final currenciesAsync = ref.watch(availableCurrenciesProvider);
-    
+
     return currenciesAsync.when(
       data: (currenciesData) {
         final currencies = currenciesData.currencies.entries
-            .where((entry) => 
-                !(widget.excludedCurrencies?.contains(entry.key) ?? false) &&
-                (entry.key.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                 entry.value.toLowerCase().contains(_searchQuery.toLowerCase())))
+            .where(
+              (entry) =>
+                  !(widget.excludedCurrencies?.contains(entry.key) ?? false) &&
+                  (entry.key.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      ) ||
+                      entry.value.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      )),
+            )
             .toList();
 
         return Dialog(
@@ -81,7 +88,9 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
                         ),
                         onChanged: (value) {
                           setState(() {
@@ -100,16 +109,18 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                     itemBuilder: (context, index) {
                       final entry = currencies[index];
                       final isSelected = entry.key == widget.selectedCurrency;
-                      
+
                       return ListTile(
                         leading: Text(
-                          kCurrencies[entry.key]?.flag ?? '🏳️',
+                          Currency.from(entry.key).flag,
                           style: const TextStyle(fontSize: 24),
                         ),
                         title: Text(entry.key),
                         subtitle: Text(entry.value),
                         selected: isSelected,
-                        selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+                        selectedTileColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
                         onTap: () {
                           Navigator.of(context).pop(entry.key);
                         },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../providers/fake_data_provider.dart';
+import '../data/currency.dart';
 
 class CurrencySelector extends StatelessWidget {
   final String currency;
@@ -25,7 +25,7 @@ class CurrencySelector extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              kCurrencies[currency]?.flag ?? '🏳️',
+              Currency.from(currency).flag,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(width: 8),

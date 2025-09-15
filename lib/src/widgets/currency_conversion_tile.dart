@@ -1,4 +1,4 @@
-import 'package:currency_converter/src/providers/fake_data_provider.dart';
+import 'package:currency_converter/src/data/currency.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionTile extends StatelessWidget {
@@ -19,9 +19,9 @@ class CurrencyConversionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyData = kCurrencies[currency];
-    final flag = currencyData?.flag ?? '🏳️';
-    final currencyName = currencyData?.name ?? currency;
+    final currencyData = Currency.from(currency);
+    final flag = currencyData.flag;
+    final currencyName = currencyData.desc;
 
     return Dismissible(
       key: Key(currency),
