@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/currency.dart';
-import '../network/frankfurter_client.dart';
+import '../../data/currency.dart';
+import '../../network/frankfurter_client.dart';
 
 class CurrencyPickerDialog extends ConsumerStatefulWidget {
   final Currency? selectedCurrency;

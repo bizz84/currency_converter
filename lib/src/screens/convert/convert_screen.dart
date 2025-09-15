@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'package:currency_converter/src/widgets/currency_conversion_tile.dart';
-import 'package:currency_converter/src/widgets/currency_section_header.dart';
+import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
+import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/currency.dart';
-import '../widgets/currency_selector.dart';
-import '../widgets/currency_picker_dialog.dart';
-import '../widgets/amount_input_field.dart';
-import '../network/frankfurter_client.dart';
-import '../data/currency_rates.dart';
+import '../../data/currency.dart';
+import 'currency_selector.dart';
+import 'currency_picker_dialog.dart';
+import 'amount_input_field.dart';
+import '../../network/frankfurter_client.dart';
+import '../../data/currency_rates.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
   const ConvertScreen({super.key});

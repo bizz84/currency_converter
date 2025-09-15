@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/convert_screen.dart';
-import 'screens/charts_screen.dart';
+import 'screens/convert/convert_screen.dart';
+import 'screens/charts/charts_screen.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
   const CurrencyConverterApp({super.key});
