@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/currency.dart';
 import '../network/frankfurter_client.dart';
 
 class CurrencyPickerDialog extends ConsumerStatefulWidget {
-  final String? selectedCurrency;
-  final List<String>? excludedCurrencies;
+  final Currency? selectedCurrency;
+  final List<Currency>? excludedCurrencies;
 
   const CurrencyPickerDialog({
     super.key,
@@ -42,7 +43,7 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
         final currencies = currenciesData.currencies
             .where(
               (currency) =>
-                  !(widget.excludedCurrencies?.contains(currency.name) ?? false) &&
+                  !(widget.excludedCurrencies?.contains(currency) ?? false) &&
                   (currency.name.toLowerCase().contains(
                         _searchQuery.toLowerCase(),
                       ) ||
@@ -107,7 +108,7 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                     itemCount: currencies.length,
                     itemBuilder: (context, index) {
                       final currency = currencies[index];
-                      final isSelected = currency.name == widget.selectedCurrency;
+                      final isSelected = currency == widget.selectedCurrency;
 
                       return ListTile(
                         leading: Text(
@@ -121,7 +122,7 @@ class _CurrencyPickerDialogState extends ConsumerState<CurrencyPickerDialog> {
                           context,
                         ).colorScheme.primaryContainer,
                         onTap: () {
-                          Navigator.of(context).pop(currency.name);
+                          Navigator.of(context).pop(currency);
                         },
                       );
                     },

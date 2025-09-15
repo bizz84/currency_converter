@@ -2,8 +2,8 @@ import 'package:currency_converter/src/data/currency.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionTile extends StatelessWidget {
-  final String currency;
-  final String baseCurrency;
+  final Currency currency;
+  final Currency baseCurrency;
   final double amount;
   final double? rate;
   final VoidCallback? onRemove;
@@ -19,12 +19,11 @@ class CurrencyConversionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyData = Currency.from(currency);
-    final flag = currencyData.flag;
-    final currencyName = currencyData.desc;
+    final flag = currency.flag;
+    final currencyName = currency.desc;
 
     return Dismissible(
-      key: Key(currency),
+      key: Key(currency.name),
       direction: DismissDirection.endToStart,
       onDismissed: (_) => onRemove?.call(),
       background: Container(
@@ -39,7 +38,7 @@ class CurrencyConversionTile extends StatelessWidget {
           leading: Text(flag, style: Theme.of(context).textTheme.headlineSmall),
           title: Row(
             children: [
-              Text(currency),
+              Text(currency.name),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -52,7 +51,7 @@ class CurrencyConversionTile extends StatelessWidget {
           ),
           subtitle: rate != null
               ? Text(
-                  '1 $baseCurrency = ${rate!.toStringAsFixed(4)} $currency',
+                  '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
                 )
               : Text(
                   'Rate unavailable',
@@ -75,7 +74,7 @@ class CurrencyConversionTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      currency,
+                      currency.name,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
