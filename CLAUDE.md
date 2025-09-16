@@ -75,3 +75,8 @@ See `ai_specs/` directory for detailed requirements:
 - Create small reusable widgets rather than _buildWidgetX helper methods
 - Assume build runner is running in watch mode
 - Don't hardcode fontSize and fontWeight in the widgets, use theme properties instead.
+
+## Notes
+
+- Prefer small, reusable widgets rather than _buildWidgetX helper methods
+- Always prefix tasks with [ ] when writing plans.
