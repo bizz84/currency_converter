@@ -79,4 +79,5 @@ See `ai_specs/` directory for detailed requirements:
 ## Notes
 
 - Prefer small, reusable widgets rather than _buildWidgetX helper methods
-- Always prefix tasks with [ ] when writing plans.
+- Always prefix tasks with `[ ]` when writing plans.
+- Use constants in `lib/src/constants/app_sizes.dart` and `lib/src/common_widgets/sliver_sized_box.dart` for spacing.
