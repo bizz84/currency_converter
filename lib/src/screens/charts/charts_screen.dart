@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class ChartsScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                 size: 80,
                 color: Colors.green,
               ),
-              SizedBox(height: 24),
+              gapH24,
               Text(
                 'Charts Screen',
                 style: TextStyle(
@@ -34,7 +35,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              gapH8,
               Text(
                 'Exchange rate charts will be displayed here',
                 style: TextStyle(

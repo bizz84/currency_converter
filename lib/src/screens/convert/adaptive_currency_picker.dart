@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:currency_converter/src/utils/should_use_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -111,7 +112,7 @@ class _CurrencyPickerContentState
                       'Select Currency',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const SizedBox(height: 16),
+                    gapH16,
                     TextField(
                       controller: _searchController,
                       decoration: InputDecoration(
@@ -172,7 +173,7 @@ class _CurrencyPickerContentState
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(),
-            SizedBox(height: 16),
+            gapH16,
             Text('Loading currencies...'),
           ],
         ),
@@ -183,15 +184,15 @@ class _CurrencyPickerContentState
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.error_outline, size: 48, color: Colors.red),
-            const SizedBox(height: 16),
+            gapH16,
             const Text('Failed to load currencies'),
-            const SizedBox(height: 8),
+            gapH8,
             Text(
               error.toString(),
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            gapH16,
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),

@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import '../../data/currency.dart';
 
@@ -28,7 +29,7 @@ class CurrencySelector extends StatelessWidget {
               currency.flag,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(width: 8),
+            gapW8,
             Text(
               currency.name,
               style: Theme.of(context).textTheme.titleMedium,

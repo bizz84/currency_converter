@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:currency_converter/src/data/currency.dart';
 import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +25,20 @@ class ExchangeRatesError extends ConsumerWidget {
               size: 48,
               color: Colors.red,
             ),
-            const SizedBox(height: 16),
+            gapH16,
             Text(
               'Failed to load exchange rates',
               style: Theme.of(
                 context,
               ).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            gapH8,
             Text(
               error.toString(),
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            gapH16,
             ElevatedButton(
               onPressed: () {
                 ref.invalidate(

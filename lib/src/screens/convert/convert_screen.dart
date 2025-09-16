@@ -65,7 +65,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
             SliverToBoxAdapter(
               child: CurrencySectionHeader(title: 'From'),
             ),
-            const SliverSizedBox(height: 12),
+            sliverGapH12,
             // Base Currency Section
             SliverToBoxAdapter(
               child: BaseCurrencyWidget(
@@ -79,7 +79,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                 },
               ),
             ),
-            const SliverSizedBox(height: 24),
+            sliverGapH24,
             // Target Currencies Section with loading/error handling
             ...ratesAsync.when(
               data: (rates) {
@@ -102,7 +102,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                   SliverToBoxAdapter(
                     child: CurrencySectionHeader(title: 'To'),
                   ),
-                  const SliverSizedBox(height: 12),
+                  sliverGapH12,
                   SliverReorderableList(
                     itemBuilder: (context, index) {
                       final currency = targetCurrencies[index];
@@ -146,7 +146,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
               ],
             ),
             // Spacing for FAB
-            const SliverSizedBox(height: 80),
+            sliverGapH80,
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +25,7 @@ class LastUpdatedWidget extends StatelessWidget {
             size: 16,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(width: 4),
+          gapW4,
           Text(
             _formatLastUpdated(),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

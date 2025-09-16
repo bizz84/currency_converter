@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/constants/app_sizes.dart';
 import 'package:currency_converter/src/data/currency.dart';
 import 'package:currency_converter/src/screens/convert/amount_input_field.dart';
 import 'package:currency_converter/src/screens/convert/currency_selector.dart';
@@ -28,7 +29,7 @@ class BaseCurrencyWidget extends StatelessWidget {
           children: [
             // Currency selector
             CurrencySelector(currency: currency, onTap: onCurrencyTap),
-            const SizedBox(width: 16),
+            gapW16,
             // Amount input
             Expanded(
               child: AmountInputField(
