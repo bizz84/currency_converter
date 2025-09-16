@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
 import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
+import 'package:currency_converter/src/screens/convert/exchange_rates_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,41 +154,9 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                 ],
                 error: (error, stack) => [
                   SliverToBoxAdapter(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Icon(
-                              Icons.error_outline,
-                              size: 48,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'Failed to load exchange rates',
-                              style: Theme.of(
-                                context,
-                              ).textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              error.toString(),
-                              style: Theme.of(context).textTheme.bodySmall,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                ref.invalidate(
-                                  latestRatesProvider(baseCurrency),
-                                );
-                              },
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      ),
+                    child: ExchangeRatesError(
+                      baseCurrency: baseCurrency,
+                      error: error,
                     ),
                   ),
                 ],
