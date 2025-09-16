@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:currency_converter/src/common_widgets/sliver_sized_box.dart';
 import 'package:currency_converter/src/screens/convert/base_currency_widget.dart';
 import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
 import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
@@ -55,112 +56,98 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            // Invalidate the provider to force a refresh
-            ref.invalidate(latestRatesProvider(baseCurrency));
-          },
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: LastUpdatedWidget(lastUpdated: date),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: LastUpdatedWidget(lastUpdated: date),
+            ),
+            // From section header
+            SliverToBoxAdapter(
+              child: CurrencySectionHeader(title: 'From'),
+            ),
+            const SliverSizedBox(height: 12),
+            // Base Currency Section
+            SliverToBoxAdapter(
+              child: BaseCurrencyWidget(
+                currency: baseCurrency,
+                amount: amount,
+                onCurrencyTap: () => _showCurrencyPicker(true),
+                onAmountChanged: (value) {
+                  setState(() {
+                    amount = value;
+                  });
+                },
               ),
-              // From section header
-              SliverToBoxAdapter(
-                child: CurrencySectionHeader(title: 'From'),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 12),
-              ),
-              // Base Currency Section
-              SliverToBoxAdapter(
-                child: BaseCurrencyWidget(
-                  currency: baseCurrency,
-                  amount: amount,
-                  onCurrencyTap: () => _showCurrencyPicker(true),
-                  onAmountChanged: (value) {
-                    setState(() {
-                      amount = value;
-                    });
-                  },
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 24),
-              ),
-              // Target Currencies Section with loading/error handling
-              ...ratesAsync.when(
-                data: (rates) {
-                  if (targetCurrencies.isEmpty) {
-                    return [
-                      SliverToBoxAdapter(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 32.0),
-                            child: ElevatedButton(
-                              onPressed: () => _showCurrencyPicker(false),
-                              child: const Text('Add a currency'),
-                            ),
+            ),
+            const SliverSizedBox(height: 24),
+            // Target Currencies Section with loading/error handling
+            ...ratesAsync.when(
+              data: (rates) {
+                if (targetCurrencies.isEmpty) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 32.0),
+                          child: ElevatedButton(
+                            onPressed: () => _showCurrencyPicker(false),
+                            child: const Text('Add a currency'),
                           ),
                         ),
                       ),
-                    ];
-                  }
-                  return [
-                    SliverToBoxAdapter(
-                      child: CurrencySectionHeader(title: 'To'),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 12),
-                    ),
-                    SliverReorderableList(
-                      itemBuilder: (context, index) {
-                        final currency = targetCurrencies[index];
-                        return CurrencyConversionTile(
-                          key: ValueKey(currency),
-                          currency: currency,
-                          baseCurrency: baseCurrency,
-                          amount: amount,
-                          index: index,
-                          rate: currency == baseCurrency
-                              ? 1.0
-                              : rates.rates[currency.name],
-                          onRemove: () => _removeCurrency(currency),
-                        );
-                      },
-                      itemCount: targetCurrencies.length,
-                      onReorder: (oldIndex, newIndex) {
-                        HapticFeedback.mediumImpact();
-                        _reorderCurrencies(oldIndex, newIndex);
-                      },
                     ),
                   ];
-                },
-                loading: () => [
-                  const SliverToBoxAdapter(
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                ],
-                error: (error, stack) => [
+                }
+                return [
                   SliverToBoxAdapter(
-                    child: ExchangeRatesError(
-                      baseCurrency: baseCurrency,
-                      error: error,
+                    child: CurrencySectionHeader(title: 'To'),
+                  ),
+                  const SliverSizedBox(height: 12),
+                  SliverReorderableList(
+                    itemBuilder: (context, index) {
+                      final currency = targetCurrencies[index];
+                      return CurrencyConversionTile(
+                        key: ValueKey(currency),
+                        currency: currency,
+                        baseCurrency: baseCurrency,
+                        amount: amount,
+                        index: index,
+                        rate: currency == baseCurrency
+                            ? 1.0
+                            : rates.rates[currency.name],
+                        onRemove: () => _removeCurrency(currency),
+                      );
+                    },
+                    itemCount: targetCurrencies.length,
+                    onReorder: (oldIndex, newIndex) {
+                      HapticFeedback.mediumImpact();
+                      _reorderCurrencies(oldIndex, newIndex);
+                    },
+                  ),
+                ];
+              },
+              loading: () => [
+                const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: CircularProgressIndicator(),
                     ),
                   ),
-                ],
-              ),
-              // Spacing for FAB
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 80),
-              ),
-            ],
-          ),
+                ),
+              ],
+              error: (error, stack) => [
+                SliverToBoxAdapter(
+                  child: ExchangeRatesError(
+                    baseCurrency: baseCurrency,
+                    error: error,
+                  ),
+                ),
+              ],
+            ),
+            // Spacing for FAB
+            const SliverSizedBox(height: 80),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _showCurrencyPicker(false),
