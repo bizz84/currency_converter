@@ -63,11 +63,11 @@
 - [x] Cache rates using provider's built-in caching
 
 ## Phase 8: Drag & Drop Reordering
-- [ ] Wrap currency list in `ReorderableListView`
-- [ ] Add drag handle to each tile
-- [ ] Implement reorder callback
-- [ ] Add haptic feedback on drag
-- [ ] Animate reordering transitions
+- [x] Wrap currency list in `ReorderableListView`
+- [x] Add drag handle to each tile
+- [x] Implement reorder callback
+- [x] Add haptic feedback on drag
+- [x] Animate reordering transitions
 
 ## Phase 9: Live Conversion Updates
 - [x] Implement real-time conversion as user types

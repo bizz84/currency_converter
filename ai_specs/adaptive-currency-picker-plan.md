@@ -1,13 +1,15 @@
 # Adaptive Currency Picker Refactoring Plan
 
 ## Overview
-Refactor the existing `CurrencyPickerDialog` to become `AdaptiveCurrencyPicker` that displays as a bottom modal sheet on mobile devices (width < 600px) and as a dialog on tablets/desktop/web, with drag-to-dismiss gesture support on mobile.
+Refactor the existing `CurrencyPickerDialog` to become `AdaptiveCurrencyPicker` that displays as a bottom modal sheet on mobile devices and as a dialog on desktop platforms, with drag-to-dismiss gesture support on mobile.
 
 ## Requirements
-- Mobile devices (width < 600px): Bottom modal sheet with drag-to-dismiss
-- Tablets/Desktop/Web (width ≥ 600px): Traditional dialog
+- Desktop platforms (macOS, Windows, Linux): Always use dialog regardless of window size
+- iOS/Android: Bottom modal sheet when width < 600px, dialog otherwise
+- Web: Adaptive based on viewport (mobile web < 768px shortest side → bottom sheet)
 - Maintain all existing functionality (search, selection, exclusions)
 - Smooth animations and intuitive gestures on mobile
+- Platform-aware behavior to prevent mobile UI on resized desktop windows
 
 ## Implementation Tasks
 
@@ -27,11 +29,12 @@ Refactor the existing `CurrencyPickerDialog` to become `AdaptiveCurrencyPicker` 
     List<Currency>? excludedCurrencies,
   })
   ```
-- [x] Implement screen size detection:
-  - Use `MediaQuery.sizeOf(context).width`
-  - Define constant: `const double mobileBreakpoint = 600.0`
-  - Return bottom sheet for width < 600px
-  - Return dialog for width ≥ 600px
+- [x] Implement platform-aware detection:
+  - Created `shouldUseBottomSheet()` utility function
+  - Desktop platforms always return `false` (dialog)
+  - iOS/Android use width < 600px breakpoint
+  - Web uses shortest side < 768px for mobile detection
+  - Extracted to `lib/src/utils/should_use_bottom_sheet.dart`
 
 #### Shared Content Widget
 - [x] Extract common UI into `_CurrencyPickerContent` widget:
@@ -86,9 +89,14 @@ Refactor the existing `CurrencyPickerDialog` to become `AdaptiveCurrencyPicker` 
 - [x] Handle keyboard appearance:
   - Use `Padding` with `MediaQuery.of(context).viewInsets.bottom`
   - Ensure search field remains visible when keyboard appears
-- [ ] Coordinate scroll behavior:
-  - Connect ListView scrollController with DraggableScrollableSheet
-  - Prevent gesture conflicts between list scrolling and sheet dragging
+- [x] Coordinate scroll behavior:
+  - Implemented `DraggableScrollableController` to detect sheet dragging
+  - Dismiss keyboard when user drags sheet down to prevent overflow
+  - Track sheet size changes to detect downward dragging
+- [x] Visual improvements:
+  - Removed `selectedTileColor` to prevent background bleeding
+  - Added trailing checkmark icon for selected currency
+  - Icon uses primary color for consistency
 - [ ] Add haptic feedback on dismiss threshold
 
 ### 5. Testing Requirements
@@ -122,20 +130,58 @@ Refactor the existing `CurrencyPickerDialog` to become `AdaptiveCurrencyPicker` 
 ## Code Structure
 
 ```
-lib/src/screens/convert/
-├── adaptive_currency_picker.dart
-│   ├── AdaptiveCurrencyPicker (main widget)
-│   ├── _CurrencyPickerContent (shared content)
-│   ├── _AdaptiveCurrencyPickerBottomSheet
-│   └── _AdaptiveCurrencyPickerDialog
-└── convert_screen.dart (updated to use new picker)
+lib/src/
+├── screens/convert/
+│   ├── adaptive_currency_picker.dart
+│   │   ├── AdaptiveCurrencyPicker (main widget)
+│   │   ├── _CurrencyPickerContent (shared content)
+│   │   ├── _AdaptiveCurrencyPickerBottomSheet (StatefulWidget)
+│   │   └── _AdaptiveCurrencyPickerDialog
+│   └── convert_screen.dart (updated to use new picker)
+└── utils/
+    └── should_use_bottom_sheet.dart (platform detection logic)
 ```
 
+## Key Implementation Details
+
+### Platform Detection (`should_use_bottom_sheet.dart`)
+```dart
+bool shouldUseBottomSheet(BuildContext context) {
+  final platform = Theme.of(context).platform;
+
+  // Desktop always uses dialog
+  if (platform == TargetPlatform.macOS ||
+      platform == TargetPlatform.windows ||
+      platform == TargetPlatform.linux) {
+    return false;
+  }
+
+  // Web: mobile if shortest side < 768
+  if (kIsWeb) {
+    final shortestSide = MediaQuery.sizeOf(context).shortestSide;
+    return shortestSide < 768;
+  }
+
+  // iOS/Android: adaptive based on width
+  final screenWidth = MediaQuery.sizeOf(context).width;
+  return screenWidth < 600;
+}
+```
+
+### Bottom Sheet Keyboard Handling
+- Uses `DraggableScrollableController` to track sheet size
+- Dismisses keyboard when detecting downward drag
+- Prevents overflow errors when keyboard is visible
+
 ## Success Criteria
-- ✅ Bottom sheet appears on mobile devices (< 600px width)
-- ✅ Dialog appears on tablets/desktop (≥ 600px width)
+- ✅ Desktop platforms always show dialog regardless of window size
+- ✅ Bottom sheet appears on mobile devices (< 600px width for iOS/Android)
+- ✅ Web adapts based on viewport (< 768px shortest side → bottom sheet)
 - ✅ Drag-to-dismiss works smoothly on mobile
+- ✅ Keyboard dismisses when dragging sheet down
+- ✅ Selected currency shows checkmark instead of background color
+- ✅ No visual bleeding of selected tile background
 - ✅ All existing functionality preserved
-- ✅ No UI regressions on any platform
-- ✅ Clean code with no duplication between variants
+- ✅ Platform detection prevents mobile UI on resized desktop windows
+- ✅ Clean code with reusable utility function
 - ✅ Proper state management and disposal
