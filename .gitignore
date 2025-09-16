@@ -49,5 +49,8 @@ app.*.map.json
 *.env
 rest-api/.env
 
+# Firebase
+.firebase/
+
 # MCP Servers
 .mcp.json*
