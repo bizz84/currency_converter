@@ -7,12 +7,14 @@ class CurrencyConversionTile extends StatelessWidget {
   final double amount;
   final double? rate;
   final VoidCallback? onRemove;
+  final int index;
 
   const CurrencyConversionTile({
     super.key,
     required this.currency,
     required this.baseCurrency,
     required this.amount,
+    required this.index,
     this.rate,
     this.onRemove,
   });
@@ -83,9 +85,12 @@ class CurrencyConversionTile extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(width: 16),
-                Icon(
-                  Icons.drag_handle,
-                  color: Colors.black38,
+                ReorderableDragStartListener(
+                  index: index,
+                  child: const Icon(
+                    Icons.drag_handle,
+                    color: Colors.black38,
+                  ),
                 ),
               ],
             ),

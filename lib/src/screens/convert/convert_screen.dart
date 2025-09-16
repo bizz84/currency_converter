@@ -119,18 +119,16 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                     SliverReorderableList(
                       itemBuilder: (context, index) {
                         final currency = targetCurrencies[index];
-                        return ReorderableDragStartListener(
+                        return CurrencyConversionTile(
                           key: ValueKey(currency),
+                          currency: currency,
+                          baseCurrency: baseCurrency,
+                          amount: amount,
                           index: index,
-                          child: CurrencyConversionTile(
-                            currency: currency,
-                            baseCurrency: baseCurrency,
-                            amount: amount,
-                            rate: currency == baseCurrency
-                                ? 1.0
-                                : rates.rates[currency.name],
-                            onRemove: () => _removeCurrency(currency),
-                          ),
+                          rate: currency == baseCurrency
+                              ? 1.0
+                              : rates.rates[currency.name],
+                          onRemove: () => _removeCurrency(currency),
                         );
                       },
                       itemCount: targetCurrencies.length,
