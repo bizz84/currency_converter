@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:currency_converter/src/screens/convert/base_currency_widget.dart';
 import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
 import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
 import 'package:currency_converter/src/screens/convert/exchange_rates_error.dart';
@@ -6,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
-import 'currency_selector.dart';
 import 'currency_picker_dialog.dart';
-import 'amount_input_field.dart';
 import '../../network/frankfurter_client.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
@@ -78,7 +77,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
               ),
               // Base Currency Section
               SliverToBoxAdapter(
-                child: BaseCurrencyCard(
+                child: BaseCurrencyWidget(
                   currency: baseCurrency,
                   amount: amount,
                   onCurrencyTap: () => _showCurrencyPicker(true),
@@ -215,45 +214,5 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
       final Currency currency = targetCurrencies.removeAt(oldIndex);
       targetCurrencies.insert(newIndex, currency);
     });
-  }
-}
-
-class BaseCurrencyCard extends StatelessWidget {
-  final Currency currency;
-  final double amount;
-  final VoidCallback onCurrencyTap;
-  final ValueChanged<double> onAmountChanged;
-
-  const BaseCurrencyCard({
-    super.key,
-    required this.currency,
-    required this.amount,
-    required this.onCurrencyTap,
-    required this.onAmountChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      margin: const EdgeInsets.only(bottom: 1),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            // Currency selector
-            CurrencySelector(currency: currency, onTap: onCurrencyTap),
-            const SizedBox(width: 16),
-            // Amount input
-            Expanded(
-              child: AmountInputField(
-                initialAmount: amount,
-                onChanged: onAmountChanged,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
