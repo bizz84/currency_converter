@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
-import 'currency_picker_dialog.dart';
+import 'adaptive_currency_picker.dart';
 import '../../network/frankfurter_client.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
@@ -177,14 +177,12 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   }
 
   Future<void> _showCurrencyPicker(bool isBaseCurrency) async {
-    final result = await showDialog<Currency>(
-      context: context,
-      builder: (context) => CurrencyPickerDialog(
-        selectedCurrency: isBaseCurrency ? baseCurrency : null,
-        excludedCurrencies: isBaseCurrency
-            ? null
-            : [baseCurrency, ...targetCurrencies],
-      ),
+    final result = await AdaptiveCurrencyPicker.show(
+      context,
+      selectedCurrency: isBaseCurrency ? baseCurrency : null,
+      excludedCurrencies: isBaseCurrency
+          ? null
+          : [baseCurrency, ...targetCurrencies],
     );
 
     if (result != null) {
