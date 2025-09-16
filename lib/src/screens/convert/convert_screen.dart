@@ -3,6 +3,7 @@ import 'package:currency_converter/src/screens/convert/base_currency_widget.dart
 import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
 import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
 import 'package:currency_converter/src/screens/convert/exchange_rates_error.dart';
+import 'package:currency_converter/src/screens/convert/last_updated_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,18 +23,14 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   Currency baseCurrency = Currency.GBP;
   double amount = 100.0;
   List<Currency> targetCurrencies = [Currency.EUR, Currency.USD, Currency.JPY];
-  DateTime lastUpdated = DateTime.now();
   Timer? _refreshTimer;
 
   @override
   void initState() {
     super.initState();
-    // Set up automatic refresh every 60 seconds
-    _refreshTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
+    // Set up automatic refresh every hour
+    _refreshTimer = Timer.periodic(const Duration(hours: 1), (timer) {
       ref.invalidate(latestRatesProvider(baseCurrency));
-      setState(() {
-        lastUpdated = DateTime.now();
-      });
     });
   }
 
@@ -46,6 +43,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   @override
   Widget build(BuildContext context) {
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
+    final date = ratesAsync.value?.dateTime;
     return GestureDetector(
       onTap: () {
         // Hide keyboard when tapping outside
@@ -61,13 +59,12 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
           onRefresh: () async {
             // Invalidate the provider to force a refresh
             ref.invalidate(latestRatesProvider(baseCurrency));
-
-            setState(() {
-              lastUpdated = DateTime.now();
-            });
           },
           child: CustomScrollView(
             slivers: [
+              SliverToBoxAdapter(
+                child: LastUpdatedWidget(lastUpdated: date),
+              ),
               // From section header
               SliverToBoxAdapter(
                 child: CurrencySectionHeader(title: 'From'),

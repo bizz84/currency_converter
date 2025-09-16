@@ -13,6 +13,9 @@ class CurrencyRates {
   // TODO: Change to Currency
   final Map<String, double> rates;
 
+  /// Parses the date string (yyyy-mm-dd format) from the API into a DateTime
+  DateTime get dateTime => DateTime.parse(date);
+
   factory CurrencyRates.fromJson(Map<String, dynamic> json) {
     return CurrencyRates(
       amount: (json['amount'] as num).toDouble(),
