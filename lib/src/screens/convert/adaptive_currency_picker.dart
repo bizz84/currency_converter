@@ -1,20 +1,16 @@
+import 'package:currency_converter/src/utils/should_use_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
 import '../../network/frankfurter_client.dart';
 
 class AdaptiveCurrencyPicker {
-  static const double mobileBreakpoint = 600.0;
-
   static Future<Currency?> show(
     BuildContext context, {
     Currency? selectedCurrency,
     List<Currency>? excludedCurrencies,
   }) async {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final isMobile = screenWidth < mobileBreakpoint;
-
-    if (isMobile) {
+    if (shouldUseBottomSheet(context)) {
       return showModalBottomSheet<Currency>(
         context: context,
         isScrollControlled: true,
