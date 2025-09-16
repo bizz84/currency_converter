@@ -154,10 +154,12 @@ class _CurrencyPickerContentState
                     ),
                     title: Text(currency.name),
                     subtitle: Text(currency.desc),
-                    selected: isSelected,
-                    selectedTileColor: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer,
+                    trailing: isSelected
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : null,
                     onTap: () {
                       Navigator.of(context).pop(currency);
                     },
@@ -206,7 +208,7 @@ class _CurrencyPickerContentState
 }
 
 // Bottom sheet implementation for mobile
-class _AdaptiveCurrencyPickerBottomSheet extends StatelessWidget {
+class _AdaptiveCurrencyPickerBottomSheet extends StatefulWidget {
   final Currency? selectedCurrency;
   final List<Currency>? excludedCurrencies;
 
@@ -216,11 +218,49 @@ class _AdaptiveCurrencyPickerBottomSheet extends StatelessWidget {
   });
 
   @override
+  State<_AdaptiveCurrencyPickerBottomSheet> createState() =>
+      _AdaptiveCurrencyPickerBottomSheetState();
+}
+
+class _AdaptiveCurrencyPickerBottomSheetState
+    extends State<_AdaptiveCurrencyPickerBottomSheet> {
+  final DraggableScrollableController _draggableController =
+      DraggableScrollableController();
+  static const intitialSize = 0.9;
+  double _previousSize = intitialSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _draggableController.addListener(_onDraggableChanged);
+  }
+
+  void _onDraggableChanged() {
+    final currentSize = _draggableController.size;
+
+    // Detect when dragging down
+    if (currentSize < _previousSize) {
+      // Dismiss keyboard when dragging down
+      FocusScope.of(context).unfocus();
+    }
+
+    _previousSize = currentSize;
+  }
+
+  @override
+  void dispose() {
+    _draggableController.removeListener(_onDraggableChanged);
+    _draggableController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.9,
+      controller: _draggableController,
+      initialChildSize: intitialSize,
       minChildSize: 0.3,
-      maxChildSize: 0.9,
+      maxChildSize: intitialSize,
       snap: true,
       builder: (context, scrollController) => Container(
         decoration: BoxDecoration(
@@ -248,8 +288,8 @@ class _AdaptiveCurrencyPickerBottomSheet extends StatelessWidget {
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: _CurrencyPickerContent(
-                  selectedCurrency: selectedCurrency,
-                  excludedCurrencies: excludedCurrencies,
+                  selectedCurrency: widget.selectedCurrency,
+                  excludedCurrencies: widget.excludedCurrencies,
                   scrollController: scrollController,
                   showHeader: true,
                 ),
