@@ -13,6 +13,17 @@ The app should be built with Flutter and have the following screens:
 
 Sample UI design: `img/convert-preview.jpeg`
 
+## Currency Selector Screen
+
+Currently implemented as an adaptive bottom sheet/dialog.
+
+Improvements:
+
+- List of previously used currencies at the top
+- Alphabetical list of currencies with letter headers (iOS style)
+
+Sample UI design: `img/currency-selector-preview.jpeg`
+
 ## Charts Screen
 
 - Side by side dropdown selector for the two currencies
