@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/common_widgets/responsive_constrained_box.dart';
 import 'package:flutter/material.dart';
 import 'screens/convert/convert_screen.dart';
 import 'screens/charts/charts_screen.dart';
@@ -15,6 +16,9 @@ class CurrencyConverterApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         useMaterial3: true,
+      ),
+      builder: (context, child) => ResponsiveConstrainedBox(
+        child: child!,
       ),
       home: const MainScreen(),
     );

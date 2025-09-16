@@ -1,7 +1,6 @@
+import 'package:currency_converter/src/constants/layout_breakpoints.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-const double kMobileBreakpoint = 600.0;
 
 bool shouldUseBottomSheet(BuildContext context) {
   final platform = Theme.of(context).platform;
@@ -23,5 +22,5 @@ bool shouldUseBottomSheet(BuildContext context) {
 
   // iOS and Android: Use adaptive approach based on screen width
   final screenWidth = MediaQuery.sizeOf(context).width;
-  return screenWidth < kMobileBreakpoint;
+  return screenWidth < LayoutBreakpoints.medium;
 }
