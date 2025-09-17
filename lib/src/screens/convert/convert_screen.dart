@@ -8,9 +8,9 @@ import 'package:currency_converter/src/screens/convert/last_updated_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/currency.dart';
 import 'adaptive_currency_picker.dart';
-import '../../network/frankfurter_client.dart';
+import '/src/network/frankfurter_client.dart';
+import '/src/storage/user_prefs_notifier.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
   const ConvertScreen({super.key});
@@ -20,10 +20,7 @@ class ConvertScreen extends ConsumerStatefulWidget {
 }
 
 class _ConvertScreenState extends ConsumerState<ConvertScreen> {
-  // State variables
-  Currency baseCurrency = Currency.GBP;
-  double amount = 100.0;
-  List<Currency> targetCurrencies = [Currency.EUR, Currency.USD, Currency.JPY];
+  // Refresh timer
   Timer? _refreshTimer;
 
   @override
@@ -31,7 +28,8 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     super.initState();
     // Set up automatic refresh every hour
     _refreshTimer = Timer.periodic(const Duration(hours: 1), (timer) {
-      ref.invalidate(latestRatesProvider(baseCurrency));
+      final base = ref.read(userPrefsProvider).baseCurrency;
+      ref.invalidate(latestRatesProvider(base));
     });
   }
 
@@ -43,6 +41,10 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final prefs = ref.watch(userPrefsProvider);
+    final baseCurrency = prefs.baseCurrency;
+    final amount = prefs.amount;
+    final targetCurrencies = prefs.targetCurrencies;
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
     final date = ratesAsync.value?.dateTime;
     return GestureDetector(
@@ -73,9 +75,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                 amount: amount,
                 onCurrencyTap: () => _showCurrencyPicker(true),
                 onAmountChanged: (value) {
-                  setState(() {
-                    amount = value;
-                  });
+                  ref.read(userPrefsProvider.notifier).setAmount(value);
                 },
               ),
             ),
@@ -115,13 +115,17 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                         rate: currency == baseCurrency
                             ? 1.0
                             : rates.rates[currency.name],
-                        onRemove: () => _removeCurrency(currency),
+                        onRemove: () => ref
+                            .read(userPrefsProvider.notifier)
+                            .removeTarget(currency),
                       );
                     },
                     itemCount: targetCurrencies.length,
                     onReorder: (oldIndex, newIndex) {
                       HapticFeedback.mediumImpact();
-                      _reorderCurrencies(oldIndex, newIndex);
+                      ref
+                          .read(userPrefsProvider.notifier)
+                          .reorderTargets(oldIndex, newIndex);
                     },
                   ),
                 ];
@@ -161,38 +165,22 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   Future<void> _showCurrencyPicker(bool isBaseCurrency) async {
     final result = await AdaptiveCurrencyPicker.show(
       context,
-      selectedCurrency: isBaseCurrency ? baseCurrency : null,
+      selectedCurrency: isBaseCurrency
+          ? ref.read(userPrefsProvider).baseCurrency
+          : null,
       excludedCurrencies: isBaseCurrency
           ? null
-          : [baseCurrency, ...targetCurrencies],
+          : ref.read(userPrefsProvider).targetCurrencies,
     );
 
     if (result != null) {
-      setState(() {
-        if (isBaseCurrency) {
-          baseCurrency = result;
-        } else {
-          if (!targetCurrencies.contains(result)) {
-            targetCurrencies.add(result);
-          }
-        }
-      });
-    }
-  }
-
-  void _removeCurrency(Currency currency) {
-    setState(() {
-      targetCurrencies.remove(currency);
-    });
-  }
-
-  void _reorderCurrencies(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
+      if (isBaseCurrency) {
+        await ref.read(userPrefsProvider.notifier).setBase(result);
+        // Invalidate rates for new base
+        ref.invalidate(latestRatesProvider(result));
+      } else {
+        await ref.read(userPrefsProvider.notifier).addTarget(result);
       }
-      final Currency currency = targetCurrencies.removeAt(oldIndex);
-      targetCurrencies.insert(newIndex, currency);
-    });
+    }
   }
 }
