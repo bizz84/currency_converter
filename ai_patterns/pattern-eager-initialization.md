@@ -1,4 +1,4 @@
-# Eager initialization example
+# Eager provider initialization pattern (example)
 
 This is an example of how to use eager initialization to access shared preferences in a provider/notifier.
 
@@ -6,14 +6,13 @@ This is an example of how to use eager initialization to access shared preferenc
 
 ```dart
 // lib/src/utils/shared_preferences_provider.dart
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'shared_preferences.g.dart';
+part 'shared_preferences_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<SharedPreferences> sharedPreferences(Ref ref) {
+Future<SharedPreferences> sharedPreferences(Ref ref) async {
   return SharedPreferences.getInstance();
 }
 ```
