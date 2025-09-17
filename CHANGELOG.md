@@ -1,8 +1,12 @@
 ## Unreleased
 
 - [ ] Built-in keyboard on mobile (more control, no delay for keyboard to appear, built-in done button to dismiss)
-- [ ] Store list of currencies in local storage (persist across app restarts)
 - [ ] Cache API responses to avoid unnecessary API calls
+
+## 0.1.1
+
+- [x] Store user preferences in local storage (persist across app restarts)
+
 ## 0.1.0
 
 ### Basic Converter Screen
