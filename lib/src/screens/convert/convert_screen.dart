@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
 import 'adaptive_currency_picker.dart';
 import '../../network/frankfurter_client.dart';
+import '/src/storage/user_prefs_notifier.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
   const ConvertScreen({super.key});
@@ -20,10 +21,6 @@ class ConvertScreen extends ConsumerStatefulWidget {
 }
 
 class _ConvertScreenState extends ConsumerState<ConvertScreen> {
-  // State variables
-  Currency baseCurrency = Currency.GBP;
-  double amount = 100.0;
-  List<Currency> targetCurrencies = [Currency.EUR, Currency.USD, Currency.JPY];
   Timer? _refreshTimer;
 
   @override
@@ -31,6 +28,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     super.initState();
     // Set up automatic refresh every hour
     _refreshTimer = Timer.periodic(const Duration(hours: 1), (timer) {
+      final baseCurrency = ref.read(userPrefsProvider).baseCurrency;
       ref.invalidate(latestRatesProvider(baseCurrency));
     });
   }
@@ -43,6 +41,12 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Use provider state
+    final userPrefs = ref.watch(userPrefsProvider);
+    final baseCurrency = userPrefs.baseCurrency;
+    final amount = userPrefs.amount;
+    final targetCurrencies = userPrefs.targetCurrencies;
+
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
     final date = ratesAsync.value?.dateTime;
     return GestureDetector(
@@ -73,9 +77,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                 amount: amount,
                 onCurrencyTap: () => _showCurrencyPicker(true),
                 onAmountChanged: (value) {
-                  setState(() {
-                    amount = value;
-                  });
+                  ref.read(userPrefsProvider.notifier).updateAmount(value);
                 },
               ),
             ),
@@ -159,40 +161,29 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   }
 
   Future<void> _showCurrencyPicker(bool isBaseCurrency) async {
+    final userPrefs = ref.read(userPrefsProvider);
     final result = await AdaptiveCurrencyPicker.show(
       context,
-      selectedCurrency: isBaseCurrency ? baseCurrency : null,
+      selectedCurrency: isBaseCurrency ? userPrefs.baseCurrency : null,
       excludedCurrencies: isBaseCurrency
           ? null
-          : [baseCurrency, ...targetCurrencies],
+          : [userPrefs.baseCurrency, ...userPrefs.targetCurrencies],
     );
 
     if (result != null) {
-      setState(() {
-        if (isBaseCurrency) {
-          baseCurrency = result;
-        } else {
-          if (!targetCurrencies.contains(result)) {
-            targetCurrencies.add(result);
-          }
-        }
-      });
+      if (isBaseCurrency) {
+        ref.read(userPrefsProvider.notifier).updateBaseCurrency(result);
+      } else {
+        ref.read(userPrefsProvider.notifier).addTargetCurrency(result);
+      }
     }
   }
 
   void _removeCurrency(Currency currency) {
-    setState(() {
-      targetCurrencies.remove(currency);
-    });
+    ref.read(userPrefsProvider.notifier).removeTargetCurrency(currency);
   }
 
   void _reorderCurrencies(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final Currency currency = targetCurrencies.removeAt(oldIndex);
-      targetCurrencies.insert(newIndex, currency);
-    });
+    ref.read(userPrefsProvider.notifier).reorderTargetCurrencies(oldIndex, newIndex);
   }
 }
