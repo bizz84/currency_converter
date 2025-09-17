@@ -1,0 +1,3 @@
+[submodule "ai_helpers"]
+	path = ai_helpers
+	url = https://github.com/bizz84/ai_flutter_helpers
