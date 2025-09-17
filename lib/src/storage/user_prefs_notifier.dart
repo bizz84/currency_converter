@@ -26,19 +26,15 @@ class UserPrefs {
 @riverpod
 class UserPrefsNotifier extends _$UserPrefsNotifier {
   // Separate keys for each preference
-  static const _baseCurrencyKey = 'base_currency';
-  static const _amountKey = 'amount';
-  static const _targetCurrenciesKey = 'target_currencies';
+  static const _baseCurrencyKey = 'user_prefs/base_currency';
+  static const _amountKey = 'user_prefs/amount';
+  static const _targetCurrenciesKey = 'user_prefs/target_currencies';
 
   SharedPreferences get _prefs =>
       ref.watch(sharedPreferencesProvider).requireValue;
 
   @override
   UserPrefs build() {
-    return _loadPreferences();
-  }
-
-  UserPrefs _loadPreferences() {
     // Load each preference separately with fallback to defaults
     final baseCurrencyName = _prefs.getString(_baseCurrencyKey);
     final baseCurrency = baseCurrencyName != null
