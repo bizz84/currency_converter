@@ -1,10 +1,27 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/src/data/currency.dart';
-import '/src/data/user_prefs.dart';
 import '/src/utils/shared_preferences_provider.dart';
 
 part 'user_prefs_notifier.g.dart';
+
+class UserPrefs {
+  final Currency baseCurrency;
+  final double amount;
+  final List<Currency> targetCurrencies;
+
+  const UserPrefs({
+    required this.baseCurrency,
+    required this.amount,
+    required this.targetCurrencies,
+  });
+
+  static const defaults = UserPrefs(
+    baseCurrency: Currency.GBP,
+    amount: 100.0,
+    targetCurrencies: [Currency.EUR, Currency.USD, Currency.JPY],
+  );
+}
 
 @riverpod
 class UserPrefsNotifier extends _$UserPrefsNotifier {
@@ -33,8 +50,8 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
     final targetCurrencyNames = _prefs.getStringList(_targetCurrenciesKey);
     final targetCurrencies = targetCurrencyNames != null
         ? targetCurrencyNames
-            .map((name) => Currency.values.byName(name))
-            .toList()
+              .map((name) => Currency.values.byName(name))
+              .toList()
         : UserPrefs.defaults.targetCurrencies;
 
     return UserPrefs(

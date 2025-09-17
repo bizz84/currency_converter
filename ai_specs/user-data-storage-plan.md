@@ -19,10 +19,8 @@ Implement persistent storage for user preferences using SharedPreferences with e
 ### File Structure
 ```
 lib/src/
-├── data/
-│   └── user_prefs.dart                    # Data model with defaults
 ├── storage/
-│   └── user_prefs_notifier.dart           # State management with auto-save
+│   └── user_prefs_notifier.dart           # Data model (UserPrefs) + state management with auto-save
 ├── utils/
 │   └── shared_preferences_provider.dart   # SharedPreferences instance provider
 └── main.dart                              # Eager initialization
@@ -39,11 +37,9 @@ dependencies:
 Run: `flutter pub get`
 
 ### [x] 2. Create UserPrefs data model
-**File:** `lib/src/data/user_prefs.dart`
+**File:** `lib/src/storage/user_prefs_notifier.dart` (included in the same file as the notifier)
 
 ```dart
-import '/src/data/currency.dart';
-
 class UserPrefs {
   final Currency baseCurrency;
   final double amount;
@@ -79,13 +75,15 @@ Future<SharedPreferences> sharedPreferences(Ref ref) async {
 ```
 
 ### [x] 4. Create UserPrefsNotifier
-**File:** `lib/src/storage/user_prefs_notifier.dart`
+**File:** `lib/src/storage/user_prefs_notifier.dart` (includes both UserPrefs model and notifier)
 
 ```dart
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/src/data/currency.dart';
-import '/src/data/user_prefs.dart';
 import '/src/utils/shared_preferences_provider.dart';
+
+// UserPrefs model is defined at the top of this file
 
 part 'user_prefs_notifier.g.dart';
 
@@ -213,7 +211,7 @@ void main() async {
 
 Add import:
 ```dart
-import '/src/storage/user_prefs_notifier.dart';
+import '/src/storage/user_prefs_notifier.dart';  // Contains both UserPrefs model and UserPrefsNotifier
 ```
 
 Replace local state variables with provider:
