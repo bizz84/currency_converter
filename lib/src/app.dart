@@ -8,19 +8,8 @@ class CurrencyConverterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Currency Converter',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-      ),
-      builder: (context, child) => ResponsiveConstrainedBox(
-        child: child!,
-      ),
-      home: const MainScreen(),
+    return const ResponsiveConstrainedBox(
+      child: MainScreen(),
     );
   }
 }
