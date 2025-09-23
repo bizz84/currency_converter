@@ -40,7 +40,7 @@ Introduce a new `CurrencyApiClient` to integrate CurrencyAPI.com alongside the e
 
 ### Phase 6 — Testing & samples
 
-- [ ] Add unit tests under `test/src/network/currency_api_client_test.dart` using `http_mock_adapter`.
+- [x] Add unit tests under `test/src/network/currency_api_client_test.dart` using `http_mock_adapter`.
 - [ ] Cover: latest rates happy path, `amount` multiplication, missing `data`/`meta` fields, currencies mapping/filtering, error codes.
 - [ ] Add REST Client samples under `rest-api/` mirroring Frankfurter ones (optional, if repo uses them), referencing `.env` for the key.
 
