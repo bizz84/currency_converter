@@ -5,6 +5,12 @@ class Env {
 
   // TODO: Add environment variables when needed (e.g., for analytics, crash reporting)
 
+  // API key for CurrencyAPI.com
+  static String get currencyApiKey => const String.fromEnvironment(
+    'CURRENCYAPI_KEY',
+    defaultValue: '',
+  );
+
   // iOS App Store ID for force update functionality
   static String get appStoreId => const String.fromEnvironment(
     'APP_STORE_ID',
@@ -18,10 +24,8 @@ class Env {
   );
 
   static void validate() {
-    // TODO: Validate environment variables when added
-    // Example:
-    // if (apiKey.isEmpty) {
-    //   throw Exception('API_KEY not defined');
-    // }
+    if (currencyApiKey.isEmpty) {
+      throw Exception('CURRENCYAPI_KEY not defined');
+    }
   }
 }

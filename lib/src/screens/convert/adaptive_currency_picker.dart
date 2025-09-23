@@ -3,7 +3,7 @@ import 'package:currency_converter/src/utils/should_use_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
-import '../../network/frankfurter_client.dart';
+import '../../network/api_client.dart';
 
 class AdaptiveCurrencyPicker {
   static Future<Currency?> show(

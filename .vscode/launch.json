@@ -7,19 +7,22 @@
     {
       "name": "currency_converter",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": [ "--dart-define-from-file", "rest-api/.env" ]
     },
     {
       "name": "currency_converter (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "args": [ "--dart-define-from-file", "rest-api/.env" ]
     },
     {
       "name": "currency_converter (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "args": [ "--dart-define-from-file", "rest-api/.env" ]
     }
   ]
 }

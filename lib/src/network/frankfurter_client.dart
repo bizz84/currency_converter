@@ -2,13 +2,11 @@ import 'package:currency_converter/src/data/currencies.dart';
 import 'package:currency_converter/src/data/currency.dart';
 import 'package:currency_converter/src/data/currency_rates.dart';
 import 'package:currency_converter/src/data/time_series_rates.dart';
-import 'package:currency_converter/src/utils/dio_provider.dart';
+import 'package:currency_converter/src/network/api_client.dart';
 import 'package:dio/dio.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'frankfurter_client.g.dart';
 
-class FrankfurterClient {
+class FrankfurterClient implements ApiClient {
   FrankfurterClient({required Dio dio}) : _dio = dio {
     _dio.options.baseUrl = 'https://api.frankfurter.dev/v1';
   }
@@ -20,6 +18,7 @@ class FrankfurterClient {
     return currencies.map((c) => c.name).join(',');
   }
 
+  @override
   Future<CurrencyRates> getLatestRates({
     required Currency base,
     List<Currency>? to,
@@ -44,6 +43,7 @@ class FrankfurterClient {
     return CurrencyRates.fromJson(response.data!);
   }
 
+  @override
   Future<CurrencyRates> getHistoricalRates(
     String date, {
     required Currency base,
@@ -63,6 +63,7 @@ class FrankfurterClient {
     return CurrencyRates.fromJson(response.data!);
   }
 
+  @override
   Future<TimeSeriesRates> getTimeSeriesRates(
     String startDate,
     String endDate, {
@@ -81,39 +82,11 @@ class FrankfurterClient {
     return TimeSeriesRates.fromJson(response.data!);
   }
 
+  @override
   Future<Currencies> getCurrencies() async {
     final response = await _dio.get<Map<String, dynamic>>('/currencies');
     return Currencies.fromJson(response.data!);
   }
 }
 
-@riverpod
-FrankfurterClient frankfurterClient(Ref ref) {
-  return FrankfurterClient(dio: ref.read(dioProvider));
-}
-
-@riverpod
-Future<Currencies> availableCurrencies(Ref ref) async {
-  final client = ref.watch(frankfurterClientProvider);
-  return client.getCurrencies();
-}
-
-@riverpod
-Future<CurrencyRates> latestRates(Ref ref, Currency baseCurrency) async {
-  final client = ref.watch(frankfurterClientProvider);
-  return client.getLatestRates(base: baseCurrency);
-}
-
-@riverpod
-double exchangeRate(Ref ref, Currency baseCurrency, Currency targetCurrency) {
-  final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-
-  return ratesAsync.when(
-    data: (rates) {
-      if (baseCurrency == targetCurrency) return 1.0;
-      return rates.rates[targetCurrency.name] ?? 1.0;
-    },
-    loading: () => 1.0,
-    error: (_, _) => 1.0,
-  );
-}
+// Providers moved to api_client.dart to allow backend selection.
