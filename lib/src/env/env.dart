@@ -7,9 +7,15 @@ class Env {
 
   // iOS App Store ID for force update functionality
   static String get appStoreId => const String.fromEnvironment(
-        'APP_STORE_ID',
-        defaultValue: '1234567890', // TODO: Replace with actual App Store ID
-      );
+    'APP_STORE_ID',
+    defaultValue: '', // TODO: Replace with actual App Store ID
+  );
+
+  // Sentry DSN for error tracking
+  static String get sentryDsn => const String.fromEnvironment(
+    'SENTRY_DSN',
+    defaultValue: '', // TODO: Replace with actual Sentry DSN
+  );
 
   static void validate() {
     // TODO: Validate environment variables when added
