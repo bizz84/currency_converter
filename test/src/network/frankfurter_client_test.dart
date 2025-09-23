@@ -36,7 +36,7 @@ void main() {
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['USD'], 1.0899);
         expect(result.rates['GBP'], 0.8597);
       });
@@ -60,7 +60,7 @@ void main() {
 
         expect(result.amount, 1.0);
         expect(result.base, 'USD');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['GBP'], 0.7888);
       });
 
@@ -87,7 +87,7 @@ void main() {
 
         expect(result.amount, 100.0);
         expect(result.base, 'USD');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['GBP'], 78.88);
       });
     });
@@ -109,7 +109,7 @@ void main() {
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
-        expect(result.date, date);
+        expect(result.date, DateTime.parse(date));
         expect(result.rates['USD'], 1.1043);
         expect(result.rates['GBP'], 0.8678);
       });
@@ -140,7 +140,7 @@ void main() {
 
           expect(result.amount, 1.0);
           expect(result.base, 'USD');
-          expect(result.date, date);
+          expect(result.date, DateTime.parse(date));
           expect(result.rates['GBP'], 0.7859);
           expect(result.rates['EUR'], 0.9055);
         },
@@ -171,7 +171,7 @@ void main() {
 
         expect(result.amount, 50.0);
         expect(result.base, 'USD');
-        expect(result.date, date);
+        expect(result.date, DateTime.parse(date));
         expect(result.rates['GBP'], 39.295);
       });
     });

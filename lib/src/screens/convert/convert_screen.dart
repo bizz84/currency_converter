@@ -48,7 +48,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     final targetCurrencies = userPrefs.targetCurrencies;
 
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-    final date = ratesAsync.value?.dateTime;
+    final date = ratesAsync.value?.date;
     return GestureDetector(
       onTap: () {
         // Hide keyboard when tapping outside

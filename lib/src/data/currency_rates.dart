@@ -9,18 +9,15 @@ class CurrencyRates {
   final double amount;
   // TODO: Change to Currency
   final String base;
-  final String date;
+  final DateTime date;
   // TODO: Change to Currency
   final Map<String, double> rates;
-
-  /// Parses the date string (yyyy-mm-dd format) from the API into a DateTime
-  DateTime get dateTime => DateTime.parse(date);
 
   factory CurrencyRates.fromFrankfurterApi(Map<String, dynamic> json) {
     return CurrencyRates(
       amount: (json['amount'] as num).toDouble(),
       base: json['base'] as String,
-      date: json['date'] as String,
+      date: DateTime.parse(json['date'] as String),
       rates: (json['rates'] as Map<String, dynamic>).map(
         (key, value) => MapEntry(key, (value as num).toDouble()),
       ),
@@ -43,9 +40,9 @@ class CurrencyRates {
     final lastUpdatedAt = meta != null
         ? meta['last_updated_at'] as String?
         : null;
-    final date = (lastUpdatedAt != null && lastUpdatedAt.length >= 10)
-        ? lastUpdatedAt.substring(0, 10)
-        : DateTime.now().toIso8601String().substring(0, 10);
+    final date = lastUpdatedAt != null
+        ? DateTime.parse(lastUpdatedAt).toUtc()
+        : DateTime.now().toUtc();
 
     final rawData = json['data'] as Map<String, dynamic>? ?? const {};
     final Map<String, double> flattenedRates = {
@@ -70,8 +67,15 @@ class CurrencyRates {
     return {
       'amount': amount,
       'base': base,
-      'date': date,
+      'date': _formatYyyyMmDd(date),
       'rates': rates,
     };
+  }
+
+  static String _formatYyyyMmDd(DateTime dt) {
+    final y = dt.year.toString().padLeft(4, '0');
+    final m = dt.month.toString().padLeft(2, '0');
+    final d = dt.day.toString().padLeft(2, '0');
+    return '$y-$m-$d';
   }
 }
