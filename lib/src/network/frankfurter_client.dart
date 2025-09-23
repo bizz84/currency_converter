@@ -39,8 +39,8 @@ class FrankfurterClient implements ApiClient {
     // final rates = Map<String, dynamic>.from(data['rates'] as Map);
     // rates[base] = 1.0;
     // data['rates'] = rates;
-    // return CurrencyRates.fromJson(data);
-    return CurrencyRates.fromJson(response.data!);
+    // return CurrencyRates.fromFrankfurterApi(data);
+    return CurrencyRates.fromFrankfurterApi(response.data!);
   }
 
   @override
@@ -60,7 +60,7 @@ class FrankfurterClient implements ApiClient {
       '/$date',
       queryParameters: queryParameters,
     );
-    return CurrencyRates.fromJson(response.data!);
+    return CurrencyRates.fromFrankfurterApi(response.data!);
   }
 
   @override

@@ -36,33 +36,11 @@ class CurrencyApiClient implements ApiClient {
       '/latest',
       queryParameters: queryParameters,
     );
-
-    final data = response.data ?? const {};
-    final meta = data['meta'] as Map<String, dynamic>?;
-    final lastUpdatedAt = meta != null
-        ? meta['last_updated_at'] as String?
-        : null;
-    final date = (lastUpdatedAt != null && lastUpdatedAt.length >= 10)
-        ? lastUpdatedAt.substring(0, 10)
-        : DateTime.now().toIso8601String().substring(0, 10);
-
-    final rawData = data['data'] as Map<String, dynamic>? ?? const {};
-    final Map<String, double> flattenedRates = {
-      for (final entry in rawData.entries)
-        entry.key: ((entry.value as Map<String, dynamic>)['value'] as num)
-            .toDouble(),
-    };
-
     final amt = amount ?? 1.0;
-    final Map<String, double> adjustedRates = {
-      for (final e in flattenedRates.entries) e.key: e.value * amt,
-    };
-
-    return CurrencyRates(
-      amount: amt,
+    return CurrencyRates.fromCurrencyApi(
+      response.data ?? const {},
       base: base.name,
-      date: date,
-      rates: adjustedRates,
+      amount: amt,
     );
   }
 
