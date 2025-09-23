@@ -41,13 +41,17 @@ abstract class ApiClient {
 
 @riverpod
 ApiClient apiClient(Ref ref) {
-  // Toggle implementation when testing the app.
-  Env.validate();
-  return CurrencyApiClient(
-    dio: ref.read(dioProvider),
-    apiKey: Env.currencyApiKey,
-  );
-  //return FrankfurterClient(dio: ref.read(dioProvider));
+  // Choose backend via Env.converterApi (from CONVERTER_API define)
+  switch (Env.converterApi) {
+    case ConverterApi.currencyApi:
+      Env.validate();
+      return CurrencyApiClient(
+        dio: ref.read(dioProvider),
+        apiKey: Env.currencyApiKey,
+      );
+    case ConverterApi.frankfurter:
+      return FrankfurterClient(dio: ref.read(dioProvider));
+  }
 }
 
 @riverpod

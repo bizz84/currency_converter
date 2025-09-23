@@ -11,6 +11,23 @@ class Env {
     defaultValue: '',
   );
 
+  // Select which converter API backend to use
+  // Accepted values (case-insensitive): 'frankfurter', 'currencyapi'
+  static ConverterApi get converterApi {
+    final raw = const String.fromEnvironment(
+      'CONVERTER_API',
+      defaultValue: 'frankfurter',
+    );
+    switch (raw.toLowerCase().trim()) {
+      case 'currencyapi':
+        return ConverterApi.currencyApi;
+      case 'frankfurter':
+        return ConverterApi.frankfurter;
+      default:
+        return ConverterApi.frankfurter;
+    }
+  }
+
   // iOS App Store ID for force update functionality
   static String get appStoreId => const String.fromEnvironment(
     'APP_STORE_ID',
@@ -24,8 +41,12 @@ class Env {
   );
 
   static void validate() {
-    if (currencyApiKey.isEmpty) {
-      throw Exception('CURRENCYAPI_KEY not defined');
+    if (converterApi == ConverterApi.currencyApi) {
+      if (currencyApiKey.trim().isEmpty) {
+        throw Exception('CURRENCYAPI_KEY not defined');
+      }
     }
   }
 }
+
+enum ConverterApi { frankfurter, currencyApi }
