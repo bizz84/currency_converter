@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
 import 'adaptive_currency_picker.dart';
-import '../../network/frankfurter_client.dart';
+import '../../network/api_client.dart';
 import '/src/storage/user_prefs_notifier.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
@@ -48,7 +48,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     final targetCurrencies = userPrefs.targetCurrencies;
 
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));
-    final date = ratesAsync.value?.dateTime;
+    final date = ratesAsync.value?.date;
     return GestureDetector(
       onTap: () {
         // Hide keyboard when tapping outside

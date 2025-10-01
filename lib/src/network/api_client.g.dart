@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'frankfurter_client.dart';
+part of 'api_client.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,52 +9,46 @@ part of 'frankfurter_client.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(frankfurterClient)
-const frankfurterClientProvider = FrankfurterClientProvider._();
+@ProviderFor(apiClient)
+const apiClientProvider = ApiClientProvider._();
 
-final class FrankfurterClientProvider
-    extends
-        $FunctionalProvider<
-          FrankfurterClient,
-          FrankfurterClient,
-          FrankfurterClient
-        >
-    with $Provider<FrankfurterClient> {
-  const FrankfurterClientProvider._()
+final class ApiClientProvider
+    extends $FunctionalProvider<ApiClient, ApiClient, ApiClient>
+    with $Provider<ApiClient> {
+  const ApiClientProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'frankfurterClientProvider',
+        name: r'apiClientProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$frankfurterClientHash();
+  String debugGetCreateSourceHash() => _$apiClientHash();
 
   @$internal
   @override
-  $ProviderElement<FrankfurterClient> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $ProviderElement<ApiClient> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  FrankfurterClient create(Ref ref) {
-    return frankfurterClient(ref);
+  ApiClient create(Ref ref) {
+    return apiClient(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(FrankfurterClient value) {
+  Override overrideWithValue(ApiClient value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<FrankfurterClient>(value),
+      providerOverride: $SyncValueProvider<ApiClient>(value),
     );
   }
 }
 
-String _$frankfurterClientHash() => r'e4965f869f205e2f193ade82bf20044aaa292b68';
+String _$apiClientHash() => r'f1aea49a4d8595aea7fb1edfcd461cdbd0cba0b8';
 
 @ProviderFor(availableCurrencies)
 const availableCurrenciesProvider = AvailableCurrenciesProvider._();
@@ -93,7 +87,7 @@ final class AvailableCurrenciesProvider
 }
 
 String _$availableCurrenciesHash() =>
-    r'7108d6909effefeff040e36bb1937b54e95fdaeb';
+    r'398cb0c12b43905cd6d041405431ee60a0e58217';
 
 @ProviderFor(latestRates)
 const latestRatesProvider = LatestRatesFamily._();
@@ -150,7 +144,7 @@ final class LatestRatesProvider
   }
 }
 
-String _$latestRatesHash() => r'6d6a1f5d7ab69aea6097ba57051a4c0b0e1bc31e';
+String _$latestRatesHash() => r'6efc2e0fdcc9555c2dc7f23f7cdc11a08e838eb8';
 
 final class LatestRatesFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<CurrencyRates>, Currency> {

@@ -3,6 +3,7 @@ import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'currency_rates_test_ext.dart';
 
 void main() {
   late Dio dio;
@@ -36,7 +37,7 @@ void main() {
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['USD'], 1.0899);
         expect(result.rates['GBP'], 0.8597);
       });
@@ -56,11 +57,14 @@ void main() {
           queryParameters: {'from': 'USD', 'to': 'GBP'},
         );
 
-        final result = await client.getLatestRates(base: Currency.USD, to: [Currency.GBP]);
+        final result = await client.getLatestRates(
+          base: Currency.USD,
+          to: [Currency.GBP],
+        );
 
         expect(result.amount, 1.0);
         expect(result.base, 'USD');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['GBP'], 0.7888);
       });
 
@@ -87,7 +91,7 @@ void main() {
 
         expect(result.amount, 100.0);
         expect(result.base, 'USD');
-        expect(result.date, '2024-01-15');
+        expect(result.date, DateTime.parse('2024-01-15'));
         expect(result.rates['GBP'], 78.88);
       });
     });
@@ -105,11 +109,14 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: Currency.EUR);
+        final result = await client.getHistoricalRates(
+          date,
+          base: Currency.EUR,
+        );
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
-        expect(result.date, date);
+        expect(result.date, DateTime.parse(date));
         expect(result.rates['USD'], 1.1043);
         expect(result.rates['GBP'], 0.8678);
       });
@@ -140,7 +147,7 @@ void main() {
 
           expect(result.amount, 1.0);
           expect(result.base, 'USD');
-          expect(result.date, date);
+          expect(result.date, DateTime.parse(date));
           expect(result.rates['GBP'], 0.7859);
           expect(result.rates['EUR'], 0.9055);
         },
@@ -171,7 +178,7 @@ void main() {
 
         expect(result.amount, 50.0);
         expect(result.base, 'USD');
-        expect(result.date, date);
+        expect(result.date, DateTime.parse(date));
         expect(result.rates['GBP'], 39.295);
       });
     });
@@ -294,7 +301,7 @@ void main() {
         expect(result.currencies.any((c) => c.name == 'EUR'), true);
         expect(result.currencies.any((c) => c.name == 'GBP'), true);
         expect(result.currencies.any((c) => c.name == 'JPY'), true);
-        // The length will be less than or equal to the API response 
+        // The length will be less than or equal to the API response
         // since we only include currencies in our enum
         expect(result.currencies.length, lessThanOrEqualTo(31));
       });
@@ -327,7 +334,10 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: Currency.EUR);
+        final result = await client.getHistoricalRates(
+          date,
+          base: Currency.EUR,
+        );
 
         expect(result.toJson(), responseData);
       });
