@@ -3,6 +3,7 @@ import 'package:currency_converter/src/network/frankfurter_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'currency_rates_test_ext.dart';
 
 void main() {
   late Dio dio;
@@ -56,7 +57,10 @@ void main() {
           queryParameters: {'from': 'USD', 'to': 'GBP'},
         );
 
-        final result = await client.getLatestRates(base: Currency.USD, to: [Currency.GBP]);
+        final result = await client.getLatestRates(
+          base: Currency.USD,
+          to: [Currency.GBP],
+        );
 
         expect(result.amount, 1.0);
         expect(result.base, 'USD');
@@ -105,7 +109,10 @@ void main() {
 
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: Currency.EUR);
+        final result = await client.getHistoricalRates(
+          date,
+          base: Currency.EUR,
+        );
 
         expect(result.amount, 1.0);
         expect(result.base, 'EUR');
@@ -294,7 +301,7 @@ void main() {
         expect(result.currencies.any((c) => c.name == 'EUR'), true);
         expect(result.currencies.any((c) => c.name == 'GBP'), true);
         expect(result.currencies.any((c) => c.name == 'JPY'), true);
-        // The length will be less than or equal to the API response 
+        // The length will be less than or equal to the API response
         // since we only include currencies in our enum
         expect(result.currencies.length, lessThanOrEqualTo(31));
       });
@@ -327,7 +334,10 @@ void main() {
         };
         dioAdapter.onGet(path, (server) => server.reply(200, responseData));
 
-        final result = await client.getHistoricalRates(date, base: Currency.EUR);
+        final result = await client.getHistoricalRates(
+          date,
+          base: Currency.EUR,
+        );
 
         expect(result.toJson(), responseData);
       });
