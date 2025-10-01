@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:currency_converter/src/app.dart';
 import 'package:currency_converter/src/utils/shared_preferences_provider.dart';
 import 'package:currency_converter/src/screens/convert/amount_input_field.dart';
+import 'package:currency_converter/src/storage/user_prefs_notifier.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:currency_converter/src/utils/dio_provider.dart';
@@ -82,9 +83,9 @@ void main() {
     testWidgets('restores saved preferences on app start', (tester) async {
       // Set up saved preferences
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'EUR',
-        'amount': 250.0,
-        'target_currencies': ['JPY', 'CAD', 'AUD'],
+        UserPrefsNotifier.baseCurrencyKey: 'EUR',
+        UserPrefsNotifier.amountKey: 250.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['JPY', 'CAD', 'AUD'],
       });
 
       // Set up the mock Dio adapter BEFORE creating the container
@@ -103,7 +104,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const CurrencyConverterApp(),
+          child: const MaterialApp(
+            home: CurrencyConverterApp(),
+          ),
         ),
       );
 
@@ -148,7 +151,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const CurrencyConverterApp(),
+          child: const MaterialApp(
+            home: CurrencyConverterApp(),
+          ),
         ),
       );
 
@@ -171,9 +176,9 @@ void main() {
 
     testWidgets('persists adding a new target currency', (tester) async {
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'GBP',
-        'amount': 100.0,
-        'target_currencies': ['EUR'],
+        UserPrefsNotifier.baseCurrencyKey: 'GBP',
+        UserPrefsNotifier.amountKey: 100.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['EUR'],
       });
 
       // Set up the mock Dio adapter BEFORE creating the container
@@ -192,7 +197,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const CurrencyConverterApp(),
+          child: const MaterialApp(
+            home: CurrencyConverterApp(),
+          ),
         ),
       );
 
@@ -216,16 +223,16 @@ void main() {
 
       // Verify it was persisted
       final prefs = await SharedPreferences.getInstance();
-      final savedCurrencies = prefs.getStringList('target_currencies');
+      final savedCurrencies = prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey);
       expect(savedCurrencies, contains('USD'));
       expect(savedCurrencies, contains('EUR'));
     });
 
     testWidgets('persists removing a target currency', (tester) async {
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'GBP',
-        'amount': 100.0,
-        'target_currencies': ['EUR', 'USD', 'JPY'],
+        UserPrefsNotifier.baseCurrencyKey: 'GBP',
+        UserPrefsNotifier.amountKey: 100.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['EUR', 'USD', 'JPY'],
       });
 
       // Set up the mock Dio adapter BEFORE creating the container
@@ -244,7 +251,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const CurrencyConverterApp(),
+          child: const MaterialApp(
+            home: CurrencyConverterApp(),
+          ),
         ),
       );
 
@@ -268,7 +277,7 @@ void main() {
 
       // Verify it was persisted
       final prefs = await SharedPreferences.getInstance();
-      final savedCurrencies = prefs.getStringList('target_currencies');
+      final savedCurrencies = prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey);
       expect(savedCurrencies, isNot(contains('USD')));
       expect(savedCurrencies, contains('EUR'));
       expect(savedCurrencies, contains('JPY'));
@@ -276,9 +285,9 @@ void main() {
 
     testWidgets('persists amount changes', (tester) async {
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'GBP',
-        'amount': 100.0,
-        'target_currencies': ['EUR'],
+        UserPrefsNotifier.baseCurrencyKey: 'GBP',
+        UserPrefsNotifier.amountKey: 100.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['EUR'],
       });
 
       // Set up the mock Dio adapter BEFORE creating the container
@@ -297,7 +306,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const CurrencyConverterApp(),
+          child: const MaterialApp(
+            home: CurrencyConverterApp(),
+          ),
         ),
       );
 
@@ -329,7 +340,7 @@ void main() {
 
       // Verify it was persisted
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getDouble('amount'), 500.0);
+      expect(prefs.getDouble(UserPrefsNotifier.amountKey), 500.0);
     });
   });
 }

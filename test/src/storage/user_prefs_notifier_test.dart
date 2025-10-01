@@ -20,9 +20,9 @@ void main() {
     test('loads saved preferences on initialization', () async {
       // Initialize with test values
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'EUR',
-        'amount': 50.0,
-        'target_currencies': ['USD', 'GBP'],
+        UserPrefsNotifier.baseCurrencyKey: 'EUR',
+        UserPrefsNotifier.amountKey: 50.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
       });
 
       container = ProviderContainer();
@@ -54,7 +54,7 @@ void main() {
     test('falls back to defaults for missing individual keys', () async {
       // Only set base_currency, others should use defaults
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'CAD',
+        UserPrefsNotifier.baseCurrencyKey: 'CAD',
       });
 
       container = ProviderContainer();
@@ -84,7 +84,7 @@ void main() {
       expect(prefs.baseCurrency, Currency.JPY);
 
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getString('base_currency'), 'JPY');
+      expect(sharedPrefs.getString(UserPrefsNotifier.baseCurrencyKey), 'JPY');
     });
 
     test('updates amount and persists to storage', () async {
@@ -99,7 +99,7 @@ void main() {
       expect(prefs.amount, 250.5);
 
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getDouble('amount'), 250.5);
+      expect(sharedPrefs.getDouble(UserPrefsNotifier.amountKey), 250.5);
     });
 
     test('updates target currencies and persists to storage', () async {
@@ -117,7 +117,7 @@ void main() {
       expect(prefs.targetCurrencies, newCurrencies);
 
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getStringList('target_currencies'), [
+      expect(sharedPrefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), [
         'CAD',
         'AUD',
         'CHF',
@@ -126,7 +126,7 @@ void main() {
 
     test('adds target currency without duplicates', () async {
       SharedPreferences.setMockInitialValues({
-        'target_currencies': ['USD', 'GBP'],
+        UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
       });
 
       container = ProviderContainer();
@@ -152,7 +152,7 @@ void main() {
 
       // Verify persisted
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getStringList('target_currencies'), [
+      expect(sharedPrefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), [
         'USD',
         'GBP',
         'JPY',
@@ -161,7 +161,7 @@ void main() {
 
     test('removes target currency', () async {
       SharedPreferences.setMockInitialValues({
-        'target_currencies': ['USD', 'GBP', 'JPY'],
+        UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP', 'JPY'],
       });
 
       container = ProviderContainer();
@@ -177,12 +177,12 @@ void main() {
 
       // Verify persisted
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getStringList('target_currencies'), ['USD', 'JPY']);
+      expect(sharedPrefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), ['USD', 'JPY']);
     });
 
     test('reorders target currencies correctly - move forward', () async {
       SharedPreferences.setMockInitialValues({
-        'target_currencies': ['EUR', 'USD', 'JPY'],
+        UserPrefsNotifier.targetCurrenciesKey: ['EUR', 'USD', 'JPY'],
       });
 
       container = ProviderContainer();
@@ -199,7 +199,7 @@ void main() {
 
       // Verify persisted
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getStringList('target_currencies'), [
+      expect(sharedPrefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), [
         'USD',
         'JPY',
         'EUR',
@@ -208,7 +208,7 @@ void main() {
 
     test('reorders target currencies correctly - move backward', () async {
       SharedPreferences.setMockInitialValues({
-        'target_currencies': ['EUR', 'USD', 'JPY'],
+        UserPrefsNotifier.targetCurrenciesKey: ['EUR', 'USD', 'JPY'],
       });
 
       container = ProviderContainer();
@@ -225,7 +225,7 @@ void main() {
 
       // Verify persisted
       final sharedPrefs = await SharedPreferences.getInstance();
-      expect(sharedPrefs.getStringList('target_currencies'), [
+      expect(sharedPrefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), [
         'JPY',
         'EUR',
         'USD',
@@ -234,9 +234,9 @@ void main() {
 
     test('maintains other preferences when updating one', () async {
       SharedPreferences.setMockInitialValues({
-        'base_currency': 'EUR',
-        'amount': 75.0,
-        'target_currencies': ['USD', 'GBP'],
+        UserPrefsNotifier.baseCurrencyKey: 'EUR',
+        UserPrefsNotifier.amountKey: 75.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
       });
 
       container = ProviderContainer();
