@@ -48,7 +48,7 @@ final class ApiClientProvider
   }
 }
 
-String _$apiClientHash() => r'f1aea49a4d8595aea7fb1edfcd461cdbd0cba0b8';
+String _$apiClientHash() => r'89bf72bf50edb59aee26d6b8665a94eea54e0810';
 
 @ProviderFor(availableCurrencies)
 const availableCurrenciesProvider = AvailableCurrenciesProvider._();

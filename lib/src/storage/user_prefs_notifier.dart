@@ -25,10 +25,10 @@ class UserPrefs {
 
 @riverpod
 class UserPrefsNotifier extends _$UserPrefsNotifier {
-  // Separate keys for each preference
-  static const _baseCurrencyKey = 'user_prefs/base_currency';
-  static const _amountKey = 'user_prefs/amount';
-  static const _targetCurrenciesKey = 'user_prefs/target_currencies';
+  // Separate keys for each preference (public for testing)
+  static const baseCurrencyKey = 'user_prefs/base_currency';
+  static const amountKey = 'user_prefs/amount';
+  static const targetCurrenciesKey = 'user_prefs/target_currencies';
 
   SharedPreferences get _prefs =>
       ref.watch(sharedPreferencesProvider).requireValue;
@@ -36,14 +36,14 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
   @override
   UserPrefs build() {
     // Load each preference separately with fallback to defaults
-    final baseCurrencyName = _prefs.getString(_baseCurrencyKey);
+    final baseCurrencyName = _prefs.getString(baseCurrencyKey);
     final baseCurrency = baseCurrencyName != null
         ? Currency.values.byName(baseCurrencyName)
         : UserPrefs.defaults.baseCurrency;
 
-    final amount = _prefs.getDouble(_amountKey) ?? UserPrefs.defaults.amount;
+    final amount = _prefs.getDouble(amountKey) ?? UserPrefs.defaults.amount;
 
-    final targetCurrencyNames = _prefs.getStringList(_targetCurrenciesKey);
+    final targetCurrencyNames = _prefs.getStringList(targetCurrenciesKey);
     final targetCurrencies = targetCurrencyNames != null
         ? targetCurrencyNames
               .map((name) => Currency.values.byName(name))
@@ -63,7 +63,7 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
       amount: state.amount,
       targetCurrencies: state.targetCurrencies,
     );
-    _prefs.setString(_baseCurrencyKey, currency.name);
+    _prefs.setString(baseCurrencyKey, currency.name);
   }
 
   void updateAmount(double amount) {
@@ -72,7 +72,7 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
       amount: amount,
       targetCurrencies: state.targetCurrencies,
     );
-    _prefs.setDouble(_amountKey, amount);
+    _prefs.setDouble(amountKey, amount);
   }
 
   void updateTargetCurrencies(List<Currency> currencies) {
@@ -82,7 +82,7 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
       targetCurrencies: currencies,
     );
     _prefs.setStringList(
-      _targetCurrenciesKey,
+      targetCurrenciesKey,
       currencies.map((c) => c.name).toList(),
     );
   }
