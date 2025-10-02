@@ -1,6 +1,7 @@
 import '/src/constants/app_sizes.dart';
 import '/src/utils/should_use_bottom_sheet.dart';
 import '/src/data/currency.dart';
+import '/src/data/currencies.dart';
 import '/src/network/api_client.dart';
 import '/src/storage/recent_currencies_storage.dart';
 import 'package:flutter/material.dart';
@@ -79,158 +80,17 @@ class _CurrencyPickerContentState
     final recentCurrencies = ref.watch(recentCurrenciesStorageProvider);
 
     return currenciesAsync.when(
-      data: (currenciesData) {
-        // Get in-use currencies (which are also excluded from selection)
-        final inUseCurrencies = widget.inUseCurrencies ?? [];
-
-        // Filter currencies based on search and exclusions
-        final allCurrencies = currenciesData.currencies
-            .where(
-              (currency) =>
-                  !inUseCurrencies.contains(currency) &&
-                  (currency.name.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      ) ||
-                      currency.desc.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      )),
-            )
-            .toList();
-
-        // Build RECENT section: in-use currencies + MRU, deduplicated
-        final recentSection = <Currency>[
-          ...inUseCurrencies,
-          ...recentCurrencies.where((c) => !inUseCurrencies.contains(c)),
-        ]
-            .where(
-              (currency) =>
-                  !inUseCurrencies.contains(currency) &&
-                  (currency.name.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      ) ||
-                      currency.desc.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      )),
-            )
-            .toList();
-
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Header with search
-            if (widget.showHeader)
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Select Currency',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    gapH16,
-                    TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search currencies...',
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            // Currency list with sections
-            Flexible(
-              child: ListView(
-                controller: widget.scrollController,
-                shrinkWrap: true,
-                children: [
-                  // RECENT section
-                  if (recentSection.isNotEmpty) ...[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                      child: Text(
-                        'RECENT',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                      ),
-                    ),
-                    ...recentSection.map((currency) {
-                      final isSelected = currency == widget.selectedCurrency;
-                      return ListTile(
-                        leading: Text(
-                          currency.flag,
-                          style: const TextStyle(fontSize: 24),
-                        ),
-                        title: Text(currency.name),
-                        subtitle: Text(currency.desc),
-                        trailing: isSelected
-                            ? Icon(
-                                Icons.check,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                            : null,
-                        onTap: () {
-                          Navigator.of(context).pop(currency);
-                        },
-                      );
-                    }),
-                  ],
-                  // ALL section
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: Text(
-                      'ALL',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                    ),
-                  ),
-                  ...allCurrencies.map((currency) {
-                    final isSelected = currency == widget.selectedCurrency;
-                    return ListTile(
-                      leading: Text(
-                        currency.flag,
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                      title: Text(currency.name),
-                      subtitle: Text(currency.desc),
-                      trailing: isSelected
-                          ? Icon(
-                              Icons.check,
-                              color: Theme.of(context).colorScheme.primary,
-                            )
-                          : null,
-                      onTap: () {
-                        Navigator.of(context).pop(currency);
-                      },
-                    );
-                  }),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
+      data: (currenciesData) => _CurrencyPickerData(
+        currenciesData: currenciesData,
+        recentCurrencies: recentCurrencies,
+        searchQuery: _searchQuery,
+        searchController: _searchController,
+        onSearchChanged: (value) => setState(() => _searchQuery = value),
+        selectedCurrency: widget.selectedCurrency,
+        inUseCurrencies: widget.inUseCurrencies,
+        scrollController: widget.scrollController,
+        showHeader: widget.showHeader,
+      ),
       loading: () => const Padding(
         padding: EdgeInsets.all(32.0),
         child: Column(
@@ -264,6 +124,181 @@ class _CurrencyPickerContentState
           ],
         ),
       ),
+    );
+  }
+}
+
+// Widget that displays the currency list with search results
+class _CurrencyPickerData extends StatelessWidget {
+  final Currencies currenciesData;
+  final List<Currency> recentCurrencies;
+  final String searchQuery;
+  final TextEditingController searchController;
+  final ValueChanged<String> onSearchChanged;
+  final Currency? selectedCurrency;
+  final List<Currency>? inUseCurrencies;
+  final ScrollController? scrollController;
+  final bool showHeader;
+
+  const _CurrencyPickerData({
+    required this.currenciesData,
+    required this.recentCurrencies,
+    required this.searchQuery,
+    required this.searchController,
+    required this.onSearchChanged,
+    this.selectedCurrency,
+    this.inUseCurrencies,
+    this.scrollController,
+    required this.showHeader,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Get in-use currencies (which are also excluded from selection)
+    final inUseCurrenciesList = inUseCurrencies ?? [];
+
+    // Filter currencies based on search and exclusions
+    final allCurrencies = currenciesData.currencies
+        .where(
+          (currency) =>
+              !inUseCurrenciesList.contains(currency) &&
+              (currency.name.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  ) ||
+                  currency.desc.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  )),
+        )
+        .toList();
+
+    // Build RECENT section: in-use currencies + MRU, deduplicated
+    final recentSection = <Currency>[
+      ...inUseCurrenciesList,
+      ...recentCurrencies.where((c) => !inUseCurrenciesList.contains(c)),
+    ]
+        .where(
+          (currency) =>
+              !inUseCurrenciesList.contains(currency) &&
+              (currency.name.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  ) ||
+                  currency.desc.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  )),
+        )
+        .toList();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Header with search
+        if (showHeader)
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Select Currency',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                gapH16,
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search currencies...',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                  ),
+                  onChanged: onSearchChanged,
+                ),
+              ],
+            ),
+          ),
+        // Currency list with sections
+        Flexible(
+          child: ListView(
+            controller: scrollController,
+            shrinkWrap: true,
+            children: [
+              // RECENT section
+              if (recentSection.isNotEmpty) ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text(
+                    'RECENT',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                  ),
+                ),
+                ...recentSection.map((currency) {
+                  final isSelected = currency == selectedCurrency;
+                  return ListTile(
+                    leading: Text(
+                      currency.flag,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    title: Text(currency.name),
+                    subtitle: Text(currency.desc),
+                    trailing: isSelected
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : null,
+                    onTap: () {
+                      Navigator.of(context).pop(currency);
+                    },
+                  );
+                }),
+              ],
+              // ALL section
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Text(
+                  'ALL',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+              ),
+              ...allCurrencies.map((currency) {
+                final isSelected = currency == selectedCurrency;
+                return ListTile(
+                  leading: Text(
+                    currency.flag,
+                    style: const TextStyle(fontSize: 24),
+                  ),
+                  title: Text(currency.name),
+                  subtitle: Text(currency.desc),
+                  trailing: isSelected
+                      ? Icon(
+                          Icons.check,
+                          color: Theme.of(context).colorScheme.primary,
+                        )
+                      : null,
+                  onTap: () {
+                    Navigator.of(context).pop(currency);
+                  },
+                );
+              }),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
