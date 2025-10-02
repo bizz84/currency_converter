@@ -1,7 +1,7 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
-import 'package:currency_converter/src/data/currency.dart';
-import 'package:currency_converter/src/screens/convert/amount_input_field.dart';
-import 'package:currency_converter/src/screens/convert/currency_selector.dart';
+import '/src/constants/app_sizes.dart';
+import '/src/data/currency.dart';
+import '/src/screens/convert/amount_input_field.dart';
+import '/src/screens/selector/currency_selector.dart';
 import 'package:flutter/material.dart';
 
 class BaseCurrencyWidget extends StatelessWidget {

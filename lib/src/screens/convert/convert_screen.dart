@@ -8,9 +8,9 @@ import 'package:currency_converter/src/screens/convert/last_updated_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/currency.dart';
-import 'adaptive_currency_picker.dart';
-import '../../network/api_client.dart';
+import '/src/data/currency.dart';
+import '/src/screens/selector/adaptive_currency_picker.dart';
+import '/src/network/api_client.dart';
 import '/src/storage/user_prefs_notifier.dart';
 import '/src/storage/recent_currencies_storage.dart';
 

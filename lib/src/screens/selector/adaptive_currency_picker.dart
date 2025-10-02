@@ -1,10 +1,10 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
-import 'package:currency_converter/src/utils/should_use_bottom_sheet.dart';
+import '/src/constants/app_sizes.dart';
+import '/src/utils/should_use_bottom_sheet.dart';
+import '/src/data/currency.dart';
+import '/src/network/api_client.dart';
+import '/src/storage/recent_currencies_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/currency.dart';
-import '../../network/api_client.dart';
-import '../../storage/recent_currencies_storage.dart';
 
 class AdaptiveCurrencyPicker {
   static Future<Currency?> show(
