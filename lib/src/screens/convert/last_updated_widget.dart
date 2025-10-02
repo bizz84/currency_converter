@@ -11,7 +11,8 @@ class LastUpdatedWidget extends StatelessWidget {
     if (lastUpdated == null) {
       return 'Updating...';
     }
-    return 'Last updated: ${DateFormat('d MMM yyyy - HH:mm').format(lastUpdated!)}';
+    //return 'Last updated: ${DateFormat('d MMM yyyy - HH:mm').format(lastUpdated!)}';
+    return 'Last updated: ${DateFormat('d MMM yyyy').format(lastUpdated!)}';
   }
 
   @override
