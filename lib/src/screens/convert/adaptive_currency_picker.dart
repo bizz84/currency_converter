@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/currency.dart';
 import '../../network/api_client.dart';
+import '../../storage/recent_currencies_storage.dart';
 
 class AdaptiveCurrencyPicker {
   static Future<Currency?> show(
     BuildContext context, {
     Currency? selectedCurrency,
-    List<Currency>? excludedCurrencies,
+    List<Currency>? inUseCurrencies,
   }) async {
     if (shouldUseBottomSheet(context)) {
       return showModalBottomSheet<Currency>(
@@ -21,7 +22,7 @@ class AdaptiveCurrencyPicker {
         useSafeArea: true,
         builder: (context) => _AdaptiveCurrencyPickerBottomSheet(
           selectedCurrency: selectedCurrency,
-          excludedCurrencies: excludedCurrencies,
+          inUseCurrencies: inUseCurrencies,
         ),
       );
     } else {
@@ -29,7 +30,7 @@ class AdaptiveCurrencyPicker {
         context: context,
         builder: (context) => _AdaptiveCurrencyPickerDialog(
           selectedCurrency: selectedCurrency,
-          excludedCurrencies: excludedCurrencies,
+          inUseCurrencies: inUseCurrencies,
         ),
       );
     }
@@ -39,13 +40,13 @@ class AdaptiveCurrencyPicker {
 // Shared content widget used by both bottom sheet and dialog
 class _CurrencyPickerContent extends ConsumerStatefulWidget {
   final Currency? selectedCurrency;
-  final List<Currency>? excludedCurrencies;
+  final List<Currency>? inUseCurrencies;
   final ScrollController? scrollController;
   final bool showHeader;
 
   const _CurrencyPickerContent({
     this.selectedCurrency,
-    this.excludedCurrencies,
+    this.inUseCurrencies,
     this.scrollController,
     this.showHeader = true,
   });
@@ -75,13 +76,35 @@ class _CurrencyPickerContentState
   @override
   Widget build(BuildContext context) {
     final currenciesAsync = ref.watch(availableCurrenciesProvider);
+    final recentCurrencies = ref.watch(recentCurrenciesStorageProvider);
 
     return currenciesAsync.when(
       data: (currenciesData) {
-        final currencies = currenciesData.currencies
+        // Get in-use currencies (which are also excluded from selection)
+        final inUseCurrencies = widget.inUseCurrencies ?? [];
+
+        // Filter currencies based on search and exclusions
+        final allCurrencies = currenciesData.currencies
             .where(
               (currency) =>
-                  !(widget.excludedCurrencies?.contains(currency) ?? false) &&
+                  !inUseCurrencies.contains(currency) &&
+                  (currency.name.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      ) ||
+                      currency.desc.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      )),
+            )
+            .toList();
+
+        // Build RECENT section: in-use currencies + MRU, deduplicated
+        final recentSection = <Currency>[
+          ...inUseCurrencies,
+          ...recentCurrencies.where((c) => !inUseCurrencies.contains(c)),
+        ]
+            .where(
+              (currency) =>
+                  !inUseCurrencies.contains(currency) &&
                   (currency.name.toLowerCase().contains(
                         _searchQuery.toLowerCase(),
                       ) ||
@@ -134,34 +157,75 @@ class _CurrencyPickerContentState
                   ],
                 ),
               ),
-            // Currency list
+            // Currency list with sections
             Flexible(
-              child: ListView.builder(
+              child: ListView(
                 controller: widget.scrollController,
                 shrinkWrap: true,
-                itemCount: currencies.length,
-                itemBuilder: (context, index) {
-                  final currency = currencies[index];
-                  final isSelected = currency == widget.selectedCurrency;
-
-                  return ListTile(
-                    leading: Text(
-                      currency.flag,
-                      style: const TextStyle(fontSize: 24),
+                children: [
+                  // RECENT section
+                  if (recentSection.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      child: Text(
+                        'RECENT',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                      ),
                     ),
-                    title: Text(currency.name),
-                    subtitle: Text(currency.desc),
-                    trailing: isSelected
-                        ? Icon(
-                            Icons.check,
-                            color: Theme.of(context).colorScheme.primary,
-                          )
-                        : null,
-                    onTap: () {
-                      Navigator.of(context).pop(currency);
-                    },
-                  );
-                },
+                    ...recentSection.map((currency) {
+                      final isSelected = currency == widget.selectedCurrency;
+                      return ListTile(
+                        leading: Text(
+                          currency.flag,
+                          style: const TextStyle(fontSize: 24),
+                        ),
+                        title: Text(currency.name),
+                        subtitle: Text(currency.desc),
+                        trailing: isSelected
+                            ? Icon(
+                                Icons.check,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : null,
+                        onTap: () {
+                          Navigator.of(context).pop(currency);
+                        },
+                      );
+                    }),
+                  ],
+                  // ALL section
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                    child: Text(
+                      'ALL',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                    ),
+                  ),
+                  ...allCurrencies.map((currency) {
+                    final isSelected = currency == widget.selectedCurrency;
+                    return ListTile(
+                      leading: Text(
+                        currency.flag,
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      title: Text(currency.name),
+                      subtitle: Text(currency.desc),
+                      trailing: isSelected
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        Navigator.of(context).pop(currency);
+                      },
+                    );
+                  }),
+                ],
               ),
             ),
           ],
@@ -207,11 +271,11 @@ class _CurrencyPickerContentState
 // Bottom sheet implementation for mobile
 class _AdaptiveCurrencyPickerBottomSheet extends StatefulWidget {
   final Currency? selectedCurrency;
-  final List<Currency>? excludedCurrencies;
+  final List<Currency>? inUseCurrencies;
 
   const _AdaptiveCurrencyPickerBottomSheet({
     this.selectedCurrency,
-    this.excludedCurrencies,
+    this.inUseCurrencies,
   });
 
   @override
@@ -286,7 +350,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
                 ),
                 child: _CurrencyPickerContent(
                   selectedCurrency: widget.selectedCurrency,
-                  excludedCurrencies: widget.excludedCurrencies,
+                  inUseCurrencies: widget.inUseCurrencies,
                   scrollController: scrollController,
                   showHeader: true,
                 ),
@@ -302,11 +366,11 @@ class _AdaptiveCurrencyPickerBottomSheetState
 // Dialog implementation for tablet/desktop
 class _AdaptiveCurrencyPickerDialog extends StatelessWidget {
   final Currency? selectedCurrency;
-  final List<Currency>? excludedCurrencies;
+  final List<Currency>? inUseCurrencies;
 
   const _AdaptiveCurrencyPickerDialog({
     this.selectedCurrency,
-    this.excludedCurrencies,
+    this.inUseCurrencies,
   });
 
   @override
@@ -319,7 +383,7 @@ class _AdaptiveCurrencyPickerDialog extends StatelessWidget {
         ),
         child: _CurrencyPickerContent(
           selectedCurrency: selectedCurrency,
-          excludedCurrencies: excludedCurrencies,
+          inUseCurrencies: inUseCurrencies,
           showHeader: true,
         ),
       ),
