@@ -1,4 +1,4 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
+import '/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

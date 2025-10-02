@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:currency_converter/src/common_widgets/sliver_sized_box.dart';
-import 'package:currency_converter/src/screens/convert/base_currency_widget.dart';
-import 'package:currency_converter/src/screens/convert/currency_conversion_tile.dart';
-import 'package:currency_converter/src/screens/convert/currency_section_header.dart';
-import 'package:currency_converter/src/screens/convert/exchange_rates_error.dart';
-import 'package:currency_converter/src/screens/convert/last_updated_widget.dart';
+import '/src/common_widgets/sliver_sized_box.dart';
+import '/src/screens/convert/base_currency_widget.dart';
+import '/src/screens/convert/currency_conversion_tile.dart';
+import '/src/screens/convert/currency_section_header.dart';
+import '/src/screens/convert/exchange_rates_error.dart';
+import '/src/screens/convert/last_updated_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -187,6 +187,8 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   }
 
   void _reorderCurrencies(int oldIndex, int newIndex) {
-    ref.read(userPrefsProvider.notifier).reorderTargetCurrencies(oldIndex, newIndex);
+    ref
+        .read(userPrefsProvider.notifier)
+        .reorderTargetCurrencies(oldIndex, newIndex);
   }
 }

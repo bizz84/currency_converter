@@ -1,5 +1,5 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
-import 'package:currency_converter/src/data/currency.dart';
+import '/src/constants/app_sizes.dart';
+import '/src/data/currency.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionTile extends StatelessWidget {
