@@ -12,6 +12,7 @@ import '../../data/currency.dart';
 import 'adaptive_currency_picker.dart';
 import '../../network/api_client.dart';
 import '/src/storage/user_prefs_notifier.dart';
+import '/src/storage/recent_currencies_storage.dart';
 
 class ConvertScreen extends ConsumerStatefulWidget {
   const ConvertScreen({super.key});
@@ -165,7 +166,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     final result = await AdaptiveCurrencyPicker.show(
       context,
       selectedCurrency: isBaseCurrency ? userPrefs.baseCurrency : null,
-      excludedCurrencies: isBaseCurrency
+      inUseCurrencies: isBaseCurrency
           ? null
           : [userPrefs.baseCurrency, ...userPrefs.targetCurrencies],
     );
@@ -176,6 +177,8 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
       } else {
         ref.read(userPrefsProvider.notifier).addTargetCurrency(result);
       }
+      // Save to recent currencies
+      ref.read(recentCurrenciesStorageProvider.notifier).addCurrency(result);
     }
   }
 
