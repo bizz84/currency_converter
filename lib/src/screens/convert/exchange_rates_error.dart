@@ -1,6 +1,6 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
-import 'package:currency_converter/src/data/currency.dart';
-import 'package:currency_converter/src/network/api_client.dart';
+import '/src/constants/app_sizes.dart';
+import '/src/data/currency.dart';
+import '/src/network/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

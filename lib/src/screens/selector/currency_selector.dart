@@ -1,6 +1,6 @@
-import 'package:currency_converter/src/constants/app_sizes.dart';
+import '/src/constants/app_sizes.dart';
+import '/src/data/currency.dart';
 import 'package:flutter/material.dart';
-import '../../data/currency.dart';
 
 class CurrencySelector extends StatelessWidget {
   final Currency currency;

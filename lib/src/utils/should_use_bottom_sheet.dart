@@ -1,4 +1,4 @@
-import 'package:currency_converter/src/constants/layout_breakpoints.dart';
+import '/src/constants/layout_breakpoints.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

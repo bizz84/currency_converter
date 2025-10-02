@@ -1,11 +1,11 @@
-import 'package:currency_converter/src/data/currencies.dart';
-import 'package:currency_converter/src/data/currency.dart';
-import 'package:currency_converter/src/data/currency_rates.dart';
-import 'package:currency_converter/src/data/time_series_rates.dart';
-import 'package:currency_converter/src/network/currency_api_client.dart';
-import 'package:currency_converter/src/network/frankfurter_client.dart';
-import 'package:currency_converter/src/utils/dio_provider.dart';
-import 'package:currency_converter/src/env/env.dart';
+import '/src/data/currencies.dart';
+import '/src/data/currency.dart';
+import '/src/data/currency_rates.dart';
+import '/src/data/time_series_rates.dart';
+import '/src/network/currency_api_client.dart';
+import '/src/network/frankfurter_client.dart';
+import '/src/utils/dio_provider.dart';
+import '/src/env/env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'api_client.g.dart';

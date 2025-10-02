@@ -1,10 +1,9 @@
-import 'package:currency_converter/src/data/currencies.dart';
-import 'package:currency_converter/src/data/currency.dart';
-import 'package:currency_converter/src/data/currency_rates.dart';
-import 'package:currency_converter/src/data/time_series_rates.dart';
-import 'package:currency_converter/src/network/api_client.dart';
+import '/src/data/currencies.dart';
+import '/src/data/currency.dart';
+import '/src/data/currency_rates.dart';
+import '/src/data/time_series_rates.dart';
+import '/src/network/api_client.dart';
 import 'package:dio/dio.dart';
-
 
 class FrankfurterClient implements ApiClient {
   FrankfurterClient({required Dio dio}) : _dio = dio {

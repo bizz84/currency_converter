@@ -1,4 +1,4 @@
-import 'package:currency_converter/src/common_widgets/responsive_constrained_box.dart';
+import '/src/common_widgets/responsive_constrained_box.dart';
 import 'package:flutter/material.dart';
 import 'screens/convert/convert_screen.dart';
 import 'screens/charts/charts_screen.dart';
