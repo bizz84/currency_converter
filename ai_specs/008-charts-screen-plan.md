@@ -22,21 +22,28 @@ Implement an interactive charts screen that displays exchange rate history betwe
 - [x] Create `chartDataProvider` (Riverpod provider) to fetch and transform time series data into chart points
 - [x] Handle loading, error, and success states for chart data (delegated to Riverpod AsyncValue)
 
-### Phase 3: UI Widgets - Header Components
-- [ ] Create `CurrencySelectorRow` widget in `/src/screens/charts/currency_selector_row.dart`
+### Phase 3: UI Widgets and Initial Integration
+- [x] Create `CurrencySelectorRow` widget in `/src/screens/charts/currency_selector_row.dart`
   - Side-by-side currency selectors with swap icon in the middle
   - Reuse existing `CurrencySelector` widget
   - Integrate with `AdaptiveCurrencyPicker` for selection
-- [ ] Create `ExchangeRateHeader` widget in `/src/screens/charts/exchange_rate_header.dart`
+- [x] Create `ExchangeRateHeader` widget in `/src/screens/charts/exchange_rate_header.dart`
   - Display current/selected exchange rate (e.g., "1 GBP = 1.156813 EUR")
   - Show change indicator with percentage (red dot + text like "-0.0301 (-2.537%) Past year")
   - Handle both live (latest) and historical (on tap) rate display
-- [ ] Create `TimeRangeSelector` widget in `/src/screens/charts/time_range_selector.dart`
+- [x] Create `TimeRangeSelector` widget in `/src/screens/charts/time_range_selector.dart`
   - Horizontal row of chips/buttons for time ranges (1D, 1W, 1M, 3M, 1Y, 5Y, 10Y)
   - Highlight selected range
   - Update controller state on selection
+- [x] Update `ChartsScreen` with header widgets (without chart):
+  - Replace placeholder with basic layout using Padding/Column
+  - Add `CurrencySelectorRow` at top
+  - Add `ExchangeRateHeader` below selectors
+  - Add `TimeRangeSelector` below header
+  - Add placeholder for chart area
+  - Use constants from `app_sizes.dart` for spacing
 
-### Phase 4: Chart Implementation
+### Phase 4: Chart Implementation and Final Integration
 - [ ] Create `ExchangeRateChart` widget in `/src/screens/charts/exchange_rate_chart.dart`
   - Configure `LineChart` from fl_chart with proper styling
   - Map `ChartDataPoint` data to `FlSpot` points
@@ -48,20 +55,13 @@ Implement an interactive charts screen that displays exchange rate history betwe
   - Update controller with selected data point on tap/hold
   - Clear selected point when touch ends
   - Show indicator dot at touched position
-
-### Phase 5: Screen Assembly and Integration
-- [ ] Update `ChartsScreen` in `/src/screens/charts/charts_screen.dart`:
-  - Replace placeholder with complete layout using Column/ListView
-  - Add `CurrencySelectorRow` at top
-  - Add `ExchangeRateHeader` below selectors
-  - Add `TimeRangeSelector` below header
-  - Add `ExchangeRateChart` as main content
+- [ ] Integrate `ExchangeRateChart` into `ChartsScreen`:
+  - Replace placeholder with actual chart widget
   - Handle loading states with CircularProgressIndicator
   - Handle error states with error message display
-- [ ] Add responsive padding/spacing using constants from `app_sizes.dart`
-- [ ] Ensure screen works on different screen sizes
+  - Ensure responsive layout works on different screen sizes
 
-### Phase 6: Testing and Refinement
+### Phase 5: Testing and Refinement
 - [ ] Manual test: Currency selection works and updates chart
 - [ ] Manual test: Time range selection fetches correct data
 - [ ] Manual test: Touch interaction shows vertical line and updates header
