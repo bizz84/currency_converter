@@ -2,8 +2,13 @@
 
 - [ ] Built-in keyboard on mobile (more control, no delay for keyboard to appear, built-in done button to dismiss)
 - [ ] Cache API responses to avoid unnecessary API calls
-- [ ] Charts screen
 
+## 0.2.0
+
+- Charts screen:
+  - Interactive exchange rate charts with touch/hover selection
+  - Display historical rates over multiple time ranges (1W to 10Y)
+  
 ## 0.1.2
 
 - Improved currency selector screen to show recently used currencies
