@@ -54,3 +54,6 @@ rest-api/.env
 
 # MCP Servers
 .mcp.json*
+
+# Claude commands
+.claude/commands/*
