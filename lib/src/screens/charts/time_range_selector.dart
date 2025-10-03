@@ -11,10 +11,15 @@ class TimeRangeSelector extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedRange = ref.watch(chartsControllerProvider).timeRange;
 
+    // TODO: Add 1D back when API supports intraday data
+    final availableRanges = ChartTimeRange.values
+        .where((range) => range != ChartTimeRange.oneDay)
+        .toList();
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: ChartTimeRange.values.map((range) {
+        children: availableRanges.map((range) {
           final isSelected = range == selectedRange;
           return Padding(
             padding: const EdgeInsets.only(right: Sizes.p8),
