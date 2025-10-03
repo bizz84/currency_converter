@@ -10,27 +10,21 @@ class ChartsState {
     required this.baseCurrency,
     required this.targetCurrency,
     required this.timeRange,
-    this.selectedPoint,
   });
 
   final Currency baseCurrency;
   final Currency targetCurrency;
   final ChartTimeRange timeRange;
-  final ChartDataPoint? selectedPoint;
 
   ChartsState copyWith({
     Currency? baseCurrency,
     Currency? targetCurrency,
     ChartTimeRange? timeRange,
-    ChartDataPoint? selectedPoint,
-    bool clearSelectedPoint = false,
   }) {
     return ChartsState(
       baseCurrency: baseCurrency ?? this.baseCurrency,
       targetCurrency: targetCurrency ?? this.targetCurrency,
       timeRange: timeRange ?? this.timeRange,
-      selectedPoint:
-          clearSelectedPoint ? null : (selectedPoint ?? this.selectedPoint),
     );
   }
 }
@@ -48,22 +42,17 @@ class ChartsController extends _$ChartsController {
 
   void setBaseCurrency(Currency currency) {
     state = state.copyWith(baseCurrency: currency);
+    ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void setTargetCurrency(Currency currency) {
     state = state.copyWith(targetCurrency: currency);
+    ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void setTimeRange(ChartTimeRange range) {
-    state = state.copyWith(timeRange: range, clearSelectedPoint: true);
-  }
-
-  void setSelectedPoint(ChartDataPoint? point) {
-    state = state.copyWith(selectedPoint: point);
-  }
-
-  void clearSelectedPoint() {
-    state = state.copyWith(clearSelectedPoint: true);
+    state = state.copyWith(timeRange: range);
+    ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void swapCurrencies() {
@@ -71,5 +60,22 @@ class ChartsController extends _$ChartsController {
       baseCurrency: state.targetCurrency,
       targetCurrency: state.baseCurrency,
     );
+    ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
+  }
+}
+
+@riverpod
+class ChartSelectedPoint extends _$ChartSelectedPoint {
+  @override
+  ChartDataPoint? build() {
+    return null;
+  }
+
+  void setSelectedPoint(ChartDataPoint? point) {
+    state = point;
+  }
+
+  void clearSelectedPoint() {
+    state = null;
   }
 }

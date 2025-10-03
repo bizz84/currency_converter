@@ -41,7 +41,7 @@ final class ChartsControllerProvider
   }
 }
 
-String _$chartsControllerHash() => r'5e5ed7fc38028db9b57bac432202853f9ad0839a';
+String _$chartsControllerHash() => r'0abcc11d4e4a0f29c342ef5799d1664e5f46403c';
 
 abstract class _$ChartsController extends $Notifier<ChartsState> {
   ChartsState build();
@@ -55,6 +55,60 @@ abstract class _$ChartsController extends $Notifier<ChartsState> {
             as $ClassProviderElement<
               AnyNotifier<ChartsState, ChartsState>,
               ChartsState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(ChartSelectedPoint)
+const chartSelectedPointProvider = ChartSelectedPointProvider._();
+
+final class ChartSelectedPointProvider
+    extends $NotifierProvider<ChartSelectedPoint, ChartDataPoint?> {
+  const ChartSelectedPointProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chartSelectedPointProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$chartSelectedPointHash();
+
+  @$internal
+  @override
+  ChartSelectedPoint create() => ChartSelectedPoint();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChartDataPoint? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChartDataPoint?>(value),
+    );
+  }
+}
+
+String _$chartSelectedPointHash() =>
+    r'abe178c233e496072d95e77b70f7e4e94a6162de';
+
+abstract class _$ChartSelectedPoint extends $Notifier<ChartDataPoint?> {
+  ChartDataPoint? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ChartDataPoint?, ChartDataPoint?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ChartDataPoint?, ChartDataPoint?>,
+              ChartDataPoint?,
               Object?,
               Object?
             >;

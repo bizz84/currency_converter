@@ -50,7 +50,7 @@ class ExchangeRateChart extends ConsumerWidget {
   }
 }
 
-class ExchangeRateChartContent extends StatelessWidget {
+class ExchangeRateChartContent extends ConsumerWidget {
   const ExchangeRateChartContent({
     super.key,
     required this.dataPoints,
@@ -59,7 +59,7 @@ class ExchangeRateChartContent extends StatelessWidget {
   final List<ChartDataPoint> dataPoints;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Convert ChartDataPoint to FlSpot
     final spots = dataPoints.asMap().entries.map((entry) {
       return FlSpot(entry.key.toDouble(), entry.value.rate);
@@ -145,7 +145,62 @@ class ExchangeRateChartContent extends StatelessWidget {
             },
           ),
           borderData: FlBorderData(show: false),
-          lineTouchData: const LineTouchData(enabled: false),
+          lineTouchData: LineTouchData(
+            enabled: true,
+            touchSpotThreshold: 100,
+            getTouchLineStart: (_, _) => -double.infinity,
+            getTouchLineEnd: (_, _) => double.infinity,
+            touchTooltipData: LineTouchTooltipData(
+              // * Return a list of null elements otherwise we get:
+              // * Exception: tooltipItems and touchedSpots size should be same
+              getTooltipItems: (spots) => List.filled(spots.length, null),
+            ),
+            getTouchedSpotIndicator: (barData, spotIndexes) {
+              return spotIndexes.map((spotIndex) {
+                return TouchedSpotIndicatorData(
+                  FlLine(
+                    color: Colors.grey.withValues(alpha: 0.8),
+                    strokeWidth: 1,
+                  ),
+                  FlDotData(
+                    show: true,
+                    getDotPainter: (spot, percent, barData, index) {
+                      return FlDotCirclePainter(
+                        radius: 4,
+                        color: Colors.blue,
+                        strokeWidth: 2,
+                        strokeColor: Colors.white,
+                      );
+                    },
+                  ),
+                );
+              }).toList();
+            },
+            touchCallback: (event, response) {
+              // Clear selection when pointer leaves chart area
+              if (event is FlPanEndEvent ||
+                  event is FlPanCancelEvent ||
+                  event is FlPointerExitEvent) {
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .clearSelectedPoint();
+                return;
+              }
+
+              if (response?.lineBarSpots != null &&
+                  response!.lineBarSpots!.isNotEmpty) {
+                final touchedSpot = response.lineBarSpots!.first;
+                final touchedPoint = dataPoints[touchedSpot.x.toInt()];
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .setSelectedPoint(touchedPoint);
+              } else {
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .clearSelectedPoint();
+              }
+            },
+          ),
         ),
       ),
     );
