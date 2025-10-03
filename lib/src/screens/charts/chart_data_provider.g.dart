@@ -48,4 +48,4 @@ final class ChartDataProvider
   }
 }
 
-String _$chartDataHash() => r'07d9a1488944796eb5e9734234763935a767ad52';
+String _$chartDataHash() => r'886d2da9ef1c210b13329f5ec6c130ed1e51ae34';
