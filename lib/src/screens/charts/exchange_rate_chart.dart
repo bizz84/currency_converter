@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
@@ -149,9 +147,12 @@ class ExchangeRateChartContent extends ConsumerWidget {
           borderData: FlBorderData(show: false),
           lineTouchData: LineTouchData(
             enabled: true,
-            touchSpotThreshold: 5,
+            touchSpotThreshold: 100,
             getTouchLineStart: (_, _) => -double.infinity,
             getTouchLineEnd: (_, _) => double.infinity,
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (spots) => [],
+            ),
             getTouchedSpotIndicator: (barData, spotIndexes) {
               return spotIndexes.map((spotIndex) {
                 return TouchedSpotIndicatorData(

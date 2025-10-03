@@ -3,6 +3,7 @@ import '/src/screens/charts/chart_data_provider.dart';
 import '/src/screens/charts/charts_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ExchangeRateHeader extends ConsumerWidget {
@@ -15,6 +16,10 @@ class ExchangeRateHeader extends ConsumerWidget {
   String _formatChange(double change, double percentChange) {
     final sign = change >= 0 ? '+' : '';
     return '$sign${change.toStringAsFixed(4)} ($sign${percentChange.toStringAsFixed(2)}%)';
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('d MMM yyyy').format(date);
   }
 
   @override
@@ -38,14 +43,18 @@ class ExchangeRateHeader extends ConsumerWidget {
         final percentChange = (change / firstPoint.rate) * 100;
 
         final isPositive = change >= 0;
+        final isSelected = selectedPoint != null;
 
         return ExchangeRateHeaderContent(
           baseCurrency: chartsState.baseCurrency.name,
           targetCurrency: chartsState.targetCurrency.name,
           rate: _formatRate(displayPoint.rate),
           change: _formatChange(change, percentChange),
-          timeRange: chartsState.timeRange.description,
+          timeRange: isSelected
+              ? _formatDate(displayPoint.date)
+              : chartsState.timeRange.description,
           isPositive: isPositive,
+          isSelected: isSelected,
         );
       },
       loading: () {
@@ -83,6 +92,7 @@ class ExchangeRateHeaderContent extends StatelessWidget {
     required this.change,
     required this.timeRange,
     required this.isPositive,
+    this.isSelected = false,
   });
 
   final String baseCurrency;
@@ -91,6 +101,7 @@ class ExchangeRateHeaderContent extends StatelessWidget {
   final String change;
   final String timeRange;
   final bool isPositive;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -108,17 +119,29 @@ class ExchangeRateHeaderContent extends StatelessWidget {
               width: Sizes.p8,
               height: Sizes.p8,
               decoration: BoxDecoration(
-                color: isPositive ? Colors.green : Colors.red,
+                color: isSelected
+                    ? Colors.blue
+                    : (isPositive ? Colors.green : Colors.red),
                 shape: BoxShape.circle,
               ),
             ),
           ],
         ),
         gapH4,
-        Text(
-          '$change $timeRange',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: isPositive ? Colors.green : Colors.red,
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: change,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isPositive ? Colors.green : Colors.red,
+                    ),
+              ),
+              TextSpan(
+                text: ' $timeRange',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
       ],
