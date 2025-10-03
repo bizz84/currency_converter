@@ -37,6 +37,16 @@ Add interactive touch functionality to the exchange rate chart, enabling users t
 - [x] Update touch callbacks to use `chartSelectedPointProvider`
 - [x] Add `clearSelectedPoint()` calls to all `ChartsController` methods (setBaseCurrency, setTargetCurrency, setTimeRange, swapCurrencies)
 
+### Phase 5: UI Tweaks for Selected State
+
+- [ ] In `ExchangeRateHeader`, update dot color logic:
+  - When `selectedPoint` is null: show green/red dot based on positive/negative change
+  - When `selectedPoint` is present: show blue dot
+- [ ] In `ExchangeRateHeader`, update time range display:
+  - When `selectedPoint` is null: show time range description (e.g., "Past year")
+  - When `selectedPoint` is present: show formatted date of selected point
+- [ ] In `ExchangeRateChart`, hide tooltip overlay by setting `touchTooltipData: LineTouchTooltipData(show: false)`
+
 ## Implementation Notes
 
 ### Final Architecture
