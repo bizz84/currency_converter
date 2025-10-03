@@ -63,6 +63,7 @@ class CurrencyConversionTile extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.w600,
+                              fontFeatures: const [FontFeature.tabularFigures()],
                             ),
                       ),
                       const SizedBox(height: 2),
@@ -70,6 +71,7 @@ class CurrencyConversionTile extends StatelessWidget {
                         '1 ${baseCurrency.name} = ${rate!.toStringAsFixed(4)} ${currency.name}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontFeatures: const [FontFeature.tabularFigures()],
                         ),
                       ),
                     ] else

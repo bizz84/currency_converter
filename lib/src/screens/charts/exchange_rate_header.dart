@@ -112,7 +112,9 @@ class ExchangeRateHeaderContent extends StatelessWidget {
           children: [
             Text(
               '1 $baseCurrency = $rate $targetCurrency',
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
             ),
             gapW8,
             Container(
@@ -134,8 +136,9 @@ class ExchangeRateHeaderContent extends StatelessWidget {
               TextSpan(
                 text: change,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isPositive ? Colors.green : Colors.red,
-                    ),
+                  color: isPositive ? Colors.green : Colors.red,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
               ),
               TextSpan(
                 text: ' $timeRange',
