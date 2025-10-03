@@ -23,9 +23,13 @@ class TimeRangeSelector extends ConsumerWidget {
               selected: isSelected,
               onSelected: (selected) {
                 if (selected) {
-                  ref.read(chartsControllerProvider.notifier).setTimeRange(range);
+                  ref
+                      .read(chartsControllerProvider.notifier)
+                      .setTimeRange(range);
                 }
               },
+              showCheckmark: false,
+              shape: const StadiumBorder(),
             ),
           );
         }).toList(),
