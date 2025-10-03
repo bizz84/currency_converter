@@ -18,35 +18,45 @@ Add interactive touch functionality to the exchange rate chart, enabling users t
 - [x] Configure `FlLine` with appropriate color and strokeWidth: 1
 - [x] Configure `FlDotData` to show a circular dot at the touched point with radius: 4
 
-### Phase 3: Wire Touch Events to State Management
+### Phase 3: Wire Touch Events to State Management ✓
 
-- [ ] In `ExchangeRateChartContent`, pass `dataPoints` as parameter (needed to map touch index to ChartDataPoint)
-- [ ] Convert `ExchangeRateChartContent` to `ConsumerWidget` to access `ref`
-- [ ] Add `touchCallback` to `LineTouchData` configuration
-- [ ] In `touchCallback`, when `touchResponse.lineBarSpots` is not empty:
+- [x] In `ExchangeRateChartContent`, pass `dataPoints` as parameter (needed to map touch index to ChartDataPoint)
+- [x] Convert `ExchangeRateChartContent` to `ConsumerWidget` to access `ref`
+- [x] Add `touchCallback` to `LineTouchData` configuration
+- [x] In `touchCallback`, when `touchResponse.lineBarSpots` is not empty:
   - Get the touched point: `dataPoints[touchedSpot.x.toInt()]`
-  - Call `ref.read(chartsControllerProvider.notifier).setSelectedPoint(touchedPoint)`
-- [ ] In `touchCallback`, when `touchResponse.lineBarSpots` is empty (user stopped touching):
-  - Call `ref.read(chartsControllerProvider.notifier).clearSelectedPoint()`
+  - Call `ref.read(chartSelectedPointProvider.notifier).setSelectedPoint(touchedPoint)`
+- [x] In `touchCallback`, when `touchResponse.lineBarSpots` is empty (user stopped touching):
+  - Call `ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint()`
+
+### Phase 4: Fix Unnecessary Rebuilds ✓
+
+- [x] Create separate `ChartSelectedPointProvider` in `charts_controller.dart`
+- [x] Remove `selectedPoint` from `ChartsState` (to prevent triggering data refetch)
+- [x] Update `ExchangeRateHeader` to watch `chartSelectedPointProvider` instead
+- [x] Update touch callbacks to use `chartSelectedPointProvider`
+- [x] Add `clearSelectedPoint()` calls to all `ChartsController` methods (setBaseCurrency, setTargetCurrency, setTimeRange, swapCurrencies)
 
 ## Implementation Notes
 
-### Architecture (Already in Place)
+### Final Architecture
 
-- **ExchangeRateHeader** (line 22-23) already watches `chartsControllerProvider` and `chartDataProvider`
-- **ExchangeRateHeader** (line 32) already uses `chartsState.selectedPoint ?? dataPoints.last` to display either selected or latest point
-- **ChartsController** already has `setSelectedPoint()` and `clearSelectedPoint()` methods
-- When touch events update `selectedPoint`, ExchangeRateHeader automatically rebuilds with the new data
+- **ChartSelectedPointProvider** - Separate notifier for selected point state (prevents unnecessary rebuilds)
+- **ExchangeRateHeader** - Watches `chartSelectedPointProvider` to display selected or latest point
+- **ExchangeRateChartContent** - `ConsumerWidget` that updates selected point via touch callbacks
+- **ChartsController** - Clears selected point when currency/time range changes
+- When touch events update `chartSelectedPointProvider`, only ExchangeRateHeader rebuilds (not the chart)
 
 ### Touch Event Flow
 
 1. User taps/drags on chart → `touchCallback` fires
 2. Extract touched `ChartDataPoint` from `dataPoints[touchedSpot.x.toInt()]`
-3. Call `setSelectedPoint(touchedPoint)` → updates `ChartsState`
-4. ExchangeRateHeader watches state → rebuilds showing selected point
+3. Call `chartSelectedPointProvider.notifier.setSelectedPoint(touchedPoint)`
+4. Only ExchangeRateHeader rebuilds (watches `chartSelectedPointProvider`) showing selected point
 5. User stops touching → `touchCallback` fires with empty spots
-6. Call `clearSelectedPoint()` → `selectedPoint` becomes null
+6. Call `chartSelectedPointProvider.notifier.clearSelectedPoint()`
 7. ExchangeRateHeader rebuilds showing latest point again
+8. User changes currency/time range → `ChartsController` methods automatically clear selected point
 
 ### Technical Details
 
