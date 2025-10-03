@@ -1,5 +1,7 @@
 import '/src/data/chart_data_point.dart';
+import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
+import '/src/screens/charts/charts_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +12,7 @@ class ExchangeRateChart extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chartDataAsync = ref.watch(chartDataProvider);
+    final timeRange = ref.watch(chartsControllerProvider).timeRange;
 
     return chartDataAsync.when(
       data: (dataPoints) {
@@ -19,8 +22,11 @@ class ExchangeRateChart extends ConsumerWidget {
           );
         }
 
-        // Need at least 2 data points for a meaningful chart
-        if (dataPoints.length < 2) {
+        // 1D range doesn't have meaningful data (markets closed on weekends)
+        // or need at least 2 data points with different rates
+        if (timeRange == ChartTimeRange.oneDay ||
+            dataPoints.length < 2 ||
+            dataPoints.every((p) => p.rate == dataPoints.first.rate)) {
           return const Center(
             child: Text(
               'Insufficient data for selected time range.\nTry selecting a longer period.',
