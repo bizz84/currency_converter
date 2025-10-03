@@ -21,6 +21,7 @@ class ExchangeRateHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chartsState = ref.watch(chartsControllerProvider);
     final chartDataAsync = ref.watch(chartDataProvider);
+    final selectedPoint = ref.watch(chartSelectedPointProvider);
 
     return chartDataAsync.when(
       data: (dataPoints) {
@@ -29,7 +30,7 @@ class ExchangeRateHeader extends ConsumerWidget {
         }
 
         // Use selected point if available, otherwise use the latest point
-        final displayPoint = chartsState.selectedPoint ?? dataPoints.last;
+        final displayPoint = selectedPoint ?? dataPoints.last;
         final firstPoint = dataPoints.first;
 
         // Calculate change from first to selected/latest point

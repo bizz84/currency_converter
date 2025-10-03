@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
@@ -50,7 +52,7 @@ class ExchangeRateChart extends ConsumerWidget {
   }
 }
 
-class ExchangeRateChartContent extends StatelessWidget {
+class ExchangeRateChartContent extends ConsumerWidget {
   const ExchangeRateChartContent({
     super.key,
     required this.dataPoints,
@@ -59,7 +61,7 @@ class ExchangeRateChartContent extends StatelessWidget {
   final List<ChartDataPoint> dataPoints;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Convert ChartDataPoint to FlSpot
     final spots = dataPoints.asMap().entries.map((entry) {
       return FlSpot(entry.key.toDouble(), entry.value.rate);
@@ -170,6 +172,20 @@ class ExchangeRateChartContent extends StatelessWidget {
                   ),
                 );
               }).toList();
+            },
+            touchCallback: (event, response) {
+              if (response?.lineBarSpots != null &&
+                  response!.lineBarSpots!.isNotEmpty) {
+                final touchedSpot = response.lineBarSpots!.first;
+                final touchedPoint = dataPoints[touchedSpot.x.toInt()];
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .setSelectedPoint(touchedPoint);
+              } else {
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .clearSelectedPoint();
+              }
             },
           ),
         ),
