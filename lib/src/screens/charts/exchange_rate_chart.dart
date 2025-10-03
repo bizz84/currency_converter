@@ -151,7 +151,9 @@ class ExchangeRateChartContent extends ConsumerWidget {
             getTouchLineStart: (_, _) => -double.infinity,
             getTouchLineEnd: (_, _) => double.infinity,
             touchTooltipData: LineTouchTooltipData(
-              getTooltipItems: (spots) => [],
+              // * Return a list of null elements otherwise we get:
+              // * Exception: tooltipItems and touchedSpots size should be same
+              getTooltipItems: (spots) => List.filled(spots.length, null),
             ),
             getTouchedSpotIndicator: (barData, spotIndexes) {
               return spotIndexes.map((spotIndex) {
@@ -175,6 +177,16 @@ class ExchangeRateChartContent extends ConsumerWidget {
               }).toList();
             },
             touchCallback: (event, response) {
+              // Clear selection when pointer leaves chart area
+              if (event is FlPanEndEvent ||
+                  event is FlPanCancelEvent ||
+                  event is FlPointerExitEvent) {
+                ref
+                    .read(chartSelectedPointProvider.notifier)
+                    .clearSelectedPoint();
+                return;
+              }
+
               if (response?.lineBarSpots != null &&
                   response!.lineBarSpots!.isNotEmpty) {
                 final touchedSpot = response.lineBarSpots!.first;
