@@ -1,5 +1,6 @@
 import '/src/constants/app_sizes.dart';
 import '/src/screens/charts/currency_selector_row.dart';
+import '/src/screens/charts/exchange_rate_chart.dart';
 import '/src/screens/charts/exchange_rate_header.dart';
 import '/src/screens/charts/time_range_selector.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +27,7 @@ class ChartsScreen extends StatelessWidget {
             TimeRangeSelector(),
             gapH24,
             Expanded(
-              child: Center(
-                child: Text(
-                  'Chart will be displayed here',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
+              child: ExchangeRateChart(),
             ),
           ],
         ),
