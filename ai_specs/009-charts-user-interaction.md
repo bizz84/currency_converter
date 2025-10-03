@@ -1,8 +1,10 @@
 Implement user interaction in the charts screen based on these requirements:
 
-- When the user taps on the chart, show a vertical line and a rectangular overlay with the exchange rate and date
-- The vertical line and overlay should move along as the pointer moves along the chart
-- Hide the vertical line and overlay when the user stops tapping or dragging
+- When the user taps on the chart, show a vertical line with the exchange rate and date
+- The vertical line should move along as the pointer moves along the chart
+- Hide the vertical line when the user stops tapping or dragging
+
+When the vertical line is visible, the ExchangeRateHeader should show the exchange rate and date for the selected point (rather than the latest point).
 
 ## Reference Demo
 
