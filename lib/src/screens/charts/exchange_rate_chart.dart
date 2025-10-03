@@ -145,7 +145,12 @@ class ExchangeRateChartContent extends StatelessWidget {
             },
           ),
           borderData: FlBorderData(show: false),
-          lineTouchData: const LineTouchData(enabled: false),
+          lineTouchData: LineTouchData(
+            enabled: true,
+            touchSpotThreshold: 5,
+            getTouchLineStart: (_, _) => -double.infinity,
+            getTouchLineEnd: (_, _) => double.infinity,
+          ),
         ),
       ),
     );
