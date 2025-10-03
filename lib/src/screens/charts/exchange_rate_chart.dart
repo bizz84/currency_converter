@@ -150,6 +150,27 @@ class ExchangeRateChartContent extends StatelessWidget {
             touchSpotThreshold: 5,
             getTouchLineStart: (_, _) => -double.infinity,
             getTouchLineEnd: (_, _) => double.infinity,
+            getTouchedSpotIndicator: (barData, spotIndexes) {
+              return spotIndexes.map((spotIndex) {
+                return TouchedSpotIndicatorData(
+                  FlLine(
+                    color: Colors.grey.withValues(alpha: 0.8),
+                    strokeWidth: 1,
+                  ),
+                  FlDotData(
+                    show: true,
+                    getDotPainter: (spot, percent, barData, index) {
+                      return FlDotCirclePainter(
+                        radius: 4,
+                        color: Colors.blue,
+                        strokeWidth: 2,
+                        strokeColor: Colors.white,
+                      );
+                    },
+                  ),
+                );
+              }).toList();
+            },
           ),
         ),
       ),
