@@ -52,8 +52,14 @@ Implement an interactive charts screen that displays exchange rate history betwe
   - Map `ChartDataPoint` data to `FlSpot` points
   - Implement Y-axis labels (high, medium, low values)
   - Add horizontal grid lines at Y-axis label positions
-  - Style line with appropriate color and thickness (curved blue line)
+  - Style line with appropriate color and thickness (sharp edges, not curved)
   - Use `ExchangeRateChartContent` reusable widget class
+- [x] Handle edge cases and data validation
+  - Add check for empty data (show "No data available")
+  - Add check for insufficient data (<2 points or all identical rates)
+  - Hide 1D chip in `TimeRangeSelector` until API supports intraday data
+  - Implement weekend data filling in `chartDataProvider` (fills gaps with Friday's rate)
+  - Prevent `horizontalInterval` zero error with safety check: `(yMax - yMin) / 2 > 0 ? (yMax - yMin) / 2 : 1`
 - [ ] Implement touch interaction to show vertical line and selected point
   - Use `LineTouchData` configuration
   - Update controller with selected data point on tap/hold
@@ -89,12 +95,18 @@ Implement an interactive charts screen that displays exchange rate history betwe
 **Date Calculation:**
 - For time ranges, calculate start and end dates relative to today
 - API expects dates in YYYY-MM-DD format
-- Handle edge cases (e.g., 1D may need special handling vs time series)
+- 1D range hidden until API supports intraday data (markets closed on weekends)
+- Weekend data gaps filled with Friday's rate for continuous chart lines
 
 **Chart Interaction:**
 - Touch callback updates selected point in controller
 - Header reactively displays selected point's rate or falls back to latest
 - Vertical line indicator should be subtle but visible
+
+**Known Issues & TODOs:**
+- [ ] Fix Y-axis label duplication on 3M range (deferred - needs investigation)
+- [ ] TODO in `time_range_selector.dart`: Add 1D back when API supports intraday data
+- [ ] TODO in `chart_data_provider.dart`: Consider caching to reduce API calls
 
 **Future Enhancements (out of scope):**
 - Export chart as image
