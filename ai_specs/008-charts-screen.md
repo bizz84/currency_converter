@@ -6,7 +6,6 @@ Implement the charts screen based on these requirements:
   - Ranges selector (e.g. 1D, 1W, 1M, 3M, 1Y, 5Y, 10Y)
 - Chart body: line chart over the selected range
 - Y axis with high, medium, low labels
-- On tap and hold: show vertical line and update the exchange rate in the header
 
 Sample UI design: `img/chart-preview.jpeg`
 

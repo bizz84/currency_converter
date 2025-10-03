@@ -60,11 +60,13 @@ Implement an interactive charts screen that displays exchange rate history betwe
   - Hide 1D chip in `TimeRangeSelector` until API supports intraday data
   - Implement weekend data filling in `chartDataProvider` (fills gaps with Friday's rate)
   - Prevent `horizontalInterval` zero error with safety check: `(yMax - yMin) / 2 > 0 ? (yMax - yMin) / 2 : 1`
-- [ ] Implement touch interaction to show vertical line and selected point
-  - Use `LineTouchData` configuration
-  - Update controller with selected data point on tap/hold
-  - Clear selected point when touch ends
-  - Show indicator dot at touched position
+- [ ] **DEFERRED:** Implement touch interaction to show vertical line and selected point
+  - Use `LineTouchData` configuration with proper Timer-based state management
+  - Update controller with selected data point on tap/drag
+  - Clear selected point 300ms after touch ends (not immediately)
+  - Show vertical dashed line and dot indicator at touched position
+  - Update header to show selected date/time instead of time range description
+  - Prevent `setState()` after dispose errors by cancelling timers in dispose()
 - [x] Integrate `ExchangeRateChart` into `ChartsScreen`:
   - Replace placeholder with actual chart widget
   - Handle loading states with CircularProgressIndicator
@@ -74,12 +76,12 @@ Implement an interactive charts screen that displays exchange rate history betwe
 ### Phase 5: Testing and Refinement
 - [ ] Manual test: Currency selection works and updates chart
 - [ ] Manual test: Time range selection fetches correct data
-- [ ] Manual test: Touch interaction shows vertical line and updates header
+- [ ] ~~Manual test: Touch interaction shows vertical line and updates header~~ (deferred)
 - [ ] Manual test: Chart displays correctly with proper scaling
 - [ ] Manual test: Error handling when API fails
 - [ ] Manual test: Loading states display properly
 - [ ] Run `flutter analyze` to ensure no issues
-- [ ] Verify UI matches design preview
+- [ ] Verify UI matches design preview (except touch interaction)
 
 ## Implementation Notes
 
@@ -98,15 +100,19 @@ Implement an interactive charts screen that displays exchange rate history betwe
 - 1D range hidden until API supports intraday data (markets closed on weekends)
 - Weekend data gaps filled with Friday's rate for continuous chart lines
 
-**Chart Interaction:**
-- Touch callback updates selected point in controller
-- Header reactively displays selected point's rate or falls back to latest
+**Chart Interaction (Deferred):**
+- Touch interaction feature deferred to separate implementation
+- Requires Timer-based state management in ConsumerStatefulWidget
+- Touch callback should update selected point in controller
+- Header should reactively display selected point's rate or fall back to latest
 - Vertical line indicator should be subtle but visible
+- Must handle dispose() properly to prevent setState() after dispose errors
 
 **Known Issues & TODOs:**
 - [ ] Fix Y-axis label duplication on 3M range (deferred - needs investigation)
 - [ ] TODO in `time_range_selector.dart`: Add 1D back when API supports intraday data
 - [ ] TODO in `chart_data_provider.dart`: Consider caching to reduce API calls
+- [ ] **DEFERRED:** Implement touch interaction feature (Phase 4 - separate PR)
 
 **Future Enhancements (out of scope):**
 - Export chart as image
