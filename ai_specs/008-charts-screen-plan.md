@@ -31,8 +31,11 @@ Implement an interactive charts screen that displays exchange rate history betwe
   - Display current/selected exchange rate (e.g., "1 GBP = 1.156813 EUR")
   - Show change indicator with percentage (red dot + text like "-0.0301 (-2.537%) Past year")
   - Handle both live (latest) and historical (on tap) rate display
+  - Add Skeletonizer for loading state to prevent layout shifts
+  - Use `ExchangeRateHeaderContent` reusable widget class instead of build helper
 - [x] Create `TimeRangeSelector` widget in `/src/screens/charts/time_range_selector.dart`
   - Horizontal row of chips/buttons for time ranges (1D, 1W, 1M, 3M, 1Y, 5Y, 10Y)
+  - Use `ChoiceChip` with `showCheckmark: false` and `StadiumBorder` shape
   - Highlight selected range
   - Update controller state on selection
 - [x] Update `ChartsScreen` with header widgets (without chart):
