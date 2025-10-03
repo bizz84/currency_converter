@@ -1,14 +1,13 @@
 import '/src/constants/app_sizes.dart';
+import '/src/screens/charts/currency_selector_row.dart';
+import '/src/screens/charts/exchange_rate_chart.dart';
+import '/src/screens/charts/exchange_rate_header.dart';
+import '/src/screens/charts/time_range_selector.dart';
 import 'package:flutter/material.dart';
 
-class ChartsScreen extends StatefulWidget {
+class ChartsScreen extends StatelessWidget {
   const ChartsScreen({super.key});
 
-  @override
-  State<ChartsScreen> createState() => _ChartsScreenState();
-}
-
-class _ChartsScreenState extends State<ChartsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,36 +15,21 @@ class _ChartsScreenState extends State<ChartsScreen> {
         title: const Text('Exchange Rate Charts'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.show_chart,
-                size: 80,
-                color: Colors.green,
-              ),
-              gapH24,
-              Text(
-                'Charts Screen',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              gapH8,
-              Text(
-                'Exchange rate charts will be displayed here',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+      body: const Padding(
+        padding: EdgeInsets.all(Sizes.p16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CurrencySelectorRow(),
+            gapH16,
+            ExchangeRateHeader(),
+            gapH16,
+            TimeRangeSelector(),
+            gapH24,
+            Expanded(
+              child: ExchangeRateChart(),
+            ),
+          ],
         ),
       ),
     );

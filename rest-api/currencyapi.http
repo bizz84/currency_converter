@@ -12,6 +12,11 @@ GET https://api.currencyapi.com/v3/historical?apikey={{apiKey}}&base_currency=US
 
 ###
 
+### Get time series (range) rates for USD to EUR,GBP from 2021-11-30 to 2021-12-31 (daily)
+GET https://api.currencyapi.com/v3/range?apikey={{apiKey}}&datetime_start=2025-07-01T23:59:59Z&datetime_end=2025-09-30T23:59:59Z&base_currency=USD&currencies=EUR,GBP&accuracy=day
+
+###
+
 ### Convert currency (if supported)
 GET https://api.currencyapi.com/v3/convert?apikey={{apiKey}}&from=USD&to=GBP&value=100
 
