@@ -7,20 +7,20 @@ Implement an interactive charts screen that displays exchange rate history betwe
 ## Implementation
 
 ### Phase 1: Dependencies and Data Layer
-- [ ] Add `fl_chart` package to `pubspec.yaml` dependencies
-- [ ] Run `flutter pub get` to install the new dependency
-- [ ] Create `ChartTimeRange` enum with values (oneDay, oneWeek, oneMonth, threeMonths, oneYear, fiveYears, tenYears) in `/src/data/chart_time_range.dart`
-- [ ] Create extension on `ChartTimeRange` for label strings and date calculations
-- [ ] Create `ChartDataPoint` model class in `/src/data/chart_data_point.dart` to represent (date, rate) pairs
+- [x] Add `fl_chart` package to `pubspec.yaml` dependencies
+- [x] Run `flutter pub get` to install the new dependency
+- [x] Create `ChartTimeRange` enum with values (oneDay, oneWeek, oneMonth, threeMonths, oneYear, fiveYears, tenYears) in `/src/data/chart_time_range.dart`
+- [x] Create extension on `ChartTimeRange` for label strings and date calculations (implemented as enhanced enum with members)
+- [x] Create `ChartDataPoint` model class in `/src/data/chart_data_point.dart` to represent (date, rate) pairs
 
 ### Phase 2: State Management
-- [ ] Create `ChartsController` (Riverpod notifier) in `/src/screens/charts/charts_controller.dart` to manage:
+- [x] Create `ChartsController` (Riverpod notifier) in `/src/screens/charts/charts_controller.dart` to manage:
   - Selected base currency (default: GBP)
   - Selected target currency (default: EUR)
   - Selected time range (default: oneYear)
   - Optional selected data point (for tap interaction)
-- [ ] Create `chartDataProvider` (Riverpod provider) to fetch and transform time series data into chart points
-- [ ] Handle loading, error, and success states for chart data
+- [x] Create `chartDataProvider` (Riverpod provider) to fetch and transform time series data into chart points
+- [x] Handle loading, error, and success states for chart data (delegated to Riverpod AsyncValue)
 
 ### Phase 3: UI Widgets - Header Components
 - [ ] Create `CurrencySelectorRow` widget in `/src/screens/charts/currency_selector_row.dart`
