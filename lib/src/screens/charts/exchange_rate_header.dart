@@ -5,58 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ExchangeRateHeaderContent extends StatelessWidget {
-  const ExchangeRateHeaderContent({
-    super.key,
-    required this.baseCurrency,
-    required this.targetCurrency,
-    required this.rate,
-    required this.change,
-    required this.timeRange,
-    required this.isPositive,
-  });
-
-  final String baseCurrency;
-  final String targetCurrency;
-  final String rate;
-  final String change;
-  final String timeRange;
-  final bool isPositive;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              '1 $baseCurrency = $rate $targetCurrency',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            gapW8,
-            Container(
-              width: Sizes.p8,
-              height: Sizes.p8,
-              decoration: BoxDecoration(
-                color: isPositive ? Colors.green : Colors.red,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ],
-        ),
-        gapH4,
-        Text(
-          '$change $timeRange',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: isPositive ? Colors.green : Colors.red,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class ExchangeRateHeader extends ConsumerWidget {
   const ExchangeRateHeader({super.key});
 
@@ -121,6 +69,58 @@ class ExchangeRateHeader extends ConsumerWidget {
         timeRange: '',
         isPositive: false,
       ),
+    );
+  }
+}
+
+class ExchangeRateHeaderContent extends StatelessWidget {
+  const ExchangeRateHeaderContent({
+    super.key,
+    required this.baseCurrency,
+    required this.targetCurrency,
+    required this.rate,
+    required this.change,
+    required this.timeRange,
+    required this.isPositive,
+  });
+
+  final String baseCurrency;
+  final String targetCurrency;
+  final String rate;
+  final String change;
+  final String timeRange;
+  final bool isPositive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              '1 $baseCurrency = $rate $targetCurrency',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            gapW8,
+            Container(
+              width: Sizes.p8,
+              height: Sizes.p8,
+              decoration: BoxDecoration(
+                color: isPositive ? Colors.green : Colors.red,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+        gapH4,
+        Text(
+          '$change $timeRange',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: isPositive ? Colors.green : Colors.red,
+          ),
+        ),
+      ],
     );
   }
 }
