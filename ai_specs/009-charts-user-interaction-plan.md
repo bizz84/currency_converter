@@ -49,7 +49,12 @@ Add interactive touch functionality to the exchange rate chart, enabling users t
 - [x] In `ExchangeRateHeaderContent`, split text styling using `Text.rich`:
   - Change amount (e.g., "+0.0204 (+1.72%)") in green/red color
   - Date/time range text in standard text color
-- [x] In `ExchangeRateChart`, hide tooltip overlay with `touchTooltipData: LineTouchTooltipData(getTooltipItems: (spots) => [])`
+- [x] In `ExchangeRateChart`, hide tooltip overlay with `touchTooltipData: LineTouchTooltipData(getTooltipItems: (spots) => List.filled(spots.length, null))`
+
+### Phase 6: Fix Web Hover Behavior ✓
+
+- [x] Clear selected point when pointer exits chart area (handle `FlPointerExitEvent`, `FlPanEndEvent`, `FlPanCancelEvent`)
+- [x] Fix tooltip exception by returning list of null items matching touched spots length (prevents "tooltipItems and touchedSpots size should be same" error)
 
 ## Implementation Notes
 
