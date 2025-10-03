@@ -57,7 +57,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Currency Converter'),
+          title: const Text('Converter'),
           centerTitle: true,
           elevation: 0,
         ),

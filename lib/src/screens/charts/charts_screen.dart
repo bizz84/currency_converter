@@ -12,7 +12,7 @@ class ChartsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exchange Rate Charts'),
+        title: const Text('Charts'),
         centerTitle: true,
       ),
       body: const Padding(
