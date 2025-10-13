@@ -25,12 +25,12 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
 - Noted auth requirements, rate limits, pricing, and any caveats relevant to mobile apps (latency, CORS, offline fallback).
 - Assessed ease of use and integration in a Flutter/Dart context.
 
-### Frankfurter.dev ([**https://frankfurter.dev/**](https://frankfurter.dev/))
+### Frankfurter.dev (https://frankfurter.dev/)
 
 ### How to use
 
 - Auth: none (no API key)
-- Base URL: [**https://api.frankfurter.dev/v1**](https://api.frankfurter.dev/v1/)
+- Base URL: https://api.frankfurter.dev/v1
 - Endpoints
     - Latest rates
         - GET /latest?from=USD&to=GBP
@@ -40,8 +40,8 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
     - Convert helper (simple use)
         - GET /latest?amount=1&from=USD&to=GBP
 - Request examples
-    - Latest: [**https://api.frankfurter.dev/v1/latest?from=USD&to=GBP**](https://api.frankfurter.dev/v1/latest?from=USD&to=GBP)
-    - Timeseries: [**https://api.frankfurter.dev/v1/2023-01-01..2023-01-31?from=USD&to=GBP**](https://api.frankfurter.dev/v1/2023-01-01..2023-01-31?from=USD&to=GBP)
+    - Latest: https://api.frankfurter.dev/v1/latest?from=USD&to=GBP
+    - Timeseries: https://api.frankfurter.dev/v1/2023-01-01..2023-01-31?from=USD&to=GBP
 - Response payloads (typical shapes)
     - Latest
         - {"amount": 1,"base": "USD","date": "YYYY-MM-DD","rates": { "GBP": 0.75, "EUR": 0.92, ... }}
@@ -56,7 +56,7 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
 - Simple, human-friendly docs; endpoints are intuitive; JSON payloads are straightforward.
 - Great fit for a lightweight converter and historical charts in a mobile app.
 
-## Exchangeratesapi.io ([**https://exchangeratesapi.io/**](https://exchangeratesapi.io/))
+## Exchangeratesapi.io (https://exchangeratesapi.io/)
 
 ### What it is
 
@@ -66,7 +66,7 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
 ### How to use
 
 - Auth: API key (query param or header; check your plan)
-- Base URL: [**https://api.exchangeratesapi.io**](https://api.exchangeratesapi.io/) (or apilayer variants; verify your plan’s base URL)
+- Base URL: https://api.exchangeratesapi.io (or apilayer variants; verify your plan’s base URL)
 - Endpoints (typical)
     - Latest rates
         - GET /latest?base=USD&symbols=GBP,EUR
@@ -76,8 +76,8 @@ Here’s a documentation-focused report for the three APIs you flagged: Frankfur
     - Convert (if supported by plan)
         - GET /convert?from=USD&to=GBP&amount=1
 - Request examples (typical)
-    - Latest: [**https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR**](https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR)
-    - Timeseries: [**https://api.exchangeratesapi.io/2023-01-01?base=USD&symbols=GBP,EUR**](https://api.exchangeratesapi.io/2023-01-01?base=USD&symbols=GBP,EUR)
+    - Latest: https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR
+    - Timeseries: https://api.exchangeratesapi.io/2023-01-01?base=USD&symbols=GBP,EUR
 - Response payloads (typical)
     - Latest
         - {"rates": { "GBP": 0.75, "EUR": 0.92 },"base": "USD","date": "YYYY-MM-DD"}
@@ -95,7 +95,7 @@ Documentation notes
 - Expect standard REST patterns, clear parameters for base and symbols, and well-structured date-based history.
 - Useful if you need reliable quotas and SLAs as you scale.
 
-## CurrencyAPI.com ([**https://currencyapi.com/pricing/**](https://currencyapi.com/pricing/)) / docs reference
+## CurrencyAPI.com (https://currencyapi.com/pricing/) / docs reference
 
 ### What it is
 
@@ -106,15 +106,15 @@ Documentation notes
 
 - Auth: API key
 - Base URL (typical)
-    - [**https://api.currencyapi.com/v3/latest**](https://api.currencyapi.com/v3/latest)
-    - [**https://api.currencyapi.com/v3/historical**](https://api.currencyapi.com/v3/historical)
-    - [**https://api.currencyapi.com/v3/convert**](https://api.currencyapi.com/v3/convert) (if supported by their docs; usage varies by version)
+    - https://api.currencyapi.com/v3/latest
+    - https://api.currencyapi.com/v3/historical
+    - https://api.currencyapi.com/v3/convert (if supported by their docs; usage varies by version)
 - Typical request patterns (latest)
-    - GET [**https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR**](https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR)
+    - GET https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR
 - Historical
-    - GET [**https://api.currencyapi.com/v3/historical?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR&date=2023-01-31**](https://api.currencyapi.com/v3/historical?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR&date=2023-01-31)
+    - GET https://api.currencyapi.com/v3/historical?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR&date=2023-01-31
 - Convert (if supported)
-    - GET [**https://api.currencyapi.com/v3/convert?apikey=YOUR_API_KEY&from_currency=USD&to_currency=GBP&amount=1**](https://api.currencyapi.com/v3/convert?apikey=YOUR_API_KEY&from_currency=USD&to_currency=GBP&amount=1)
+    - GET https://api.currencyapi.com/v3/convert?apikey=YOUR_API_KEY&from_currency=USD&to_currency=GBP&amount=1
 - Response payloads (typical shapes)
     - Latest
         - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "timestamp": "2024-09-10T12:34:56Z" }}
@@ -133,7 +133,7 @@ Documentation notes
 
 - Frankfurter.dev
     - Latest request:
-        - GET [**https://api.frankfurter.dev/v1/latest?from=USD&to=GBP**](https://api.frankfurter.dev/v1/latest?from=USD&to=GBP)
+        - GET https://api.frankfurter.dev/v1/latest?from=USD&to=GBP
     - Response:
         - { "base": "USD", "date": "YYYY-MM-DD", "rates": { "GBP": 0.75, "EUR": 0.92 } }
     
@@ -141,7 +141,7 @@ Documentation notes
     
 - Exchangeratesapi.io
     - Latest request (example with key):
-        - GET [**https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR&access_key=YOUR_KEY**](https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR&access_key=YOUR_KEY)
+        - GET https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR&access_key=YOUR_KEY
     - Response:
         - { "rates": { "GBP": 0.75, "EUR": 0.92 }, "base": "USD", "date": "YYYY-MM-DD" }
     
@@ -149,7 +149,7 @@ Documentation notes
     
 - CurrencyAPI.com
     - Latest request:
-        - GET [**https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR**](https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR)
+        - GET https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR
     - Response:
         - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "timestamp": "..." }}
     
@@ -189,8 +189,8 @@ Documentation notes
 
 ## Sources (docs you’ll want to consult)
 
-- Frankfurter.dev docs: [**https://frankfurter.dev/**](https://frankfurter.dev/)
-- Exchangeratesapi.io docs: [**https://exchangeratesapi.io/docs**](https://exchangeratesapi.io/docs)
-- CurrencyAPI pricing/docs: [**https://currencyapi.com/pricing/**](https://currencyapi.com/pricing/) and [**https://www.currencyapi.net/docs**](https://www.currencyapi.net/docs)
+- Frankfurter.dev docs: https://frankfurter.dev/
+- Exchangeratesapi.io docs: https://exchangeratesapi.io/docs
+- CurrencyAPI pricing/docs: https://currencyapi.com/pricing/ and https://www.currencyapi.net/docs
 
 If you want, I can draft concrete Dart models and a tiny Dart/Flutter HTTP wrapper for these three APIs (with a simple retry/backoff and a small in-app cache) to accelerate your MVP.
