@@ -56,6 +56,40 @@ Here's a documentation-focused report for the three APIs. I've pulled out how to
 - Simple, human-friendly docs; endpoints are intuitive; JSON payloads are straightforward.
 - Great fit for a lightweight converter and historical charts in a mobile app.
 
+## CurrencyAPI.com (https://currencyapi.com/pricing/) / docs reference
+
+### What it is
+
+- Modern currency API with explicit pricing pages and a documented v3 API.
+- Endpoints are designed for live, historical, and convert data with a clear pay-as-you-go model.
+
+### Key docs and usage
+
+- Auth: API key
+- Base URL (typical)
+    - https://api.currencyapi.com/v3/latest
+    - https://api.currencyapi.com/v3/historical
+    - https://api.currencyapi.com/v3/convert (if supported by their docs; usage varies by version)
+- Typical request patterns (latest)
+    - GET https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR
+- Historical
+    - GET https://api.currencyapi.com/v3/historical?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR&date=2023-01-31
+- Convert (if supported)
+    - GET https://api.currencyapi.com/v3/convert?apikey=YOUR_API_KEY&from_currency=USD&to_currency=GBP&amount=1
+- Response payloads (typical shapes)
+    - Latest
+        - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "timestamp": "2024-09-10T12:34:56Z" }}
+    - Historical
+        - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "date": "2023-01-31", "timestamp": 169xxxxx }}
+- Pricing and tiers
+    - CurrencyAPI has a pay-as-you-go model and monthly plans; pricing page lists quotas per tier and included currencies.
+    - Their docs emphasize ease of use with a single API key and consistent data shapes across endpoints.
+
+### Documentation notes
+
+- Clear, modern docs with explicit examples for latest/historical/convert.
+- Pricing is explicit on the pricing page; good for budgeting in a production app.
+
 ## Exchangeratesapi.io (https://exchangeratesapi.io/)
 
 ### What it is
@@ -95,40 +129,6 @@ Documentation notes
 - Expect standard REST patterns, clear parameters for base and symbols, and well-structured date-based history.
 - Useful if you need reliable quotas and SLAs as you scale.
 
-## CurrencyAPI.com (https://currencyapi.com/pricing/) / docs reference
-
-### What it is
-
-- Modern currency API with explicit pricing pages and a documented v3 API.
-- Endpoints are designed for live, historical, and convert data with a clear pay-as-you-go model.
-
-### Key docs and usage
-
-- Auth: API key
-- Base URL (typical)
-    - https://api.currencyapi.com/v3/latest
-    - https://api.currencyapi.com/v3/historical
-    - https://api.currencyapi.com/v3/convert (if supported by their docs; usage varies by version)
-- Typical request patterns (latest)
-    - GET https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR
-- Historical
-    - GET https://api.currencyapi.com/v3/historical?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR&date=2023-01-31
-- Convert (if supported)
-    - GET https://api.currencyapi.com/v3/convert?apikey=YOUR_API_KEY&from_currency=USD&to_currency=GBP&amount=1
-- Response payloads (typical shapes)
-    - Latest
-        - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "timestamp": "2024-09-10T12:34:56Z" }}
-    - Historical
-        - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "date": "2023-01-31", "timestamp": 169xxxxx }}
-- Pricing and tiers
-    - CurrencyAPI has a pay-as-you-go model and monthly plans; pricing page lists quotas per tier and included currencies.
-    - Their docs emphasize ease of use with a single API key and consistent data shapes across endpoints.
-
-### Documentation notes
-
-- Clear, modern docs with explicit examples for latest/historical/convert.
-- Pricing is explicit on the pricing page; good for budgeting in a production app.
-
 ## Concrete payload examples (quick-glance)
 
 - Frankfurter.dev
@@ -137,24 +137,18 @@ Documentation notes
     - Response:
         - { "base": "USD", "date": "YYYY-MM-DD", "rates": { "GBP": 0.75, "EUR": 0.92 } }
     
-    Check Domain
-    
-- Exchangeratesapi.io
-    - Latest request (example with key):
-        - GET https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR&access_key=YOUR_KEY
-    - Response:
-        - { "rates": { "GBP": 0.75, "EUR": 0.92 }, "base": "USD", "date": "YYYY-MM-DD" }
-    
-    Check Domain
-    
 - CurrencyAPI.com
     - Latest request:
         - GET https://api.currencyapi.com/v3/latest?apikey=YOUR_API_KEY&base_currency=USD&symbols=GBP,EUR
     - Response:
         - {"data": {"USD": { "code": "USD", "value": 1 },"GBP": { "code": "GBP", "value": 0.75 },"EUR": { "code": "EUR", "value": 0.92 }},"meta": { "timestamp": "..." }}
-    
-    Check Domain
-    
+        
+- Exchangeratesapi.io
+    - Latest request (example with key):
+        - GET https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,EUR&access_key=YOUR_KEY
+    - Response:
+        - { "rates": { "GBP": 0.75, "EUR": 0.92 }, "base": "USD", "date": "YYYY-MM-DD" }
+        
 
 ## Implementation notes for Flutter apps (concise)
 
@@ -171,8 +165,8 @@ Documentation notes
 ## Limitations and gaps (relevant to these three)
 
 - Frankfurter.dev: No auth, great for MVP but no formal SLA; data sources are community-maintained.
-- Exchangeratesapi.io: Key-based; plan limits can impact MVP if you hit rate ceilings; ensure key management in the app.
 - CurrencyAPI.com: Pricing tiers may influence scale; ensure your plan aligns with expected currency coverage and historical depth.
+- Exchangeratesapi.io: Key-based; plan limits can impact MVP if you hit rate ceilings; ensure key management in the app.
 - Coverage differences: Some providers have stronger historical depth for certain currencies; if you rely heavily on a particular pair, verify historical availability in your target window.
 
 ## Recommendations (actionable)
@@ -192,6 +186,7 @@ Documentation notes
 
 - Frankfurter.dev docs: https://frankfurter.dev/
 - Exchangeratesapi.io docs: https://exchangeratesapi.io/docs
-- CurrencyAPI pricing/docs: https://currencyapi.com/pricing/ and https://www.currencyapi.net/docs
+- CurrencyAPI pricing/docs: https://currencyapi.com/pricing/ and https://currencyapi.com/docs
+
 
 If you want, I can draft concrete Dart models and a tiny Dart/Flutter HTTP wrapper for these three APIs (with a simple retry/backoff and a small in-app cache) to accelerate your MVP.
