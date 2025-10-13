@@ -15,14 +15,11 @@ Sample UI design: `img/convert-preview.jpeg`
 
 ## Currency Selector Screen
 
-Currently implemented as an adaptive bottom sheet/dialog.
+- Used to choose the base and target currencies for the convert and chart screens
+- Shows list of all available currencies
+- Includes previously used currencies at the top
 
-Improvements:
-
-- List of previously used currencies at the top
-- Alphabetical list of currencies with letter headers (iOS style)
-
-Sample UI design: `img/currency-selector-preview.jpeg`
+Sample UI design: `img/select-currency-preview.jpeg`
 
 ## Charts Screen
 
