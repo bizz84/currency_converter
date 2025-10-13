@@ -1,19 +1,19 @@
 ## API Access
 
-Currency API data can be pulled from one of these APIs:
+This project uses the following currency APIs:
 
-- https://frankfurter.dev/
-- https://exchangeratesapi.io/
-- https://currencyapi.com/
+- **https://frankfurter.dev/** - Primary free API (currently in use)
+- **https://currencyapi.com/** - Paid API for more frequent rate updates (currently in use)
+- **https://exchangeratesapi.io/** - Backup option (not currently used)
 
-Here’s a documentation-focused report for the three APIs you flagged: Frankfurter.dev, Exchangeratesapi.io, and CurrencyAPI.com. I’ve pulled out how to use them, the request/response payloads, auth, and notes relevant to a Flutter/mobile app.
+Here's a documentation-focused report for the three APIs. I've pulled out how to use them, the request/response payloads, auth, and notes relevant to a Flutter/mobile app.
 
 ## Executive snapshot
 
-- Frankfurter.dev: No API key required. Very simple latest, convert, and timeseries endpoints. Great for MVP and charting with minimal friction.
-- Exchangeratesapi.io: API-key-based. Solid, widely used, good docs. Pays off as you scale or need more bases/credits.
-- CurrencyAPI.com: API key-based. Modern, flexible pricing, good for larger projects with lots of currencies. Clear docs and useful historical endpoints.
-- Practical stance: Use Frankfurter.dev for MVP + redundancy, supplement with Exchangeratesapi.io or CurrencyAPI.com as you scale and need SLAs, broader base currencies, or higher quotas.
+- **Frankfurter.dev** (Primary - Free): No API key required. Very simple latest, convert, and timeseries endpoints. Great for MVP and charting with minimal friction. Currently used in the project.
+- **CurrencyAPI.com** (Secondary - Paid): API key-based. Modern, flexible pricing, good for larger projects with lots of currencies. Provides more frequent rate updates. Currently used in the project.
+- **Exchangeratesapi.io** (Backup): API-key-based. Solid, widely used, good docs. Listed as a backup option but not currently integrated.
+- **Current implementation**: Using Frankfurter.dev as primary free API, supplemented with CurrencyAPI.com for more frequent rate updates and broader currency coverage.
 
 ## Methodology (what I searched and checked)
 
@@ -177,15 +177,16 @@ Documentation notes
 
 ## Recommendations (actionable)
 
-- MVP setup:
-    - Primary: Frankfurter.dev for live + timeseries (no key).
-    - Secondary: Exchangeratesapi.io for redundancy and broader plan-based capabilities.
-- Production scaling:
-    - Add CurrencyAPI.com or CurrencyLayer for higher quotas and stable SLAs; use a backend aggregator to unify data from two sources.
-- Architecture note:
-    - Implement a lightweight backend (Node/Go) to fetch from 2 providers, cache results, and present a unified payload to the mobile app.
-- UI/UX note:
-    - Keep a simple data model for rates: baseCurrency, targetCurrency, timestamp, rate, sourceProvider.
+- **Current implementation**:
+    - Primary: Frankfurter.dev for live + timeseries (no key) - currently active
+    - Secondary: CurrencyAPI.com for more frequent rate updates and broader currency coverage - currently active
+    - Backup: Exchangeratesapi.io documented as fallback option but not currently integrated
+- **Future scaling**:
+    - Consider implementing a lightweight backend to fetch from multiple providers, cache results, and present a unified payload to the mobile app
+    - Monitor rate limits and update frequencies to optimize between free and paid API usage
+- **Architecture note**:
+    - Current approach uses dual API strategy for reliability and performance
+    - Keep a simple data model for rates: baseCurrency, targetCurrency, timestamp, rate, sourceProvider
 
 ## Sources (docs you’ll want to consult)
 
