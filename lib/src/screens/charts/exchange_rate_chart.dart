@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
@@ -67,18 +69,11 @@ class ExchangeRateChartContent extends ConsumerWidget {
 
     // Calculate min/max for Y-axis
     final rates = dataPoints.map((p) => p.rate).toList();
-    final minRate = rates.reduce((a, b) => a < b ? a : b);
-    final maxRate = rates.reduce((a, b) => a > b ? a : b);
-
-    // Add some padding to min/max
-    final padding = (maxRate - minRate) * 0.1;
-    final yMin = minRate - padding;
-    final yMax = maxRate + padding;
-
-    // Calculate Y-axis labels (high, medium, low)
-    final yHigh = yMax;
-    final yMedium = (yMax + yMin) / 2;
-    final yLow = yMin;
+    final yMin = rates.reduce((a, b) => a < b ? a : b);
+    final yMax = rates.reduce((a, b) => a > b ? a : b);
+    final horizontalInterval = (yMax - yMin) / 2 > 0 ? (yMax - yMin) / 2 : 1.0;
+    // Sentinel variable to track median from callback values
+    //var medianLabelShown = false;
 
     return Padding(
       padding: const EdgeInsets.only(right: 16, top: 16),
@@ -102,23 +97,38 @@ class ExchangeRateChartContent extends ConsumerWidget {
                 showTitles: true,
                 reservedSize: 60,
                 getTitlesWidget: (value, meta) {
+                  final midpoint = (meta.min + meta.max) / 2;
+                  log(
+                    'value: $value, meta min: ${meta.min}, meta max: ${meta.max}, midpoint: $midpoint, horizontalInterval: $horizontalInterval',
+                  );
                   // Show only high, medium, low labels
-                  if ((value - yHigh).abs() < padding / 2) {
-                    return Text(
-                      yHigh.toStringAsFixed(4),
-                      style: Theme.of(context).textTheme.bodySmall,
+                  if (value == meta.min) {
+                    return SideTitleWidget(
+                      meta: meta,
+                      child: Text(
+                        value.toStringAsFixed(4),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     );
-                  } else if ((value - yMedium).abs() < padding / 2) {
-                    return Text(
-                      yMedium.toStringAsFixed(4),
-                      style: Theme.of(context).textTheme.bodySmall,
+                  } else if (value == meta.max) {
+                    return SideTitleWidget(
+                      meta: meta,
+                      child: Text(
+                        value.toStringAsFixed(4),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     );
-                  } else if ((value - yLow).abs() < padding / 2) {
-                    return Text(
-                      yLow.toStringAsFixed(4),
-                      style: Theme.of(context).textTheme.bodySmall,
+                  } /*else if (value > midpoint && !medianLabelShown) {
+                    medianLabelShown = true;
+                    return SideTitleWidget(
+                      meta: meta,
+                      child: Text(
+                        value.toStringAsFixed(4),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     );
-                  }
+                  }*/
+
                   return const SizedBox.shrink();
                 },
               ),
@@ -134,17 +144,26 @@ class ExchangeRateChartContent extends ConsumerWidget {
             ),
           ),
           gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            horizontalInterval: (yMax - yMin) / 2 > 0 ? (yMax - yMin) / 2 : 1,
-            getDrawingHorizontalLine: (value) {
-              return FlLine(
-                color: Colors.grey.withValues(alpha: 0.2),
-                strokeWidth: 1,
-              );
-            },
+            show: false,
+            // TODO: use this to draw middle line
+            // drawVerticalLine: false,
+            // horizontalInterval: horizontalInterval,
+            // getDrawingHorizontalLine: (value) {
+            //   return FlLine(
+            //     color: Colors.grey.withValues(alpha: 0.2),
+            //     strokeWidth: 2,
+            //   );
+            // },
           ),
-          borderData: FlBorderData(show: false),
+          borderData: FlBorderData(
+            show: true,
+            border: Border.symmetric(
+              horizontal: BorderSide(
+                color: Colors.grey.withValues(alpha: 0.8),
+                width: 1,
+              ),
+            ),
+          ),
           lineTouchData: LineTouchData(
             enabled: true,
             touchSpotThreshold: 100,
