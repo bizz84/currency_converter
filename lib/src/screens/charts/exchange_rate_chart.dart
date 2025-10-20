@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
@@ -71,9 +69,6 @@ class ExchangeRateChartContent extends ConsumerWidget {
     final rates = dataPoints.map((p) => p.rate).toList();
     final yMin = rates.reduce((a, b) => a < b ? a : b);
     final yMax = rates.reduce((a, b) => a > b ? a : b);
-    final horizontalInterval = (yMax - yMin) / 2 > 0 ? (yMax - yMin) / 2 : 1.0;
-    // Sentinel variable to track median from callback values
-    //var medianLabelShown = false;
 
     return Padding(
       padding: const EdgeInsets.only(right: 16, top: 16),
@@ -97,10 +92,6 @@ class ExchangeRateChartContent extends ConsumerWidget {
                 showTitles: true,
                 reservedSize: 60,
                 getTitlesWidget: (value, meta) {
-                  final midpoint = (meta.min + meta.max) / 2;
-                  log(
-                    'value: $value, meta min: ${meta.min}, meta max: ${meta.max}, midpoint: $midpoint, horizontalInterval: $horizontalInterval',
-                  );
                   // Show only high, medium, low labels
                   if (value == meta.min) {
                     return SideTitleWidget(
@@ -118,16 +109,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     );
-                  } /*else if (value > midpoint && !medianLabelShown) {
-                    medianLabelShown = true;
-                    return SideTitleWidget(
-                      meta: meta,
-                      child: Text(
-                        value.toStringAsFixed(4),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    );
-                  }*/
+                  }
 
                   return const SizedBox.shrink();
                 },
