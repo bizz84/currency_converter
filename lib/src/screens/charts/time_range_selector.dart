@@ -34,11 +34,6 @@ class TimeRangeSelector extends ConsumerWidget {
                 }
               },
               showCheckmark: false,
-              shape: const StadiumBorder(),
-              selectedColor: Colors.blue,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : null,
-              ),
             ),
           );
         }).toList(),

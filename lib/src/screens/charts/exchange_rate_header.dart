@@ -1,6 +1,7 @@
 import '/src/constants/app_sizes.dart';
 import '/src/screens/charts/chart_data_provider.dart';
 import '/src/screens/charts/charts_controller.dart';
+import '/src/theme/app_theme_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -112,10 +113,7 @@ class ExchangeRateHeaderContent extends StatelessWidget {
           children: [
             Text(
               '1 $baseCurrency = $rate $targetCurrency',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontFeatures: const [FontFeature.tabularFigures()],
-              ),
+              style: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
             ),
             gapW8,
             StatusIndicator(
@@ -131,7 +129,9 @@ class ExchangeRateHeaderContent extends StatelessWidget {
               TextSpan(
                 text: change,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: isPositive ? Colors.green : Colors.red,
+                  color: isPositive
+                      ? Theme.of(context).appColors.positive
+                      : Theme.of(context).appColors.negative,
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
@@ -160,8 +160,10 @@ class StatusIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = isSelected
-        ? Colors.blue
-        : (isPositive ? Colors.green : Colors.red);
+        ? Theme.of(context).colorScheme.primary
+        : (isPositive
+            ? Theme.of(context).appColors.positive
+            : Theme.of(context).appColors.negative);
 
     return Stack(
       alignment: Alignment.center,

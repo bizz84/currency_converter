@@ -85,9 +85,9 @@ class AppTheme {
         backgroundColor: Colors.transparent,
         selectedColor: colorScheme.primary, // Uses primary from seed
         disabledColor: colorScheme.surfaceContainerHighest,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        labelStyle: const TextStyle(fontSize: 14),
-        secondaryLabelStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        labelStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface),
+        secondaryLabelStyle: TextStyle(fontSize: 14, color: colorScheme.onPrimary),
         shape: const StadiumBorder(),
         side: BorderSide(color: colorScheme.outline),
         checkmarkColor: colorScheme.onPrimary,
