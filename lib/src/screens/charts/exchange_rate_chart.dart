@@ -70,120 +70,117 @@ class ExchangeRateChartContent extends ConsumerWidget {
     final yMin = rates.reduce((a, b) => a < b ? a : b);
     final yMax = rates.reduce((a, b) => a > b ? a : b);
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 16, top: 16),
-      child: LineChart(
-        LineChartData(
-          minY: yMin,
-          maxY: yMax,
-          lineBarsData: [
-            LineChartBarData(
-              spots: spots,
-              isCurved: false,
-              color: Colors.blue,
-              barWidth: 2,
-              dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: false),
+    return LineChart(
+      LineChartData(
+        minY: yMin,
+        maxY: yMax,
+        lineBarsData: [
+          LineChartBarData(
+            spots: spots,
+            isCurved: false,
+            color: Colors.blue.shade700,
+            barWidth: 2,
+            dotData: const FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+        ],
+        titlesData: FlTitlesData(
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 60,
+              getTitlesWidget: (value, meta) {
+                // Show only high, low labels
+                if (value == meta.min || value == meta.max) {
+                  return SideTitleWidget(
+                    meta: meta,
+                    child: Text(
+                      value.toStringAsFixed(4),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
             ),
-          ],
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 60,
-                getTitlesWidget: (value, meta) {
-                  // Show only high, low labels
-                  if (value == meta.min || value == meta.max) {
-                    return SideTitleWidget(
-                      meta: meta,
-                      child: Text(
-                        value.toStringAsFixed(4),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          bottomTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+        ),
+        gridData: FlGridData(
+          show: false,
+        ),
+        borderData: FlBorderData(
+          show: true,
+          border: Border.symmetric(
+            horizontal: BorderSide(
+              color: Colors.grey.withValues(alpha: 0.8),
+              width: 1,
+            ),
+          ),
+        ),
+        lineTouchData: LineTouchData(
+          enabled: true,
+          touchSpotThreshold: 100,
+          getTouchLineStart: (_, _) => -double.infinity,
+          getTouchLineEnd: (_, _) => double.infinity,
+          touchTooltipData: LineTouchTooltipData(
+            // * Return a list of null elements otherwise we get:
+            // * Exception: tooltipItems and touchedSpots size should be same
+            getTooltipItems: (spots) => List.filled(spots.length, null),
+          ),
+          getTouchedSpotIndicator: (barData, spotIndexes) {
+            return spotIndexes.map((spotIndex) {
+              return TouchedSpotIndicatorData(
+                FlLine(
+                  color: Colors.grey.withValues(alpha: 0.8),
+                  strokeWidth: 1,
+                ),
+                FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                      radius: 4,
+                      color: Colors.blue.shade700,
+                      strokeWidth: 2,
+                      strokeColor: Colors.white,
                     );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
-            rightTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            bottomTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-          ),
-          gridData: FlGridData(
-            show: false,
-          ),
-          borderData: FlBorderData(
-            show: true,
-            border: Border.symmetric(
-              horizontal: BorderSide(
-                color: Colors.grey.withValues(alpha: 0.8),
-                width: 1,
-              ),
-            ),
-          ),
-          lineTouchData: LineTouchData(
-            enabled: true,
-            touchSpotThreshold: 100,
-            getTouchLineStart: (_, _) => -double.infinity,
-            getTouchLineEnd: (_, _) => double.infinity,
-            touchTooltipData: LineTouchTooltipData(
-              // * Return a list of null elements otherwise we get:
-              // * Exception: tooltipItems and touchedSpots size should be same
-              getTooltipItems: (spots) => List.filled(spots.length, null),
-            ),
-            getTouchedSpotIndicator: (barData, spotIndexes) {
-              return spotIndexes.map((spotIndex) {
-                return TouchedSpotIndicatorData(
-                  FlLine(
-                    color: Colors.grey.withValues(alpha: 0.8),
-                    strokeWidth: 1,
-                  ),
-                  FlDotData(
-                    show: true,
-                    getDotPainter: (spot, percent, barData, index) {
-                      return FlDotCirclePainter(
-                        radius: 4,
-                        color: Colors.blue,
-                        strokeWidth: 2,
-                        strokeColor: Colors.white,
-                      );
-                    },
-                  ),
-                );
-              }).toList();
-            },
-            touchCallback: (event, response) {
-              // Clear selection when pointer leaves chart area
-              if (event is FlPanEndEvent ||
-                  event is FlPanCancelEvent ||
-                  event is FlPointerExitEvent) {
-                ref
-                    .read(chartSelectedPointProvider.notifier)
-                    .clearSelectedPoint();
-                return;
-              }
+                  },
+                ),
+              );
+            }).toList();
+          },
+          touchCallback: (event, response) {
+            // Clear selection when pointer leaves chart area
+            if (event is FlPanEndEvent ||
+                event is FlPanCancelEvent ||
+                event is FlPointerExitEvent) {
+              ref
+                  .read(chartSelectedPointProvider.notifier)
+                  .clearSelectedPoint();
+              return;
+            }
 
-              if (response?.lineBarSpots != null &&
-                  response!.lineBarSpots!.isNotEmpty) {
-                final touchedSpot = response.lineBarSpots!.first;
-                final touchedPoint = dataPoints[touchedSpot.x.toInt()];
-                ref
-                    .read(chartSelectedPointProvider.notifier)
-                    .setSelectedPoint(touchedPoint);
-              } else {
-                ref
-                    .read(chartSelectedPointProvider.notifier)
-                    .clearSelectedPoint();
-              }
-            },
-          ),
+            if (response?.lineBarSpots != null &&
+                response!.lineBarSpots!.isNotEmpty) {
+              final touchedSpot = response.lineBarSpots!.first;
+              final touchedPoint = dataPoints[touchedSpot.x.toInt()];
+              ref
+                  .read(chartSelectedPointProvider.notifier)
+                  .setSelectedPoint(touchedPoint);
+            } else {
+              ref
+                  .read(chartSelectedPointProvider.notifier)
+                  .clearSelectedPoint();
+            }
+          },
         ),
       ),
     );

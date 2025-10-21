@@ -22,7 +22,7 @@ class TimeRangeSelector extends ConsumerWidget {
         children: availableRanges.map((range) {
           final isSelected = range == selectedRange;
           return Padding(
-            padding: const EdgeInsets.only(right: Sizes.p8),
+            padding: const EdgeInsets.only(right: Sizes.p4),
             child: ChoiceChip(
               label: Text(range.label),
               selected: isSelected,
@@ -35,6 +35,10 @@ class TimeRangeSelector extends ConsumerWidget {
               },
               showCheckmark: false,
               shape: const StadiumBorder(),
+              selectedColor: Colors.blue,
+              labelStyle: TextStyle(
+                color: isSelected ? Colors.white : null,
+              ),
             ),
           );
         }).toList(),
