@@ -112,20 +112,15 @@ class ExchangeRateHeaderContent extends StatelessWidget {
           children: [
             Text(
               '1 $baseCurrency = $rate $targetCurrency',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
                 fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
             gapW8,
-            Container(
-              width: Sizes.p8,
-              height: Sizes.p8,
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? Colors.blue
-                    : (isPositive ? Colors.green : Colors.red),
-                shape: BoxShape.circle,
-              ),
+            StatusIndicator(
+              isSelected: isSelected,
+              isPositive: isPositive,
             ),
           ],
         ),
@@ -145,6 +140,51 @@ class ExchangeRateHeaderContent extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class StatusIndicator extends StatelessWidget {
+  const StatusIndicator({
+    super.key,
+    required this.isSelected,
+    required this.isPositive,
+  });
+
+  final bool isSelected;
+  final bool isPositive;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isSelected
+        ? Colors.blue
+        : (isPositive ? Colors.green : Colors.red);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outer circle (semi-transparent)
+        Container(
+          width: Sizes.p16,
+          height: Sizes.p16,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: color.withValues(alpha: 0.15),
+              width: Sizes.p4,
+            ),
+          ),
+        ),
+        // Inner circle
+        Container(
+          width: Sizes.p8,
+          height: Sizes.p8,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
           ),
         ),
       ],
