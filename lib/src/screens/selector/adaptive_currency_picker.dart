@@ -16,6 +16,7 @@ class AdaptiveCurrencyPicker {
         isScrollControlled: true,
         enableDrag: true,
         isDismissible: true,
+        backgroundColor: Colors.transparent,
         useSafeArea: true,
         builder: (context) => _AdaptiveCurrencyPickerBottomSheet(
           selectedCurrency: selectedCurrency,
