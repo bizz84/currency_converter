@@ -2,12 +2,12 @@
 
 ## Overview
 
-This document compares the reference design (`ai_specs/img/011-chart-reference.jpeg`) with the current simulator implementation (`ai_specs/img/011-chart-simulator.png`) to identify UI differences.
+This document compares the reference design (`ai_specs/img/012-chart-reference.jpeg`) with the current simulator implementation (`ai_specs/img/012-chart-simulator.png`) to identify UI differences.
 
 ## Screenshots
 
-- **Reference**: `ai_specs/img/011-chart-reference.jpeg`
-- **Simulator**: `ai_specs/img/011-chart-simulator.png`
+- **Reference**: `ai_specs/img/012-chart-reference.jpeg`
+- **Simulator**: `ai_specs/img/012-chart-simulator.png`
 
 ## UI Differences
 
