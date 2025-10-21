@@ -1,3 +1,4 @@
+import 'package:currency_converter/src/theme/app_theme_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class AmountInputField extends StatefulWidget {
 
 class _AmountInputFieldState extends State<AmountInputField> {
   late TextEditingController _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +39,7 @@ class _AmountInputFieldState extends State<AmountInputField> {
       controller: _controller,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textAlign: TextAlign.right,
-      style: Theme.of(context).textTheme.titleLarge,
+      style: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
       ],
