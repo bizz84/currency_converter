@@ -87,7 +87,10 @@ class AppTheme {
         disabledColor: colorScheme.surfaceContainerHighest,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         labelStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface),
-        secondaryLabelStyle: TextStyle(fontSize: 14, color: colorScheme.onPrimary),
+        secondaryLabelStyle: TextStyle(
+          fontSize: 14,
+          color: colorScheme.onPrimary,
+        ),
         shape: const StadiumBorder(),
         side: BorderSide(color: colorScheme.outline),
         checkmarkColor: colorScheme.onPrimary,
@@ -160,19 +163,20 @@ class AppTheme {
           negativeLight: negativeColor.withValues(alpha: 0.15),
         ),
 
-        const AppTextStyleExtension(
+        AppTextStyleExtension(
           // Currency flag emoji style
-          flagEmojiStyle: TextStyle(fontSize: 24),
+          flagEmojiStyle: const TextStyle(fontSize: 24),
 
           // Conversion amount with tabular figures for alignment
           conversionAmountStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            fontFeatures: [FontFeature.tabularFigures()],
+            fontFeatures: const [FontFeature.tabularFigures()],
+            color: colorScheme.onSurface,
           ),
 
           // Exchange rate header with tabular figures
-          exchangeRateHeaderStyle: TextStyle(
+          exchangeRateHeaderStyle: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             fontFeatures: [FontFeature.tabularFigures()],
