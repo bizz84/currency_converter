@@ -92,16 +92,8 @@ class ExchangeRateChartContent extends ConsumerWidget {
                 showTitles: true,
                 reservedSize: 60,
                 getTitlesWidget: (value, meta) {
-                  // Show only high, medium, low labels
-                  if (value == meta.min) {
-                    return SideTitleWidget(
-                      meta: meta,
-                      child: Text(
-                        value.toStringAsFixed(4),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    );
-                  } else if (value == meta.max) {
+                  // Show only high, low labels
+                  if (value == meta.min || value == meta.max) {
                     return SideTitleWidget(
                       meta: meta,
                       child: Text(
@@ -110,7 +102,6 @@ class ExchangeRateChartContent extends ConsumerWidget {
                       ),
                     );
                   }
-
                   return const SizedBox.shrink();
                 },
               ),
@@ -127,15 +118,6 @@ class ExchangeRateChartContent extends ConsumerWidget {
           ),
           gridData: FlGridData(
             show: false,
-            // TODO: use this to draw middle line
-            // drawVerticalLine: false,
-            // horizontalInterval: horizontalInterval,
-            // getDrawingHorizontalLine: (value) {
-            //   return FlLine(
-            //     color: Colors.grey.withValues(alpha: 0.2),
-            //     strokeWidth: 2,
-            //   );
-            // },
           ),
           borderData: FlBorderData(
             show: true,
