@@ -17,13 +17,13 @@ class ExchangeRatesError extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(Sizes.p16),
         child: Column(
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline,
-              size: 48,
-              color: Colors.red,
+              size: Sizes.p48,
+              color: Theme.of(context).colorScheme.error,
             ),
             gapH16,
             Text(

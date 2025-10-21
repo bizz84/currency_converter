@@ -1,5 +1,6 @@
 import '/src/constants/app_sizes.dart';
 import '/src/data/currency.dart';
+import '/src/theme/app_theme_extensions.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionTile extends StatelessWidget {
@@ -28,19 +29,19 @@ class CurrencyConversionTile extends StatelessWidget {
       onDismissed: (_) => onRemove?.call(),
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 16),
-        color: Colors.red,
-        child: const Icon(Icons.delete, color: Colors.white),
+        padding: const EdgeInsets.only(right: Sizes.p16),
+        color: Theme.of(context).colorScheme.error,
+        child: Icon(Icons.delete, color: Theme.of(context).colorScheme.onError),
       ),
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         margin: const EdgeInsets.only(bottom: 1),
         child: Material(
           color: Colors.transparent,
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
+              horizontal: Sizes.p16,
+              vertical: Sizes.p12,
             ),
             leading: Text(
               currency.flag,
@@ -60,11 +61,7 @@ class CurrencyConversionTile extends StatelessWidget {
                     if (rate != null) ...[
                       Text(
                         '${currency.symbol} ${(amount * rate!).toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontFeatures: const [FontFeature.tabularFigures()],
-                            ),
+                        style: Theme.of(context).appTextStyles.conversionAmountStyle,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -77,12 +74,8 @@ class CurrencyConversionTile extends StatelessWidget {
                     ] else
                       Text(
                         '—',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
+                        style: Theme.of(context).appTextStyles.conversionAmountStyle.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                       ),
                   ],
@@ -90,9 +83,9 @@ class CurrencyConversionTile extends StatelessWidget {
                 gapW16,
                 ReorderableDragStartListener(
                   index: index,
-                  child: const Icon(
+                  child: Icon(
                     Icons.drag_handle,
-                    color: Colors.black38,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
