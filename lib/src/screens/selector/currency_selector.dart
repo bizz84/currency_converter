@@ -1,3 +1,4 @@
+import '/src/common_widgets/currency_flag_text.dart';
 import '/src/constants/app_sizes.dart';
 import '/src/data/currency.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,7 @@ class CurrencySelector extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(
-              currency.flag,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            CurrencyFlagText(flag: currency.flag),
             gapW8,
             Text(
               currency.name,

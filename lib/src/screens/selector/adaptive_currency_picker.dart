@@ -1,3 +1,4 @@
+import '/src/common_widgets/drag_handle_widget.dart';
 import '/src/utils/should_use_bottom_sheet.dart';
 import '/src/data/currency.dart';
 import '/src/screens/selector/currency_picker_content.dart';
@@ -15,7 +16,6 @@ class AdaptiveCurrencyPicker {
         isScrollControlled: true,
         enableDrag: true,
         isDismissible: true,
-        backgroundColor: Colors.transparent,
         useSafeArea: true,
         builder: (context) => _AdaptiveCurrencyPickerBottomSheet(
           selectedCurrency: selectedCurrency,
@@ -98,16 +98,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
         ),
         child: Column(
           children: [
-            // Drag handle
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+            const DragHandleWidget(),
             // Content
             Expanded(
               child: Padding(

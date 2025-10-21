@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:currency_converter/src/app.dart';
+import 'package:currency_converter/src/theme/app_theme.dart';
 import 'package:currency_converter/src/utils/shared_preferences_provider.dart';
 import 'package:currency_converter/src/screens/convert/amount_input_field.dart';
 import 'package:currency_converter/src/storage/user_prefs_notifier.dart';
@@ -104,8 +105,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: CurrencyConverterApp(),
+          child: MaterialApp(
+            theme: AppTheme.lightTheme(),
+            home: const CurrencyConverterApp(),
           ),
         ),
       );
@@ -151,8 +153,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: CurrencyConverterApp(),
+          child: MaterialApp(
+            theme: AppTheme.lightTheme(),
+            home: const CurrencyConverterApp(),
           ),
         ),
       );
@@ -197,8 +200,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: CurrencyConverterApp(),
+          child: MaterialApp(
+            theme: AppTheme.lightTheme(),
+            home: const CurrencyConverterApp(),
           ),
         ),
       );
@@ -251,8 +255,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: CurrencyConverterApp(),
+          child: MaterialApp(
+            theme: AppTheme.lightTheme(),
+            home: const CurrencyConverterApp(),
           ),
         ),
       );
@@ -306,8 +311,9 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: CurrencyConverterApp(),
+          child: MaterialApp(
+            theme: AppTheme.lightTheme(),
+            home: const CurrencyConverterApp(),
           ),
         ),
       );
@@ -334,8 +340,8 @@ void main() {
       await tester.enterText(textField, '500');
       await tester.pumpAndSettle();
 
-      // Unfocus to trigger save
-      await tester.tap(find.text('Currency Converter'));
+      // Unfocus to trigger save by tapping the navigation bar
+      await tester.tap(find.text('Convert'));
       await tester.pumpAndSettle();
 
       // Verify it was persisted

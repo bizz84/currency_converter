@@ -122,7 +122,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
           show: true,
           border: Border.symmetric(
             horizontal: BorderSide(
-              color: Colors.grey.withValues(alpha: 0.8),
+              color: Theme.of(context).colorScheme.outlineVariant,
               width: 1,
             ),
           ),
@@ -141,7 +141,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
             return spotIndexes.map((spotIndex) {
               return TouchedSpotIndicatorData(
                 FlLine(
-                  color: Colors.grey.withValues(alpha: 0.8),
+                  color: Theme.of(context).colorScheme.outlineVariant,
                   strokeWidth: 1,
                 ),
                 FlDotData(
