@@ -1,3 +1,5 @@
+import 'package:currency_converter/src/env/env.dart';
+
 import '/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,8 +13,10 @@ class LastUpdatedWidget extends StatelessWidget {
     if (lastUpdated == null) {
       return 'Updating...';
     }
-    //return 'Last updated: ${DateFormat('d MMM yyyy - HH:mm').format(lastUpdated!)}';
-    return 'Last updated: ${DateFormat('d MMM yyyy').format(lastUpdated!)}';
+    final format = Env.converterApi == ConverterApi.currencyApi
+        ? 'd MMM yyyy - HH:mm'
+        : 'd MMM yyyy';
+    return 'Last updated: ${DateFormat(format).format(lastUpdated!)}';
   }
 
   @override
