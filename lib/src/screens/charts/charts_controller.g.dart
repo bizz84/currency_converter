@@ -41,7 +41,7 @@ final class ChartsControllerProvider
   }
 }
 
-String _$chartsControllerHash() => r'0abcc11d4e4a0f29c342ef5799d1664e5f46403c';
+String _$chartsControllerHash() => r'4c2b04ad4e50462a0bb59a22ae7530b87e3f3765';
 
 abstract class _$ChartsController extends $Notifier<ChartsState> {
   ChartsState build();

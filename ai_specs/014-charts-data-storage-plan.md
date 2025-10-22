@@ -85,11 +85,11 @@ test/src/
 - [x] Verified `user_prefs_notifier.g.dart` updates correctly
 - [x] Verified code compiles with no warnings (`flutter analyze`)
 
-### 4. Update ChartsController to use persisted state
+### 4. Update ChartsController to use persisted state ✅
 
 **File:** `lib/src/screens/charts/charts_controller.dart`
 
-- [ ] Modify `build()` method to read initial state from `userPrefsProvider`:
+- [x] Modify `build()` method to read initial state from `userPrefsProvider`:
   ```dart
   @override
   ChartsState build() {
@@ -101,7 +101,7 @@ test/src/
     );
   }
   ```
-- [ ] Update `setBaseCurrency()` to persist:
+- [x] Update `setBaseCurrency()` to persist:
   ```dart
   void setBaseCurrency(Currency currency) {
     state = state.copyWith(baseCurrency: currency);
@@ -109,9 +109,9 @@ test/src/
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
   ```
-- [ ] Update `setTargetCurrency()` to persist
-- [ ] Update `setTimeRange()` to persist
-- [ ] Update `swapCurrencies()` to persist both currencies:
+- [x] Update `setTargetCurrency()` to persist
+- [x] Update `setTimeRange()` to persist
+- [x] Update `swapCurrencies()` to persist both currencies:
   ```dart
   void swapCurrencies() {
     final newBase = state.targetCurrency;
@@ -126,7 +126,7 @@ test/src/
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
   ```
-- [ ] Verify app compiles and charts screen functions correctly
+- [x] Verify app compiles and charts screen functions correctly (`flutter analyze` passed)
 
 ### 5. Update MainScreen to persist tab selection
 
