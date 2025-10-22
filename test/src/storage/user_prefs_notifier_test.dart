@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:currency_converter/src/storage/user_prefs_notifier.dart';
 import 'package:currency_converter/src/utils/shared_preferences_provider.dart';
 import 'package:currency_converter/src/data/currency.dart';
+import 'package:currency_converter/src/data/chart_time_range.dart';
 
 void main() {
   group('UserPrefsNotifier', () {
@@ -251,6 +252,130 @@ void main() {
       expect(prefs.baseCurrency, Currency.CAD);
       expect(prefs.amount, 75.0); // unchanged
       expect(prefs.targetCurrencies, [Currency.USD, Currency.GBP]); // unchanged
+    });
+
+    test('loads saved chart preferences on initialization', () async {
+      SharedPreferences.setMockInitialValues({
+        UserPrefsNotifier.chartBaseCurrencyKey: 'USD',
+        UserPrefsNotifier.chartTargetCurrencyKey: 'JPY',
+        UserPrefsNotifier.chartTimeRangeKey: 'threeMonths',
+        UserPrefsNotifier.selectedTabIndexKey: 1,
+      });
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartBaseCurrency, Currency.USD);
+      expect(prefs.chartTargetCurrency, Currency.JPY);
+      expect(prefs.chartTimeRange, ChartTimeRange.threeMonths);
+      expect(prefs.selectedTabIndex, 1);
+    });
+
+    test('falls back to defaults for missing chart preferences', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartBaseCurrency, Currency.GBP);
+      expect(prefs.chartTargetCurrency, Currency.EUR);
+      expect(prefs.chartTimeRange, ChartTimeRange.oneYear);
+      expect(prefs.selectedTabIndex, 0);
+    });
+
+    test('updates chart base currency and persists to storage', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      container
+          .read(userPrefsProvider.notifier)
+          .updateChartBaseCurrency(Currency.CAD);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartBaseCurrency, Currency.CAD);
+
+      final sharedPrefs = await SharedPreferences.getInstance();
+      expect(
+          sharedPrefs.getString(UserPrefsNotifier.chartBaseCurrencyKey), 'CAD');
+    });
+
+    test('updates chart target currency and persists to storage', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      container
+          .read(userPrefsProvider.notifier)
+          .updateChartTargetCurrency(Currency.AUD);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartTargetCurrency, Currency.AUD);
+
+      final sharedPrefs = await SharedPreferences.getInstance();
+      expect(sharedPrefs.getString(UserPrefsNotifier.chartTargetCurrencyKey),
+          'AUD');
+    });
+
+    test('updates chart time range and persists to storage', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      container
+          .read(userPrefsProvider.notifier)
+          .updateChartTimeRange(ChartTimeRange.fiveYears);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartTimeRange, ChartTimeRange.fiveYears);
+
+      final sharedPrefs = await SharedPreferences.getInstance();
+      expect(sharedPrefs.getString(UserPrefsNotifier.chartTimeRangeKey),
+          'fiveYears');
+    });
+
+    test('updates selected tab index and persists to storage', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      container.read(userPrefsProvider.notifier).updateSelectedTabIndex(1);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.selectedTabIndex, 1);
+
+      final sharedPrefs = await SharedPreferences.getInstance();
+      expect(sharedPrefs.getInt(UserPrefsNotifier.selectedTabIndexKey), 1);
+    });
+
+    test('maintains convert preferences when updating chart preferences',
+        () async {
+      SharedPreferences.setMockInitialValues({
+        UserPrefsNotifier.baseCurrencyKey: 'EUR',
+        UserPrefsNotifier.amountKey: 75.0,
+        UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
+      });
+
+      container = ProviderContainer();
+      await container.read(sharedPreferencesProvider.future);
+
+      // Update chart base currency
+      container
+          .read(userPrefsProvider.notifier)
+          .updateChartBaseCurrency(Currency.JPY);
+
+      final prefs = container.read(userPrefsProvider);
+      expect(prefs.chartBaseCurrency, Currency.JPY);
+      // Convert preferences should be unchanged
+      expect(prefs.baseCurrency, Currency.EUR);
+      expect(prefs.amount, 75.0);
+      expect(prefs.targetCurrencies, [Currency.USD, Currency.GBP]);
     });
   });
 }
