@@ -110,9 +110,15 @@ class AppTextStyleExtension extends ThemeExtension<AppTextStyleExtension> {
     return AppTextStyleExtension(
       flagEmojiStyle: TextStyle.lerp(flagEmojiStyle, other.flagEmojiStyle, t)!,
       conversionAmountStyle: TextStyle.lerp(
-          conversionAmountStyle, other.conversionAmountStyle, t)!,
+        conversionAmountStyle,
+        other.conversionAmountStyle,
+        t,
+      )!,
       exchangeRateHeaderStyle: TextStyle.lerp(
-          exchangeRateHeaderStyle, other.exchangeRateHeaderStyle, t)!,
+        exchangeRateHeaderStyle,
+        other.exchangeRateHeaderStyle,
+        t,
+      )!,
     );
   }
 }
@@ -120,5 +126,6 @@ class AppTextStyleExtension extends ThemeExtension<AppTextStyleExtension> {
 /// Extension to access custom theme extensions easily
 extension AppThemeExtensions on ThemeData {
   AppColorExtension get appColors => extension<AppColorExtension>()!;
-  AppTextStyleExtension get appTextStyles => extension<AppTextStyleExtension>()!;
+  AppTextStyleExtension get appTextStyles =>
+      extension<AppTextStyleExtension>()!;
 }

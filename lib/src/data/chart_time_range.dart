@@ -7,7 +7,13 @@ enum ChartTimeRange {
   fiveYears('5Y', 'Past 5 years', 0, 0, 5),
   tenYears('10Y', 'Past 10 years', 0, 0, 10);
 
-  const ChartTimeRange(this.label, this.description, this.days, this.months, this.years);
+  const ChartTimeRange(
+    this.label,
+    this.description,
+    this.days,
+    this.months,
+    this.years,
+  );
   final String label;
   final String description;
   final int days;

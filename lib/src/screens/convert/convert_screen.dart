@@ -44,11 +44,13 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
   Widget build(BuildContext context) {
     // Use provider state with selector to only rebuild when convert-related fields change
     final (baseCurrency, amount, targetCurrencies) = ref.watch(
-      userPrefsProvider.select((prefs) => (
-        prefs.baseCurrency,
-        prefs.amount,
-        prefs.targetCurrencies,
-      )),
+      userPrefsProvider.select(
+        (prefs) => (
+          prefs.baseCurrency,
+          prefs.amount,
+          prefs.targetCurrencies,
+        ),
+      ),
     );
 
     final ratesAsync = ref.watch(latestRatesProvider(baseCurrency));

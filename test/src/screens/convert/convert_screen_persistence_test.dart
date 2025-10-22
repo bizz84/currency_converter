@@ -161,7 +161,9 @@ void main() {
 
       // Verify it was persisted
       final prefs = await SharedPreferences.getInstance();
-      final savedCurrencies = prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey);
+      final savedCurrencies = prefs.getStringList(
+        UserPrefsNotifier.targetCurrenciesKey,
+      );
       expect(savedCurrencies, contains('USD'));
       expect(savedCurrencies, contains('EUR'));
     });
@@ -213,7 +215,9 @@ void main() {
 
       // Verify it was persisted
       final prefs = await SharedPreferences.getInstance();
-      final savedCurrencies = prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey);
+      final savedCurrencies = prefs.getStringList(
+        UserPrefsNotifier.targetCurrenciesKey,
+      );
       expect(savedCurrencies, isNot(contains('USD')));
       expect(savedCurrencies, contains('EUR'));
       expect(savedCurrencies, contains('JPY'));

@@ -62,5 +62,4 @@ class CurrencyRates {
       rates: adjustedRates,
     );
   }
-
 }

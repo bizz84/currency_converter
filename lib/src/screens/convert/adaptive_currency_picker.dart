@@ -246,7 +246,11 @@ class _CurrencyPickerContentState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline, size: Sizes.p48, color: Theme.of(context).colorScheme.error),
+            Icon(
+              Icons.error_outline,
+              size: Sizes.p48,
+              color: Theme.of(context).colorScheme.error,
+            ),
             gapH16,
             const Text('Failed to load currencies'),
             gapH8,

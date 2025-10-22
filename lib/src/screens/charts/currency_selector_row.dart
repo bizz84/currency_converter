@@ -24,7 +24,9 @@ class CurrencySelectorRow extends ConsumerWidget {
                 inUseCurrencies: [chartsState.targetCurrency],
               );
               if (currency != null) {
-                ref.read(chartsControllerProvider.notifier).setBaseCurrency(currency);
+                ref
+                    .read(chartsControllerProvider.notifier)
+                    .setBaseCurrency(currency);
               }
             },
           ),
@@ -47,7 +49,9 @@ class CurrencySelectorRow extends ConsumerWidget {
                 inUseCurrencies: [chartsState.baseCurrency],
               );
               if (currency != null) {
-                ref.read(chartsControllerProvider.notifier).setTargetCurrency(currency);
+                ref
+                    .read(chartsControllerProvider.notifier)
+                    .setTargetCurrency(currency);
               }
             },
           ),

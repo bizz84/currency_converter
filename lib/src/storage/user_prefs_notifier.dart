@@ -102,7 +102,8 @@ class UserPrefsNotifier extends _$UserPrefsNotifier {
         ? ChartTimeRange.values.byName(chartTimeRangeName)
         : UserPrefs.defaults.chartTimeRange;
 
-    final selectedTabIndex = _prefs.getInt(selectedTabIndexKey) ??
+    final selectedTabIndex =
+        _prefs.getInt(selectedTabIndexKey) ??
         UserPrefs.defaults.selectedTabIndex;
 
     return UserPrefs(

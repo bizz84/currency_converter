@@ -90,15 +90,24 @@ void main() {
         final responseData = {
           'data': {
             'USD': {
-              'symbol': '\$','name': 'US Dollar','code': 'USD','type': 'fiat'
+              'symbol': '\$',
+              'name': 'US Dollar',
+              'code': 'USD',
+              'type': 'fiat',
             },
             'EUR': {
-              'symbol': '€','name': 'Euro','code': 'EUR','type': 'fiat'
+              'symbol': '€',
+              'name': 'Euro',
+              'code': 'EUR',
+              'type': 'fiat',
             },
             'ZZZ': {
-              'symbol': 'Z','name': 'Test','code': 'ZZZ','type': 'fiat'
+              'symbol': 'Z',
+              'name': 'Test',
+              'code': 'ZZZ',
+              'type': 'fiat',
             },
-          }
+          },
         };
 
         dioAdapter.onGet(

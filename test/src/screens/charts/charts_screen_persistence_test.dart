@@ -27,8 +27,9 @@ void main() {
       container.dispose();
     });
 
-    testWidgets('restores saved chart preferences on app start',
-        (tester) async {
+    testWidgets('restores saved chart preferences on app start', (
+      tester,
+    ) async {
       // Set up the mock Dio adapter
       final dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
@@ -79,8 +80,9 @@ void main() {
       expect(threeMonthsButton, findsOneWidget);
     });
 
-    testWidgets('uses default chart preferences when none saved',
-        (tester) async {
+    testWidgets('uses default chart preferences when none saved', (
+      tester,
+    ) async {
       // Set up the mock Dio adapter
       final dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
@@ -132,8 +134,9 @@ void main() {
       expect(find.text('1Y'), findsOneWidget);
     });
 
-    testWidgets('app opens on Charts tab when it was last selected',
-        (tester) async {
+    testWidgets('app opens on Charts tab when it was last selected', (
+      tester,
+    ) async {
       // Set up the mock Dio adapter
       final dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
@@ -223,60 +226,64 @@ void main() {
       expect(prefs.getString(UserPrefsNotifier.chartTimeRangeKey), 'fiveYears');
     });
 
-    testWidgets('maintains convert preferences when changing chart preferences',
-        (tester) async {
-      // Set up the mock Dio adapter
-      final dio = Dio();
-      dioAdapter = DioAdapter(dio: dio);
-      setupMockLatestRates(dioAdapter, Currency.EUR);
-      setupMockTimeSeriesRates(
-        dioAdapter,
-        Currency.GBP,
-        Currency.EUR,
-        '2024-01-01',
-        '2024-12-31',
-      );
-      setupMockCurrencies(dioAdapter);
+    testWidgets(
+      'maintains convert preferences when changing chart preferences',
+      (tester) async {
+        // Set up the mock Dio adapter
+        final dio = Dio();
+        dioAdapter = DioAdapter(dio: dio);
+        setupMockLatestRates(dioAdapter, Currency.EUR);
+        setupMockTimeSeriesRates(
+          dioAdapter,
+          Currency.GBP,
+          Currency.EUR,
+          '2024-01-01',
+          '2024-12-31',
+        );
+        setupMockCurrencies(dioAdapter);
 
-      // Create container with convert preferences set
-      container = await createTestContainer(
-        mockPreferences: {
-          UserPrefsNotifier.baseCurrencyKey: 'EUR',
-          UserPrefsNotifier.amountKey: 250.0,
-          UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
-          UserPrefsNotifier.selectedTabIndexKey: 1,
-        },
-        overrides: [dioProvider.overrideWithValue(dio)],
-      );
+        // Create container with convert preferences set
+        container = await createTestContainer(
+          mockPreferences: {
+            UserPrefsNotifier.baseCurrencyKey: 'EUR',
+            UserPrefsNotifier.amountKey: 250.0,
+            UserPrefsNotifier.targetCurrenciesKey: ['USD', 'GBP'],
+            UserPrefsNotifier.selectedTabIndexKey: 1,
+          },
+          overrides: [dioProvider.overrideWithValue(dio)],
+        );
 
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: MaterialApp(
-            theme: AppTheme.lightTheme(),
-            home: const CurrencyConverterApp(),
+        await tester.pumpWidget(
+          UncontrolledProviderScope(
+            container: container,
+            child: MaterialApp(
+              theme: AppTheme.lightTheme(),
+              home: const CurrencyConverterApp(),
+            ),
           ),
-        ),
-      );
+        );
 
-      // Wait for the screen to load (Charts tab)
-      await tester.pumpAndSettle();
+        // Wait for the screen to load (Charts tab)
+        await tester.pumpAndSettle();
 
-      // Change time range on Charts
-      await tester.tap(find.text('3M'));
-      await tester.pumpAndSettle();
+        // Change time range on Charts
+        await tester.tap(find.text('3M'));
+        await tester.pumpAndSettle();
 
-      // Navigate back to Convert
-      await tester.tap(find.text('Convert'));
-      await tester.pumpAndSettle();
+        // Navigate back to Convert
+        await tester.tap(find.text('Convert'));
+        await tester.pumpAndSettle();
 
-      // Verify convert preferences unchanged
-      final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getString(UserPrefsNotifier.baseCurrencyKey), 'EUR');
-      expect(prefs.getDouble(UserPrefsNotifier.amountKey), 250.0);
-      expect(prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey),
-          ['USD', 'GBP']);
-    });
+        // Verify convert preferences unchanged
+        final prefs = await SharedPreferences.getInstance();
+        expect(prefs.getString(UserPrefsNotifier.baseCurrencyKey), 'EUR');
+        expect(prefs.getDouble(UserPrefsNotifier.amountKey), 250.0);
+        expect(prefs.getStringList(UserPrefsNotifier.targetCurrenciesKey), [
+          'USD',
+          'GBP',
+        ]);
+      },
+    );
 
     testWidgets('tab selection persists across navigation', (tester) async {
       // Set up the mock Dio adapter

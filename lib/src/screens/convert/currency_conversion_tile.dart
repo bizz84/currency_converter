@@ -61,7 +61,9 @@ class CurrencyConversionTile extends StatelessWidget {
                     if (rate != null) ...[
                       Text(
                         '${currency.symbol} ${(amount * rate!).toStringAsFixed(2)}',
-                        style: Theme.of(context).appTextStyles.conversionAmountStyle,
+                        style: Theme.of(
+                          context,
+                        ).appTextStyles.conversionAmountStyle,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -74,8 +76,13 @@ class CurrencyConversionTile extends StatelessWidget {
                     ] else
                       Text(
                         '—',
-                        style: Theme.of(context).appTextStyles.conversionAmountStyle.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        style: Theme.of(context)
+                            .appTextStyles
+                            .conversionAmountStyle
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                       ),
                   ],

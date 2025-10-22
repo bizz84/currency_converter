@@ -17,4 +17,3 @@ extension CurrencyRatesTestX on CurrencyRates {
     return '$y-$m-$d';
   }
 }
-

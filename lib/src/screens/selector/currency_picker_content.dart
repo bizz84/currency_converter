@@ -28,8 +28,7 @@ class CurrencyPickerContent extends ConsumerStatefulWidget {
       _CurrencyPickerContentState();
 }
 
-class _CurrencyPickerContentState
-    extends ConsumerState<CurrencyPickerContent> {
+class _CurrencyPickerContentState extends ConsumerState<CurrencyPickerContent> {
   late TextEditingController _searchController;
   String _searchQuery = '';
 
@@ -135,21 +134,24 @@ class _CurrencyPickerData extends StatelessWidget {
         .toList();
 
     // Build RECENT section: in-use currencies + MRU, deduplicated
-    final recentSection = <Currency>[
-      ...inUseCurrenciesList,
-      ...recentCurrencies.where((c) => !inUseCurrenciesList.contains(c)),
-    ]
-        .where(
-          (currency) =>
-              !inUseCurrenciesList.contains(currency) &&
-              (currency.name.toLowerCase().contains(
-                    searchQuery.toLowerCase(),
-                  ) ||
-                  currency.desc.toLowerCase().contains(
-                    searchQuery.toLowerCase(),
-                  )),
-        )
-        .toList();
+    final recentSection =
+        <Currency>[
+              ...inUseCurrenciesList,
+              ...recentCurrencies.where(
+                (c) => !inUseCurrenciesList.contains(c),
+              ),
+            ]
+            .where(
+              (currency) =>
+                  !inUseCurrenciesList.contains(currency) &&
+                  (currency.name.toLowerCase().contains(
+                        searchQuery.toLowerCase(),
+                      ) ||
+                      currency.desc.toLowerCase().contains(
+                        searchQuery.toLowerCase(),
+                      )),
+            )
+            .toList();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -203,8 +205,8 @@ class _CurrencyPickerData extends StatelessWidget {
                   child: Text(
                     'RECENT',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
                 ...recentSection.map((currency) {
@@ -231,8 +233,8 @@ class _CurrencyPickerData extends StatelessWidget {
                 child: Text(
                   'ALL',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
               ),
               ...allCurrencies.map((currency) {

@@ -162,8 +162,8 @@ class StatusIndicator extends StatelessWidget {
     final color = isSelected
         ? Theme.of(context).colorScheme.primary
         : (isPositive
-            ? Theme.of(context).appColors.positive
-            : Theme.of(context).appColors.negative);
+              ? Theme.of(context).appColors.positive
+              : Theme.of(context).appColors.negative);
 
     return Stack(
       alignment: Alignment.center,
