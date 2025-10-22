@@ -1,4 +1,6 @@
 ### Exchangeratesapi.io API Tests (Requires API key)
+### See pricing: https://exchangeratesapi.io/#pricing_plan
+
 # API key is loaded from .env file
 @apiKey = {{$dotenv EXCHANGERATESAPI_KEY}}
 
@@ -7,17 +9,17 @@ GET https://api.exchangeratesapi.io/v1/latest?access_key={{apiKey}}&base=USD&sym
 
 ###
 
-### Get historical rates for specific date
+### Get historical rates for specific date (requires starter plan)
 GET https://api.exchangeratesapi.io/v1/2024-01-01?access_key={{apiKey}}&base=USD&symbols=GBP,EUR
 
 ###
 
-### Get time series data
+### Get time series data (requires professional plan)
 GET https://api.exchangeratesapi.io/v1/timeseries?access_key={{apiKey}}&start_date=2024-01-01&end_date=2024-01-31&base=USD&symbols=GBP,EUR
 
 ###
 
-### Convert specific amount (if supported by plan)
+### Convert specific amount (requires starter plan)
 GET https://api.exchangeratesapi.io/v1/convert?access_key={{apiKey}}&from=USD&to=GBP&amount=100
 
 ###
