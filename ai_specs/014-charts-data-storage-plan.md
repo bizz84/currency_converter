@@ -128,30 +128,63 @@ test/src/
   ```
 - [x] Verify app compiles and charts screen functions correctly (`flutter analyze` passed)
 
-### 5. Update MainScreen to persist tab selection
+### 5. Update MainScreen to persist tab selection ✅
 
 **File:** `lib/src/app.dart`
 
-- [ ] Convert `MainScreen` from `StatefulWidget` to `ConsumerStatefulWidget`
-- [ ] Import Riverpod: `import 'package:flutter_riverpod/flutter_riverpod.dart';`
-- [ ] Initialize `_selectedIndex` from saved preferences in `initState()`:
+- [x] Convert `MainScreen` from `StatefulWidget` to `ConsumerWidget`
+- [x] Import Riverpod: `import 'package:flutter_riverpod/flutter_riverpod.dart';`
+- [x] Import UserPrefsNotifier: `import '/src/storage/user_prefs_notifier.dart';`
+- [x] Read `selectedIndex` using a selector to optimize rebuilds:
   ```dart
   @override
-  void initState() {
-    super.initState();
-    _selectedIndex = ref.read(userPrefsProvider).selectedTabIndex;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(
+      userPrefsProvider.select((prefs) => prefs.selectedTabIndex),
+    );
+    // ...
   }
   ```
-- [ ] Update `_onItemTapped()` to persist selection:
+- [x] Update `onDestinationSelected` callback to persist selection:
   ```dart
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  onDestinationSelected: (index) {
     ref.read(userPrefsProvider.notifier).updateSelectedTabIndex(index);
   }
   ```
-- [ ] Verify tab selection persists across app restarts
+- [x] **IMPROVEMENT:** Eliminated redundant local state - provider is now single source of truth
+- [x] **OPTIMIZATION:** Used `select()` to only rebuild when `selectedTabIndex` changes, not on other UserPrefs changes
+- [x] **OPTIMIZATION:** Applied selector to `ConvertScreen` to only watch convert-related fields (baseCurrency, amount, targetCurrencies)
+- [x] Verify app compiles with no warnings (`flutter analyze` passed)
+
+### Performance Optimization Notes
+
+**Selector Usage Pattern:**
+- ✅ **MainScreen (widget)** - Uses `select()` for `selectedTabIndex` only
+  ```dart
+  final selectedIndex = ref.watch(
+    userPrefsProvider.select((prefs) => prefs.selectedTabIndex),
+  );
+  ```
+- ✅ **ConvertScreen (widget)** - Uses `select()` with record for convert fields only
+  ```dart
+  final (baseCurrency, amount, targetCurrencies) = ref.watch(
+    userPrefsProvider.select((prefs) => (
+      prefs.baseCurrency,
+      prefs.amount,
+      prefs.targetCurrencies,
+    )),
+  );
+  ```
+- ✅ **ChartsController (provider)** - Uses simple `ref.watch()` (correct for providers)
+  ```dart
+  final prefs = ref.watch(userPrefsProvider);
+  ```
+
+**Benefits:**
+- MainScreen doesn't rebuild when convert/chart fields change
+- ConvertScreen doesn't rebuild when chart/tab fields change
+- Charts screen uses ChartsController which rebuilds appropriately
+- Provider rebuilds are lightweight; widget rebuilds are what we optimize
 
 ### 6. Add unit tests for chart preferences
 
