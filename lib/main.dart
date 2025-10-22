@@ -10,6 +10,7 @@ import '/src/app.dart';
 import '/src/utils/shared_preferences_provider.dart';
 import '/src/env/env.dart';
 import '/src/common_widgets/show_alert_dialog.dart';
+import '/src/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,13 +58,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Currency Converter',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme(),
       navigatorKey: _rootNavigatorKey,
       builder: (context, child) {
         return ForceUpdateWidget(

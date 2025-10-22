@@ -1,3 +1,5 @@
+import '/src/common_widgets/currency_flag_text.dart';
+import '/src/common_widgets/error_state_widget.dart';
 import '/src/constants/app_sizes.dart';
 import '/src/data/currency.dart';
 import '/src/data/currencies.dart';
@@ -76,15 +78,7 @@ class _CurrencyPickerContentState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-            gapH16,
-            const Text('Failed to load currencies'),
-            gapH8,
-            Text(
-              error.toString(),
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
+            const ErrorStateWidget(message: 'Failed to load currencies'),
             gapH16,
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -216,10 +210,7 @@ class _CurrencyPickerData extends StatelessWidget {
                 ...recentSection.map((currency) {
                   final isSelected = currency == selectedCurrency;
                   return ListTile(
-                    leading: Text(
-                      currency.flag,
-                      style: const TextStyle(fontSize: 24),
-                    ),
+                    leading: CurrencyFlagText(flag: currency.flag),
                     title: Text(currency.name),
                     subtitle: Text(currency.desc),
                     trailing: isSelected
@@ -247,10 +238,7 @@ class _CurrencyPickerData extends StatelessWidget {
               ...allCurrencies.map((currency) {
                 final isSelected = currency == selectedCurrency;
                 return ListTile(
-                  leading: Text(
-                    currency.flag,
-                    style: const TextStyle(fontSize: 24),
-                  ),
+                  leading: CurrencyFlagText(flag: currency.flag),
                   title: Text(currency.name),
                   subtitle: Text(currency.desc),
                   trailing: isSelected

@@ -1,10 +1,12 @@
+import '/src/common_widgets/currency_flag_text.dart';
+import '/src/common_widgets/drag_handle_widget.dart';
 import '/src/constants/app_sizes.dart';
-import '/src/utils/should_use_bottom_sheet.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/src/data/currency.dart';
 import '/src/network/api_client.dart';
 import '/src/storage/recent_currencies_storage.dart';
+import '/src/utils/should_use_bottom_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AdaptiveCurrencyPicker {
   static Future<Currency?> show(
@@ -180,10 +182,7 @@ class _CurrencyPickerContentState
                     ...recentSection.map((currency) {
                       final isSelected = currency == widget.selectedCurrency;
                       return ListTile(
-                        leading: Text(
-                          currency.flag,
-                          style: const TextStyle(fontSize: 24),
-                        ),
+                        leading: CurrencyFlagText(flag: currency.flag),
                         title: Text(currency.name),
                         subtitle: Text(currency.desc),
                         trailing: isSelected
@@ -211,10 +210,7 @@ class _CurrencyPickerContentState
                   ...allCurrencies.map((currency) {
                     final isSelected = currency == widget.selectedCurrency;
                     return ListTile(
-                      leading: Text(
-                        currency.flag,
-                        style: const TextStyle(fontSize: 24),
-                      ),
+                      leading: CurrencyFlagText(flag: currency.flag),
                       title: Text(currency.name),
                       subtitle: Text(currency.desc),
                       trailing: isSelected
@@ -246,11 +242,11 @@ class _CurrencyPickerContentState
         ),
       ),
       error: (error, stack) => Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(Sizes.p32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: Colors.red),
+            Icon(Icons.error_outline, size: Sizes.p48, color: Theme.of(context).colorScheme.error),
             gapH16,
             const Text('Failed to load currencies'),
             gapH8,
@@ -336,15 +332,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
         child: Column(
           children: [
             // Drag handle
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+            const DragHandleWidget(),
             // Content
             Expanded(
               child: Padding(

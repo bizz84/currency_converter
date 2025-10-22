@@ -2,6 +2,7 @@ import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/screens/charts/chart_data_provider.dart';
 import '/src/screens/charts/charts_controller.dart';
+import '/src/theme/app_theme_extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +79,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
           LineChartBarData(
             spots: spots,
             isCurved: false,
-            color: Colors.blue.shade700,
+            color: Theme.of(context).appColors.chartLine,
             barWidth: 2,
             dotData: const FlDotData(show: false),
             belowBarData: BarAreaData(show: false),
@@ -121,7 +122,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
           show: true,
           border: Border.symmetric(
             horizontal: BorderSide(
-              color: Colors.grey.withValues(alpha: 0.8),
+              color: Theme.of(context).colorScheme.outlineVariant,
               width: 1,
             ),
           ),
@@ -140,7 +141,7 @@ class ExchangeRateChartContent extends ConsumerWidget {
             return spotIndexes.map((spotIndex) {
               return TouchedSpotIndicatorData(
                 FlLine(
-                  color: Colors.grey.withValues(alpha: 0.8),
+                  color: Theme.of(context).colorScheme.outlineVariant,
                   strokeWidth: 1,
                 ),
                 FlDotData(
@@ -148,9 +149,9 @@ class ExchangeRateChartContent extends ConsumerWidget {
                   getDotPainter: (spot, percent, barData, index) {
                     return FlDotCirclePainter(
                       radius: 4,
-                      color: Colors.blue.shade700,
+                      color: Theme.of(context).appColors.chartDot,
                       strokeWidth: 2,
-                      strokeColor: Colors.white,
+                      strokeColor: Theme.of(context).colorScheme.surface,
                     );
                   },
                 ),
