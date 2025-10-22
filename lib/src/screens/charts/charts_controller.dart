@@ -1,6 +1,7 @@
 import '/src/data/chart_data_point.dart';
 import '/src/data/chart_time_range.dart';
 import '/src/data/currency.dart';
+import '/src/storage/user_prefs_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'charts_controller.g.dart';
@@ -33,33 +34,42 @@ class ChartsState {
 class ChartsController extends _$ChartsController {
   @override
   ChartsState build() {
-    return const ChartsState(
-      baseCurrency: Currency.GBP,
-      targetCurrency: Currency.EUR,
-      timeRange: ChartTimeRange.oneYear,
+    final prefs = ref.watch(userPrefsProvider);
+    return ChartsState(
+      baseCurrency: prefs.chartBaseCurrency,
+      targetCurrency: prefs.chartTargetCurrency,
+      timeRange: prefs.chartTimeRange,
     );
   }
 
   void setBaseCurrency(Currency currency) {
     state = state.copyWith(baseCurrency: currency);
+    ref.read(userPrefsProvider.notifier).updateChartBaseCurrency(currency);
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void setTargetCurrency(Currency currency) {
     state = state.copyWith(targetCurrency: currency);
+    ref.read(userPrefsProvider.notifier).updateChartTargetCurrency(currency);
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void setTimeRange(ChartTimeRange range) {
     state = state.copyWith(timeRange: range);
+    ref.read(userPrefsProvider.notifier).updateChartTimeRange(range);
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 
   void swapCurrencies() {
+    final newBase = state.targetCurrency;
+    final newTarget = state.baseCurrency;
     state = state.copyWith(
-      baseCurrency: state.targetCurrency,
-      targetCurrency: state.baseCurrency,
+      baseCurrency: newBase,
+      targetCurrency: newTarget,
     );
+    final notifier = ref.read(userPrefsProvider.notifier);
+    notifier.updateChartBaseCurrency(newBase);
+    notifier.updateChartTargetCurrency(newTarget);
     ref.read(chartSelectedPointProvider.notifier).clearSelectedPoint();
   }
 }

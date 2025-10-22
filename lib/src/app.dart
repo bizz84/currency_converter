@@ -1,5 +1,7 @@
 import '/src/common_widgets/responsive_constrained_box.dart';
+import '/src/storage/user_prefs_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/convert/convert_screen.dart';
 import 'screens/charts/charts_screen.dart';
 
@@ -14,34 +16,27 @@ class CurrencyConverterApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = const [
+  static const _screens = [
     ConvertScreen(),
     ChartsScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(
+      userPrefsProvider.select((prefs) => prefs.selectedTabIndex),
+    );
+
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: _screens[selectedIndex],
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onItemTapped,
+        selectedIndex: selectedIndex,
+        onDestinationSelected: (index) {
+          ref.read(userPrefsProvider.notifier).updateSelectedTabIndex(index);
+        },
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.currency_exchange),
