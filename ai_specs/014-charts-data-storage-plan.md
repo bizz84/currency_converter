@@ -39,49 +39,51 @@ test/src/
 
 ## Implementation Tasks
 
-### 1. Extend UserPrefs data model
+### 1. Extend UserPrefs data model ✅
 
 **File:** `lib/src/storage/user_prefs_notifier.dart`
 
-- [ ] Add chart-related fields to `UserPrefs` class:
+- [x] Add chart-related fields to `UserPrefs` class:
   - `chartBaseCurrency: Currency`
   - `chartTargetCurrency: Currency`
   - `chartTimeRange: ChartTimeRange`
   - `selectedTabIndex: int`
-- [ ] Update `UserPrefs.defaults` constant:
+- [x] Update `UserPrefs.defaults` constant:
   - chartBaseCurrency: `Currency.GBP`
   - chartTargetCurrency: `Currency.EUR`
   - chartTimeRange: `ChartTimeRange.oneYear`
   - selectedTabIndex: `0`
-- [ ] Keep all fields in same class for simplicity
+- [x] Keep all fields in same class for simplicity
+- [x] **BONUS:** Added `copyWith` method to make state updates more concise and maintainable
 
-### 2. Add storage keys and methods to UserPrefsNotifier
+### 2. Add storage keys and methods to UserPrefsNotifier ✅
 
 **File:** `lib/src/storage/user_prefs_notifier.dart`
 
-- [ ] Add storage keys as static constants (following existing pattern):
+- [x] Add storage keys as static constants (following existing pattern):
   - `chartBaseCurrencyKey = 'user_prefs/chart_base_currency'`
   - `chartTargetCurrencyKey = 'user_prefs/chart_target_currency'`
   - `chartTimeRangeKey = 'user_prefs/chart_time_range'`
   - `selectedTabIndexKey = 'user_prefs/selected_tab_index'`
-- [ ] Update `build()` method to load chart preferences:
+- [x] Update `build()` method to load chart preferences:
   - Read each key from SharedPreferences
   - Parse enum names for Currency and ChartTimeRange
   - Fall back to defaults for missing/invalid values
-- [ ] Add update methods:
+- [x] Add update methods:
   - `updateChartBaseCurrency(Currency currency)`
   - `updateChartTargetCurrency(Currency currency)`
   - `updateChartTimeRange(ChartTimeRange range)`
   - `updateSelectedTabIndex(int index)`
-- [ ] Each update method should:
-  - Update state with new value
+- [x] Each update method should:
+  - Update state with new value (using `copyWith`)
   - Persist to SharedPreferences
+- [x] Refactored all existing update methods to use `copyWith`
 
-### 3. Run build_runner
+### 3. Run build_runner ✅
 
-- [ ] Build runner is assumed to be in watch mode (will auto-generate)
-- [ ] If needed: `dart run build_runner build -d`
-- [ ] Verify `user_prefs_notifier.g.dart` updates correctly
+- [x] Build runner is assumed to be in watch mode (auto-generated)
+- [x] Verified `user_prefs_notifier.g.dart` updates correctly
+- [x] Verified code compiles with no warnings (`flutter analyze`)
 
 ### 4. Update ChartsController to use persisted state
 
