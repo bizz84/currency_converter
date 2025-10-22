@@ -3,6 +3,12 @@
 - [ ] Built-in keyboard on mobile (more control, no delay for keyboard to appear, built-in done button to dismiss)
 - [ ] Cache API responses to avoid unnecessary API calls
 
+## 0.2.1
+
+- Chart UI tweaks
+- Updated app theming system
+- Save charts user preferences to local storage
+
 ## 0.2.0
 
 - Charts screen:
