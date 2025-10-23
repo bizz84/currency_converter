@@ -7,10 +7,11 @@ import 'package:force_update_helper/force_update_helper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '/src/app.dart';
-import '/src/utils/shared_preferences_provider.dart';
-import '/src/env/env.dart';
 import '/src/common_widgets/show_alert_dialog.dart';
+import '/src/env/env.dart';
 import '/src/theme/app_theme.dart';
+import '/src/utils/package_info_provider.dart';
+import '/src/utils/shared_preferences_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,7 @@ void main() async {
   final container = ProviderContainer();
   // Eagerly initialize SharedPreferences
   await container.read(sharedPreferencesProvider.future);
+  await container.read(packageInfoProvider.future);
 
   runApp(
     UncontrolledProviderScope(
