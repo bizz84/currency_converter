@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:currency_converter/src/utils/package_info_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ void main() async {
   final container = ProviderContainer();
   // Eagerly initialize SharedPreferences
   await container.read(sharedPreferencesProvider.future);
+  await container.read(packageInfoProvider.future);
 
   runApp(
     UncontrolledProviderScope(

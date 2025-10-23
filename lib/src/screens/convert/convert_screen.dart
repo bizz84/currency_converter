@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:currency_converter/src/screens/settings/settings_screen.dart';
+
 import '/src/common_widgets/sliver_sized_box.dart';
 import '/src/screens/convert/base_currency_widget.dart';
 import '/src/screens/convert/currency_conversion_tile.dart';
@@ -63,6 +65,17 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Converter'),
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const SettingsScreen(),
+                ),
+              ),
+              icon: const Icon(Icons.settings),
+            ),
+          ],
           centerTitle: true,
           elevation: 0,
         ),
