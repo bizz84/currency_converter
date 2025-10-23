@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:currency_converter/src/screens/settings/settings_screen.dart';
-
+import '../../common_widgets/app_info_widget.dart';
 import '/src/common_widgets/sliver_sized_box.dart';
+import '/src/common_widgets/show_info_dialog.dart';
 import '/src/screens/convert/base_currency_widget.dart';
 import '/src/screens/convert/currency_conversion_tile.dart';
 import '/src/screens/convert/currency_section_header.dart';
@@ -67,13 +67,11 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
           title: const Text('Converter'),
           actions: [
             IconButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => const SettingsScreen(),
-                ),
+              onPressed: () => showInfoDialog(
+                context: context,
+                content: const AppInfoWidget(),
               ),
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.info),
             ),
           ],
           centerTitle: true,
