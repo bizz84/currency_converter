@@ -33,7 +33,8 @@ enum Currency {
   COP(desc: 'Colombian Peso', symbol: '\$', flag: '🇨🇴'),
   SAR(desc: 'Saudi Riyal', symbol: '﷼', flag: '🇸🇦'),
   MYR(desc: 'Malaysian Ringgit', symbol: 'RM', flag: '🇲🇾'),
-  RON(desc: 'Romanian Leu', symbol: 'lei', flag: '🇷🇴');
+  RON(desc: 'Romanian Leu', symbol: 'lei', flag: '🇷🇴')
+  ;
 
   final String desc;
   final String symbol;
