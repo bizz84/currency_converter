@@ -25,21 +25,21 @@ class CurrencyConversionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key(currency.name),
-      direction: DismissDirection.endToStart,
+      direction: .endToStart,
       onDismissed: (_) => onRemove?.call(),
       background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: Sizes.p16),
+        alignment: .centerRight,
+        padding: const .only(right: Sizes.p16),
         color: Theme.of(context).colorScheme.error,
         child: Icon(Icons.delete, color: Theme.of(context).colorScheme.onError),
       ),
       child: Container(
         color: Theme.of(context).colorScheme.surface,
-        margin: const EdgeInsets.only(bottom: 1),
+        margin: const .only(bottom: 1),
         child: Material(
           color: Colors.transparent,
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: const .symmetric(
               horizontal: Sizes.p16,
               vertical: Sizes.p12,
             ),
@@ -52,11 +52,11 @@ class CurrencyConversionTile extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             trailing: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: .min,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: .end,
                   children: [
                     if (rate != null) ...[
                       Text(

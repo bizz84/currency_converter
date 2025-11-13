@@ -107,7 +107,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                     SliverToBoxAdapter(
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32.0),
+                          padding: const .symmetric(vertical: 32.0),
                           child: ElevatedButton(
                             onPressed: () => _showCurrencyPicker(false),
                             child: const Text('Add a currency'),
@@ -149,7 +149,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                 const SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(32.0),
+                      padding: .all(32.0),
                       child: CircularProgressIndicator(),
                     ),
                   ),

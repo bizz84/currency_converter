@@ -5,7 +5,7 @@ class ResponsiveConstrainedBox extends StatelessWidget {
   const ResponsiveConstrainedBox({
     super.key,
     this.maxContentWidth = LayoutBreakpoints.maxWidth,
-    this.padding = EdgeInsets.zero,
+    this.padding = .zero,
     required this.child,
   });
   final double maxContentWidth;
@@ -39,7 +39,7 @@ class ResponsiveCenteredColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: .max,
         children: [
           SizedBox(
             width: maxWidth,

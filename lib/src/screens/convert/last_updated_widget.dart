@@ -23,7 +23,7 @@ class LastUpdatedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           Icon(
             Icons.update,

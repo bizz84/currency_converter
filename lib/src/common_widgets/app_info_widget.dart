@@ -11,26 +11,26 @@ class AppInfoWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider).requireValue;
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         gapH32,
         Text(
           'Currency Converter',
           style: Theme.of(context).textTheme.titleLarge,
-          textAlign: TextAlign.center,
+          textAlign: .center,
         ),
         gapH12,
         Text(
           'Version ${packageInfo.version} (${packageInfo.buildNumber})',
           style: Theme.of(context).textTheme.bodyLarge,
-          textAlign: TextAlign.center,
+          textAlign: .center,
         ),
         if (kIsWeb) ...[
           gapH12,
           Text(
             'WASM enabled: $kIsWasm',
             style: Theme.of(context).textTheme.labelMedium,
-            textAlign: TextAlign.center,
+            textAlign: .center,
           ),
         ],
         gapH32,

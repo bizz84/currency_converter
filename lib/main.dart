@@ -82,7 +82,7 @@ class MainApp extends StatelessWidget {
             if (await canLaunchUrl(storeUrl)) {
               await launchUrl(
                 storeUrl,
-                mode: LaunchMode.externalApplication,
+                mode: .externalApplication,
               );
             } else {
               log('Cannot launch URL: $storeUrl');

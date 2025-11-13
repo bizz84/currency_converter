@@ -7,7 +7,7 @@ class CurrencySectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const .symmetric(horizontal: 16),
       child: Text(
         title,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(

@@ -17,7 +17,7 @@ class ExchangeRatesError extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
+        padding: const .all(Sizes.p16),
         child: Column(
           children: [
             Icon(
@@ -36,7 +36,7 @@ class ExchangeRatesError extends ConsumerWidget {
             Text(
               error.toString(),
               style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
             gapH16,
             ElevatedButton(

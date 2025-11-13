@@ -107,7 +107,7 @@ class ExchangeRateHeaderContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Row(
           children: [
@@ -166,14 +166,14 @@ class StatusIndicator extends StatelessWidget {
               : Theme.of(context).appColors.negative);
 
     return Stack(
-      alignment: Alignment.center,
+      alignment: .center,
       children: [
         // Outer circle (semi-transparent)
         Container(
           width: Sizes.p16,
           height: Sizes.p16,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: .circle,
             border: Border.all(
               color: color.withValues(alpha: 0.15),
               width: Sizes.p4,
@@ -186,7 +186,7 @@ class StatusIndicator extends StatelessWidget {
           height: Sizes.p8,
           decoration: BoxDecoration(
             color: color,
-            shape: BoxShape.circle,
+            shape: .circle,
           ),
         ),
       ],

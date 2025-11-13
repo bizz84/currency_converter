@@ -37,17 +37,17 @@ class _AmountInputFieldState extends State<AmountInputField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      textAlign: TextAlign.right,
+      keyboardType: const .numberWithOptions(decimal: true),
+      textAlign: .right,
       style: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
       ],
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
         ),
-        contentPadding: const EdgeInsets.symmetric(
+        contentPadding: const .symmetric(
           horizontal: 12,
           vertical: 8,
         ),
