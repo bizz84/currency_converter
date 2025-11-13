@@ -93,7 +93,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
       builder: (context, scrollController) => Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(
+          borderRadius: const .vertical(
             top: Radius.circular(20),
           ),
         ),
@@ -103,7 +103,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
             // Content
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: .only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: CurrencyPickerContent(

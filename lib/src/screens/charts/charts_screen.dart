@@ -27,9 +27,9 @@ class ChartsScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: const Padding(
-        padding: EdgeInsets.all(Sizes.p16),
+        padding: .all(Sizes.p16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: .stretch,
           children: [
             CurrencySelectorRow(),
             gapH16,

@@ -62,9 +62,9 @@ class _CurrencyPickerContentState extends ConsumerState<CurrencyPickerContent> {
         showHeader: widget.showHeader,
       ),
       loading: () => const Padding(
-        padding: EdgeInsets.all(32.0),
+        padding: .all(32.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             CircularProgressIndicator(),
             gapH16,
@@ -73,9 +73,9 @@ class _CurrencyPickerContentState extends ConsumerState<CurrencyPickerContent> {
         ),
       ),
       error: (error, stack) => Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const .all(32.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             const ErrorStateWidget(message: 'Failed to load currencies'),
             gapH16,
@@ -154,12 +154,12 @@ class _CurrencyPickerData extends StatelessWidget {
             .toList();
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         // Header with search
         if (showHeader)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const .all(16),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -168,7 +168,7 @@ class _CurrencyPickerData extends StatelessWidget {
               ),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Text(
                   'Select Currency',
@@ -181,9 +181,9 @@ class _CurrencyPickerData extends StatelessWidget {
                     hintText: 'Search currencies...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: .circular(8),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding: const .symmetric(
                       horizontal: 16,
                     ),
                   ),
@@ -201,7 +201,7 @@ class _CurrencyPickerData extends StatelessWidget {
               // RECENT section
               if (recentSection.isNotEmpty) ...[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  padding: const .fromLTRB(16, 16, 16, 8),
                   child: Text(
                     'RECENT',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(

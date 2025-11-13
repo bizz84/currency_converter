@@ -22,9 +22,9 @@ class BaseCurrencyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.surface,
-      margin: const EdgeInsets.only(bottom: 1),
+      margin: const .only(bottom: 1),
       child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
+        padding: const .all(Sizes.p16),
         child: Row(
           children: [
             // Currency selector

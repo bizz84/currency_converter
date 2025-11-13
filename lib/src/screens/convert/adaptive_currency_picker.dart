@@ -120,12 +120,12 @@ class _CurrencyPickerContentState
                 .toList();
 
         return Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             // Header with search
             if (widget.showHeader)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const .all(16),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -134,7 +134,7 @@ class _CurrencyPickerContentState
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Text(
                       'Select Currency',
@@ -147,9 +147,9 @@ class _CurrencyPickerContentState
                         hintText: 'Search currencies...',
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: .circular(8),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: const .symmetric(
                           horizontal: 16,
                         ),
                       ),
@@ -171,7 +171,7 @@ class _CurrencyPickerContentState
                   // RECENT section
                   if (recentSection.isNotEmpty) ...[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      padding: const .fromLTRB(16, 16, 16, 8),
                       child: Text(
                         'RECENT',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -231,9 +231,9 @@ class _CurrencyPickerContentState
         );
       },
       loading: () => const Padding(
-        padding: EdgeInsets.all(32.0),
+        padding: .all(32.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             CircularProgressIndicator(),
             gapH16,
@@ -242,9 +242,9 @@ class _CurrencyPickerContentState
         ),
       ),
       error: (error, stack) => Padding(
-        padding: const EdgeInsets.all(Sizes.p32),
+        padding: const .all(Sizes.p32),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             Icon(
               Icons.error_outline,
@@ -257,7 +257,7 @@ class _CurrencyPickerContentState
             Text(
               error.toString(),
               style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
             gapH16,
             TextButton(
@@ -329,7 +329,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
       builder: (context, scrollController) => Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(
+          borderRadius: const .vertical(
             top: Radius.circular(20),
           ),
         ),
@@ -340,7 +340,7 @@ class _AdaptiveCurrencyPickerBottomSheetState
             // Content
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: .only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: _CurrencyPickerContent(

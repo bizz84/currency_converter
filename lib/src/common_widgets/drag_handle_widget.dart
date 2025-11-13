@@ -10,10 +10,10 @@ class DragHandleWidget extends StatelessWidget {
     return Container(
       width: 40,
       height: 4,
-      margin: const EdgeInsets.symmetric(vertical: Sizes.p12),
+      margin: const .symmetric(vertical: Sizes.p12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.outline,
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: .circular(2),
       ),
     );
   }

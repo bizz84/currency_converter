@@ -6,7 +6,7 @@ class ErrorStateWidget extends StatelessWidget {
   const ErrorStateWidget({
     super.key,
     required this.message,
-    this.padding = const EdgeInsets.all(Sizes.p32),
+    this.padding = const .all(Sizes.p32),
   });
 
   final String message;
@@ -18,7 +18,7 @@ class ErrorStateWidget extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             Icon(
               Icons.error_outline,
@@ -29,7 +29,7 @@ class ErrorStateWidget extends StatelessWidget {
             Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
           ],
         ),

@@ -28,7 +28,7 @@ class AppTheme {
     // Material Design automatically creates harmonious shades
     final colorScheme = ColorScheme.fromSeed(
       seedColor: seedColor,
-      brightness: Brightness.light,
+      brightness: .light,
     );
 
     // Override specific colors if needed
@@ -85,7 +85,7 @@ class AppTheme {
         backgroundColor: Colors.transparent,
         selectedColor: colorScheme.primary, // Uses primary from seed
         disabledColor: colorScheme.surfaceContainerHighest,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const .symmetric(horizontal: 8, vertical: 6),
         labelStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface),
         secondaryLabelStyle: TextStyle(
           fontSize: 14,
@@ -100,26 +100,26 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
           borderSide: BorderSide(color: colorScheme.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
           borderSide: BorderSide(color: colorScheme.outlineVariant),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
           borderSide: BorderSide(color: colorScheme.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
           borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        contentPadding: const .symmetric(horizontal: 12, vertical: 8),
       ),
 
       // Icon theme
@@ -142,9 +142,9 @@ class AppTheme {
         elevation: 1,
         color: colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
         ),
-        margin: const EdgeInsets.all(8),
+        margin: const .all(8),
       ),
 
       // Custom theme extensions for app-specific values
