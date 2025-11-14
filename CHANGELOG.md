@@ -7,6 +7,7 @@
 
 - Formatting tweaks
 - Added gradient to charts screen
+- Added temporary app icon and splash screen
 
 ## 0.2.1
 
