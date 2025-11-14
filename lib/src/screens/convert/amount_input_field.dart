@@ -21,7 +21,6 @@ class AmountInputField extends StatefulWidget {
 class _AmountInputFieldState extends State<AmountInputField> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
-  bool _isEditing = false;
 
   @override
   void initState() {
@@ -34,15 +33,6 @@ class _AmountInputFieldState extends State<AmountInputField> {
   }
 
   @override
-  void didUpdateWidget(AmountInputField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Only update controller text if not currently editing
-    if (!_isEditing && oldWidget.initialAmount != widget.initialAmount) {
-      _controller.text = widget.initialAmount.toStringAsFixed(2);
-    }
-  }
-
-  @override
   void dispose() {
     _focusNode.removeListener(_onFocusChange);
     _focusNode.dispose();
@@ -51,10 +41,7 @@ class _AmountInputFieldState extends State<AmountInputField> {
   }
 
   void _onFocusChange() {
-    if (_focusNode.hasFocus) {
-      _isEditing = true;
-    } else {
-      _isEditing = false;
+    if (!_focusNode.hasFocus) {
       // Format the text when focus is lost
       final amount = double.tryParse(_controller.text) ?? widget.initialAmount;
       _controller.text = amount.toStringAsFixed(2);
