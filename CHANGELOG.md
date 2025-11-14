@@ -3,6 +3,11 @@
 - [ ] Built-in keyboard on mobile (more control, no delay for keyboard to appear, built-in done button to dismiss)
 - [ ] Cache API responses to avoid unnecessary API calls
 
+## 0.2.2
+
+- Formatting tweaks
+- Added gradient to charts screen
+
 ## 0.2.1
 
 - Chart UI tweaks
