@@ -20,6 +20,8 @@ class AmountInputField extends StatefulWidget {
 
 class _AmountInputFieldState extends State<AmountInputField> {
   late TextEditingController _controller;
+  late FocusNode _focusNode;
+  bool _isEditing = false;
 
   @override
   void initState() {
@@ -27,27 +29,44 @@ class _AmountInputFieldState extends State<AmountInputField> {
     _controller = TextEditingController(
       text: widget.initialAmount.toStringAsFixed(2),
     );
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
   }
 
   @override
   void didUpdateWidget(AmountInputField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Update controller text when initialAmount changes
-    if (oldWidget.initialAmount != widget.initialAmount) {
+    // Only update controller text if not currently editing
+    if (!_isEditing && oldWidget.initialAmount != widget.initialAmount) {
       _controller.text = widget.initialAmount.toStringAsFixed(2);
     }
   }
 
   @override
   void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      _isEditing = true;
+    } else {
+      _isEditing = false;
+      // Format the text when focus is lost
+      final amount = double.tryParse(_controller.text) ?? widget.initialAmount;
+      _controller.text = amount.toStringAsFixed(2);
+      widget.onChanged(amount);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      focusNode: _focusNode,
       keyboardType: const .numberWithOptions(decimal: true),
       textAlign: .right,
       style: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,

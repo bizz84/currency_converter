@@ -88,8 +88,8 @@ class ExchangeRateChartContent extends ConsumerWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Theme.of(context).appColors.chartLine.withOpacity(0.2),
-                  Theme.of(context).appColors.chartLine.withOpacity(0.0),
+                  Theme.of(context).appColors.chartLine.withValues(alpha: 0.2),
+                  Theme.of(context).appColors.chartLine.withValues(alpha: 0.0),
                 ],
               ),
             ),
