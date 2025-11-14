@@ -10,8 +10,11 @@ class CurrencyConverterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ResponsiveConstrainedBox(
-      child: MainScreen(),
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.surface,
+      child: const ResponsiveConstrainedBox(
+        child: MainScreen(),
+      ),
     );
   }
 }

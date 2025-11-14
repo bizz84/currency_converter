@@ -60,6 +60,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Currency Converter',
       debugShowCheckedModeBanner: false,
+      themeMode: .light,
       theme: AppTheme.lightTheme(),
       navigatorKey: _rootNavigatorKey,
       builder: (context, child) {
