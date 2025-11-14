@@ -34,6 +34,7 @@ class BaseCurrencyWidget extends StatelessWidget {
             Expanded(
               child: AmountInputField(
                 initialAmount: amount,
+                currencySymbol: currency.symbol,
                 onChanged: onAmountChanged,
               ),
             ),

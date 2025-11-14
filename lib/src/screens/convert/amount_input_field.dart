@@ -4,11 +4,13 @@ import 'package:flutter/services.dart';
 
 class AmountInputField extends StatefulWidget {
   final double initialAmount;
+  final String currencySymbol;
   final ValueChanged<double> onChanged;
 
   const AmountInputField({
     super.key,
     required this.initialAmount,
+    required this.currencySymbol,
     required this.onChanged,
   });
 
@@ -25,6 +27,15 @@ class _AmountInputFieldState extends State<AmountInputField> {
     _controller = TextEditingController(
       text: widget.initialAmount.toStringAsFixed(2),
     );
+  }
+
+  @override
+  void didUpdateWidget(AmountInputField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update controller text when initialAmount changes
+    if (oldWidget.initialAmount != widget.initialAmount) {
+      _controller.text = widget.initialAmount.toStringAsFixed(2);
+    }
   }
 
   @override
@@ -51,6 +62,8 @@ class _AmountInputFieldState extends State<AmountInputField> {
           horizontal: 12,
           vertical: 8,
         ),
+        prefixText: '${widget.currencySymbol} ',
+        prefixStyle: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
       ),
       onChanged: (value) {
         final amount = double.tryParse(value) ?? 0.0;

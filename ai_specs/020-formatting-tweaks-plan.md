@@ -14,19 +14,19 @@ This plan addresses three formatting improvements in the currency converter app:
 - [x] Test that existing conversions still work correctly with the new default
 - [x] Test that the 1.00 value displays properly in the input field
 
-### Phase 2: Add Currency Symbol to Amount Input Field
-- [ ] Analyze current `AmountInputField` implementation in `lib/src/screens/convert/amount_input_field.dart`
-- [ ] Add currency symbol parameter to the widget
-- [ ] Implement prefix/decoration to show currency symbol (e.g., `£ `) before the numeric input
-- [ ] Ensure the text input controller only handles numeric values (no symbol editing)
-- [ ] Update the parent widget to pass the base currency symbol to `AmountInputField`
-- [ ] Run `flutter analyze` to check for any code issues
-- [ ] Verify the app compiles and runs
-- [ ] Test that currency symbol is always visible in the input field (e.g., `£ 1.00`)
-- [ ] Test that editing only affects the numeric portion
-- [ ] Test that changing base currency updates the symbol correctly
-- [ ] Test edge cases: deleting all text, pasting values, clearing input
-- [ ] Test that conversions still calculate correctly with the symbol present
+### Phase 2: Add Currency Symbol to Amount Input Field ✅
+- [x] Analyze current `AmountInputField` implementation in `lib/src/screens/convert/amount_input_field.dart`
+- [x] Add currency symbol parameter to the widget
+- [x] Implement prefix/decoration to show currency symbol (e.g., `£ `) before the numeric input
+- [x] Ensure the text input controller only handles numeric values (no symbol editing)
+- [x] Update the parent widget to pass the base currency symbol to `AmountInputField`
+- [x] Run `flutter analyze` to check for any code issues
+- [x] Verify the app compiles and runs
+- [x] Test that currency symbol is always visible in the input field (e.g., `£ 1.00`)
+- [x] Test that editing only affects the numeric portion
+- [x] Test that changing base currency updates the symbol correctly
+- [x] Test edge cases: deleting all text, pasting values, clearing input
+- [x] Test that conversions still calculate correctly with the symbol present
 
 ### Phase 3: Reduce Chart Decimal Precision
 - [ ] Update `_formatRate` method in `lib/src/screens/charts/exchange_rate_header.dart` from `toStringAsFixed(6)` to `toStringAsFixed(4)`
