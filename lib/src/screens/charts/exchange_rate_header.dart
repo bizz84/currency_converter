@@ -11,7 +11,7 @@ class ExchangeRateHeader extends ConsumerWidget {
   const ExchangeRateHeader({super.key});
 
   String _formatRate(double rate) {
-    return rate.toStringAsFixed(6);
+    return rate.toStringAsFixed(4);
   }
 
   String _formatChange(double change, double percentChange) {
@@ -65,7 +65,7 @@ class ExchangeRateHeader extends ConsumerWidget {
           child: ExchangeRateHeaderContent(
             baseCurrency: chartsState.baseCurrency.name,
             targetCurrency: chartsState.targetCurrency.name,
-            rate: '1.234567',
+            rate: '1.2345',
             change: '+0.1234 (+1.23%)',
             timeRange: chartsState.timeRange.description,
             isPositive: true,
