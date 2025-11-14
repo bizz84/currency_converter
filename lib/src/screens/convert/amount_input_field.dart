@@ -4,11 +4,13 @@ import 'package:flutter/services.dart';
 
 class AmountInputField extends StatefulWidget {
   final double initialAmount;
+  final String currencySymbol;
   final ValueChanged<double> onChanged;
 
   const AmountInputField({
     super.key,
     required this.initialAmount,
+    required this.currencySymbol,
     required this.onChanged,
   });
 
@@ -18,6 +20,7 @@ class AmountInputField extends StatefulWidget {
 
 class _AmountInputFieldState extends State<AmountInputField> {
   late TextEditingController _controller;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
@@ -25,18 +28,32 @@ class _AmountInputFieldState extends State<AmountInputField> {
     _controller = TextEditingController(
       text: widget.initialAmount.toStringAsFixed(2),
     );
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      // Format the text when focus is lost, default to 1.0 if empty
+      final amount = double.tryParse(_controller.text) ?? 1.0;
+      _controller.text = amount.toStringAsFixed(2);
+      widget.onChanged(amount);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      focusNode: _focusNode,
       keyboardType: const .numberWithOptions(decimal: true),
       textAlign: .right,
       style: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
@@ -51,6 +68,8 @@ class _AmountInputFieldState extends State<AmountInputField> {
           horizontal: 12,
           vertical: 8,
         ),
+        prefixText: '${widget.currencySymbol} ',
+        prefixStyle: Theme.of(context).appTextStyles.exchangeRateHeaderStyle,
       ),
       onChanged: (value) {
         final amount = double.tryParse(value) ?? 0.0;
