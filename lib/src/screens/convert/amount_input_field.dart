@@ -42,8 +42,8 @@ class _AmountInputFieldState extends State<AmountInputField> {
 
   void _onFocusChange() {
     if (!_focusNode.hasFocus) {
-      // Format the text when focus is lost
-      final amount = double.tryParse(_controller.text) ?? widget.initialAmount;
+      // Format the text when focus is lost, default to 1.0 if empty
+      final amount = double.tryParse(_controller.text) ?? 1.0;
       _controller.text = amount.toStringAsFixed(2);
       widget.onChanged(amount);
     }
