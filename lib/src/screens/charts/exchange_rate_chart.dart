@@ -82,7 +82,17 @@ class ExchangeRateChartContent extends ConsumerWidget {
             color: Theme.of(context).appColors.chartLine,
             barWidth: 2,
             dotData: const FlDotData(show: false),
-            belowBarData: BarAreaData(show: false),
+            belowBarData: BarAreaData(
+              show: true,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).appColors.chartLine.withOpacity(0.2),
+                  Theme.of(context).appColors.chartLine.withOpacity(0.0),
+                ],
+              ),
+            ),
           ),
         ],
         titlesData: FlTitlesData(
@@ -120,11 +130,9 @@ class ExchangeRateChartContent extends ConsumerWidget {
         ),
         borderData: FlBorderData(
           show: true,
-          border: Border.symmetric(
-            horizontal: BorderSide(
-              color: Theme.of(context).colorScheme.outlineVariant,
-              width: 1,
-            ),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outlineVariant,
+            width: 1,
           ),
         ),
         lineTouchData: LineTouchData(
