@@ -47,7 +47,7 @@ class UserPrefs {
 
   static const defaults = UserPrefs(
     baseCurrency: Currency.GBP,
-    amount: 100.0,
+    amount: 1.0,
     targetCurrencies: [Currency.EUR, Currency.USD, Currency.JPY],
     chartBaseCurrency: Currency.GBP,
     chartTargetCurrency: Currency.EUR,

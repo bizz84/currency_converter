@@ -6,13 +6,13 @@ This plan addresses three formatting improvements in the currency converter app:
 
 ## Implementation
 
-### Phase 1: Update Default Amount
-- [ ] Change default amount from 100.0 to 1.0 in `lib/src/storage/user_prefs_notifier.dart`
-- [ ] Run `flutter analyze` to check for any code issues
-- [ ] Verify the app compiles and runs
-- [ ] Test that new users see 1.00 as the default amount on fresh app start
-- [ ] Test that existing conversions still work correctly with the new default
-- [ ] Test that the 1.00 value displays properly in the input field
+### Phase 1: Update Default Amount ✅
+- [x] Change default amount from 100.0 to 1.0 in `lib/src/storage/user_prefs_notifier.dart`
+- [x] Run `flutter analyze` to check for any code issues
+- [x] Verify the app compiles and runs
+- [x] Test that new users see 1.00 as the default amount on fresh app start
+- [x] Test that existing conversions still work correctly with the new default
+- [x] Test that the 1.00 value displays properly in the input field
 
 ### Phase 2: Add Currency Symbol to Amount Input Field
 - [ ] Analyze current `AmountInputField` implementation in `lib/src/screens/convert/amount_input_field.dart`

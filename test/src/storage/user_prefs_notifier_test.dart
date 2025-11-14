@@ -44,7 +44,7 @@ void main() {
 
       final prefs = container.read(userPrefsProvider);
       expect(prefs.baseCurrency, Currency.GBP);
-      expect(prefs.amount, 100.0);
+      expect(prefs.amount, 1.0);
       expect(prefs.targetCurrencies, [
         Currency.EUR,
         Currency.USD,
@@ -63,7 +63,7 @@ void main() {
 
       final prefs = container.read(userPrefsProvider);
       expect(prefs.baseCurrency, Currency.CAD);
-      expect(prefs.amount, 100.0); // default
+      expect(prefs.amount, 1.0); // default
       expect(prefs.targetCurrencies, [
         Currency.EUR,
         Currency.USD,

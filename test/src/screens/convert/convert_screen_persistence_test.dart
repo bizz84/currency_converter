@@ -103,10 +103,10 @@ void main() {
       // Verify default base currency is GBP
       expect(find.text('GBP'), findsWidgets);
 
-      // Verify default amount is 100.0
+      // Verify default amount is 1.0
       final amountField = find.byType(AmountInputField);
       final amountWidget = tester.widget<AmountInputField>(amountField);
-      expect(amountWidget.initialAmount, 100.0);
+      expect(amountWidget.initialAmount, 1.0);
 
       // Verify default target currencies
       expect(find.text('EUR'), findsOneWidget);
