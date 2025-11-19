@@ -57,3 +57,7 @@ rest-api/.env
 
 # Claude commands
 .claude/commands/*
+.claude/agents/*
+
+# AI code reviews (temporary analysis)
+ai_reviews/
