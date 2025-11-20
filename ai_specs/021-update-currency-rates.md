@@ -1,0 +1,1 @@
+Address the TODOs in the @lib/src/data/currency_rates.dart. Update all code that depends on it, including tests (ensure they all pass).

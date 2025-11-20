@@ -4,9 +4,11 @@ extension CurrencyRatesTestX on CurrencyRates {
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'base': base,
+      'base': base.name,
       'date': _formatYyyyMmDd(date),
-      'rates': rates,
+      'rates': {
+        for (final entry in rates.entries) entry.key.name: entry.value,
+      },
     };
   }
 

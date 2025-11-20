@@ -133,7 +133,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                         index: index,
                         rate: currency == baseCurrency
                             ? 1.0
-                            : rates.rates[currency.name],
+                            : rates.rates[currency],
                         onRemove: () => _removeCurrency(currency),
                       );
                     },

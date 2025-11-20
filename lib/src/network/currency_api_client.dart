@@ -39,7 +39,7 @@ class CurrencyApiClient implements ApiClient {
     final amt = amount ?? 1.0;
     return CurrencyRates.fromCurrencyApi(
       response.data ?? const {},
-      base: base.name,
+      base: base,
       amount: amt,
     );
   }

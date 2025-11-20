@@ -45,11 +45,11 @@ void main() {
         final result = await client.getLatestRates(base: Currency.USD);
 
         expect(result.amount, 1.0);
-        expect(result.base, 'USD');
+        expect(result.base, Currency.USD);
         expect(result.date, DateTime.parse('2025-09-22T23:59:59Z'));
-        expect(result.rates['EUR'], closeTo(0.8469301097, 1e-12));
-        expect(result.rates['GBP'], closeTo(0.739850138, 1e-12));
-        expect(result.rates['JPY'], closeTo(147.7094472344, 1e-12));
+        expect(result.rates[Currency.EUR], closeTo(0.8469301097, 1e-12));
+        expect(result.rates[Currency.GBP], closeTo(0.739850138, 1e-12));
+        expect(result.rates[Currency.JPY], closeTo(147.7094472344, 1e-12));
       });
 
       test('respects currencies filter and amount multiplication', () async {
@@ -78,9 +78,9 @@ void main() {
         );
 
         expect(result.amount, 100);
-        expect(result.base, 'USD');
+        expect(result.base, Currency.USD);
         expect(result.date, DateTime.parse('2025-09-22T12:00:00Z'));
-        expect(result.rates['GBP'], 75.0);
+        expect(result.rates[Currency.GBP], 75.0);
       });
     });
 
