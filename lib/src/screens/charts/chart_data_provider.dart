@@ -30,7 +30,7 @@ Future<List<ChartDataPoint>> chartData(Ref ref) async {
   final apiDataPoints = <ChartDataPoint>[];
 
   timeSeriesRates.rates.forEach((dateStr, rates) {
-    final rate = rates[chartsState.targetCurrency.name];
+    final rate = rates[chartsState.targetCurrency];
     if (rate != null) {
       final date = DateTime.parse(dateStr);
       apiDataPoints.add(ChartDataPoint(date: date, rate: rate));

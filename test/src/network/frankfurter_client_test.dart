@@ -208,10 +208,10 @@ void main() {
         expect(result.base, Currency.EUR);
         expect(result.startDate, startDate);
         expect(result.endDate, endDate);
-        expect(result.rates['2024-01-01']!['USD'], 1.1043);
-        expect(result.rates['2024-01-01']!['GBP'], 0.8678);
-        expect(result.rates['2024-01-02']!['USD'], 1.0950);
-        expect(result.rates['2024-01-02']!['GBP'], 0.8634);
+        expect(result.rates['2024-01-01']![Currency.USD], 1.1043);
+        expect(result.rates['2024-01-01']![Currency.GBP], 0.8678);
+        expect(result.rates['2024-01-02']![Currency.USD], 1.0950);
+        expect(result.rates['2024-01-02']![Currency.GBP], 0.8634);
       });
 
       test(
@@ -249,9 +249,9 @@ void main() {
           expect(result.base, Currency.USD);
           expect(result.startDate, startDate);
           expect(result.endDate, endDate);
-          expect(result.rates['2024-01-01']!['GBP'], 0.7859);
-          expect(result.rates['2024-01-02']!['GBP'], 0.7890);
-          expect(result.rates['2024-01-03']!['GBP'], 0.7883);
+          expect(result.rates['2024-01-01']![Currency.GBP], 0.7859);
+          expect(result.rates['2024-01-02']![Currency.GBP], 0.7890);
+          expect(result.rates['2024-01-03']![Currency.GBP], 0.7883);
         },
       );
     });

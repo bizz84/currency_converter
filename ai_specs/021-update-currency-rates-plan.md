@@ -16,11 +16,11 @@ Update the `CurrencyRates` and `TimeSeriesRates` models to use the type-safe `Cu
 
 ### Phase 2: Update TimeSeriesRates Model
 
-- [ ] Change `base` field from `String` to `Currency` in `lib/src/data/time_series_rates.dart`
-- [ ] Change `rates` map from `Map<String, Map<String, double>>` to `Map<String, Map<Currency, double>>`
-- [ ] Update `fromJson` factory to parse base as `Currency` and convert currency keys to `Currency` enum values
-- [ ] Update `toJson` method to convert `Currency` enum values back to strings
-- [ ] Verify code compiles
+- [x] Change `base` field from `String` to `Currency` in `lib/src/data/time_series_rates.dart`
+- [x] Change `rates` map from `Map<String, Map<String, double>>` to `Map<String, Map<Currency, double>>`
+- [x] Update `fromJson` factory to parse base as `Currency` and convert currency keys to `Currency` enum values
+- [x] Update `toJson` method to convert `Currency` enum values back to strings
+- [x] Verify code compiles
 
 ### Phase 3: Update Test Extension
 
@@ -48,9 +48,9 @@ Update the `CurrencyRates` and `TimeSeriesRates` models to use the type-safe `Cu
 
 ### Phase 6: Run Tests and Fix Issues
 
-- [ ] Run `flutter test` to execute all tests
-- [ ] Fix any test failures related to the currency changes
-- [ ] Ensure all tests pass
+- [x] Run `flutter test` to execute all tests
+- [x] Fix any test failures related to the currency changes
+- [x] Ensure all tests pass
 
 ## Implementation Notes
 
