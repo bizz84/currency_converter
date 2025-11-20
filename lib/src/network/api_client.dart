@@ -73,7 +73,7 @@ double exchangeRate(Ref ref, Currency baseCurrency, Currency targetCurrency) {
   return ratesAsync.when(
     data: (rates) {
       if (baseCurrency == targetCurrency) return 1.0;
-      return rates.rates[targetCurrency.name] ?? 1.0;
+      return rates.rates[targetCurrency] ?? 1.0;
     },
     loading: () => 1.0,
     error: (_, _) => 1.0,

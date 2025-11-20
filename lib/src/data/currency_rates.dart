@@ -1,3 +1,5 @@
+import 'currency.dart';
+
 class CurrencyRates {
   CurrencyRates({
     required this.amount,
@@ -7,20 +9,32 @@ class CurrencyRates {
   });
 
   final double amount;
-  // TODO: Change to Currency
-  final String base;
+  final Currency base;
   final DateTime date;
-  // TODO: Change to Currency
-  final Map<String, double> rates;
+  final Map<Currency, double> rates;
 
   factory CurrencyRates.fromFrankfurterApi(Map<String, dynamic> json) {
+    final baseCode = json['base'] as String;
+    final baseCurrency = Currency.from(baseCode);
+    if (baseCurrency == null) {
+      throw FormatException('Unknown base currency: $baseCode');
+    }
+
+    final rawRates = json['rates'] as Map<String, dynamic>;
+    final Map<Currency, double> parsedRates = {};
+
+    for (final entry in rawRates.entries) {
+      final currency = Currency.from(entry.key);
+      if (currency != null) {
+        parsedRates[currency] = (entry.value as num).toDouble();
+      }
+    }
+
     return CurrencyRates(
       amount: (json['amount'] as num).toDouble(),
-      base: json['base'] as String,
+      base: baseCurrency,
       date: DateTime.parse(json['date'] as String),
-      rates: (json['rates'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(key, (value as num).toDouble()),
-      ),
+      rates: parsedRates,
     );
   }
 
@@ -33,7 +47,7 @@ class CurrencyRates {
   /// }
   factory CurrencyRates.fromCurrencyApi(
     Map<String, dynamic> json, {
-    required String base,
+    required Currency base,
     double amount = 1.0,
   }) {
     final meta = json['meta'] as Map<String, dynamic>?;
@@ -45,21 +59,21 @@ class CurrencyRates {
         : DateTime.now().toUtc();
 
     final rawData = json['data'] as Map<String, dynamic>? ?? const {};
-    final Map<String, double> flattenedRates = {
-      for (final entry in rawData.entries)
-        entry.key: ((entry.value as Map<String, dynamic>)['value'] as num)
-            .toDouble(),
-    };
+    final Map<Currency, double> parsedRates = {};
 
-    final Map<String, double> adjustedRates = {
-      for (final e in flattenedRates.entries) e.key: e.value * amount,
-    };
+    for (final entry in rawData.entries) {
+      final currency = Currency.from(entry.key);
+      if (currency != null) {
+        final value = ((entry.value as Map<String, dynamic>)['value'] as num).toDouble();
+        parsedRates[currency] = value * amount;
+      }
+    }
 
     return CurrencyRates(
       amount: amount,
       base: base,
       date: date,
-      rates: adjustedRates,
+      rates: parsedRates,
     );
   }
 }

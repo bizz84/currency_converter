@@ -36,10 +36,10 @@ void main() {
         final result = await client.getLatestRates(base: Currency.EUR);
 
         expect(result.amount, 1.0);
-        expect(result.base, 'EUR');
+        expect(result.base, Currency.EUR);
         expect(result.date, DateTime.parse('2024-01-15'));
-        expect(result.rates['USD'], 1.0899);
-        expect(result.rates['GBP'], 0.8597);
+        expect(result.rates[Currency.USD], 1.0899);
+        expect(result.rates[Currency.GBP], 0.8597);
       });
 
       test('should fetch latest rates with base and to parameters', () async {
@@ -63,9 +63,9 @@ void main() {
         );
 
         expect(result.amount, 1.0);
-        expect(result.base, 'USD');
+        expect(result.base, Currency.USD);
         expect(result.date, DateTime.parse('2024-01-15'));
-        expect(result.rates['GBP'], 0.7888);
+        expect(result.rates[Currency.GBP], 0.7888);
       });
 
       test('should fetch latest rates with amount conversion', () async {
@@ -90,9 +90,9 @@ void main() {
         );
 
         expect(result.amount, 100.0);
-        expect(result.base, 'USD');
+        expect(result.base, Currency.USD);
         expect(result.date, DateTime.parse('2024-01-15'));
-        expect(result.rates['GBP'], 78.88);
+        expect(result.rates[Currency.GBP], 78.88);
       });
     });
 
@@ -115,10 +115,10 @@ void main() {
         );
 
         expect(result.amount, 1.0);
-        expect(result.base, 'EUR');
+        expect(result.base, Currency.EUR);
         expect(result.date, DateTime.parse(date));
-        expect(result.rates['USD'], 1.1043);
-        expect(result.rates['GBP'], 0.8678);
+        expect(result.rates[Currency.USD], 1.1043);
+        expect(result.rates[Currency.GBP], 0.8678);
       });
 
       test(
@@ -146,10 +146,10 @@ void main() {
           );
 
           expect(result.amount, 1.0);
-          expect(result.base, 'USD');
+          expect(result.base, Currency.USD);
           expect(result.date, DateTime.parse(date));
-          expect(result.rates['GBP'], 0.7859);
-          expect(result.rates['EUR'], 0.9055);
+          expect(result.rates[Currency.GBP], 0.7859);
+          expect(result.rates[Currency.EUR], 0.9055);
         },
       );
 
@@ -177,9 +177,9 @@ void main() {
         );
 
         expect(result.amount, 50.0);
-        expect(result.base, 'USD');
+        expect(result.base, Currency.USD);
         expect(result.date, DateTime.parse(date));
-        expect(result.rates['GBP'], 39.295);
+        expect(result.rates[Currency.GBP], 39.295);
       });
     });
 
@@ -205,7 +205,7 @@ void main() {
         final result = await client.getTimeSeriesRates(startDate, endDate);
 
         expect(result.amount, 1.0);
-        expect(result.base, 'EUR');
+        expect(result.base, Currency.EUR);
         expect(result.startDate, startDate);
         expect(result.endDate, endDate);
         expect(result.rates['2024-01-01']!['USD'], 1.1043);
@@ -246,7 +246,7 @@ void main() {
           );
 
           expect(result.amount, 1.0);
-          expect(result.base, 'USD');
+          expect(result.base, Currency.USD);
           expect(result.startDate, startDate);
           expect(result.endDate, endDate);
           expect(result.rates['2024-01-01']!['GBP'], 0.7859);
