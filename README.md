@@ -1,16 +1,16 @@
-# currency_converter
+# Currency Converter
 
-A new Flutter project.
+A Flutter app for real-time currency conversion and historical exchange rate charts, powered by the [Frankfurter API](https://frankfurter.dev/).
 
-## Getting Started
+## Screenshots
 
-This project is a starting point for a Flutter application.
+<p align="center">
+  <img src=".github/screenshots/convert.png" alt="Convert Screen" width="375" />
+  <img src=".github/screenshots/charts.png" alt="Charts Screen" width="375" />
+</p>
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Convert** — Live currency conversion with support for multiple target currencies and drag & drop reordering
+- **Charts** — Interactive line charts with selectable time ranges (1D to 10Y)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
