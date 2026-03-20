@@ -12,4 +12,8 @@ A Flutter app for real-time currency conversion and historical exchange rate cha
   <img src=".github/screenshots/charts.png" alt="Charts Screen" width="375" />
 </p>
 
+## Flutter Web Preview
+
+- [Currency Converter - Flutter Web](https://currency-converter-ab.web.app/)
+
 ### [LICENSE: MIT](LICENSE.md)
