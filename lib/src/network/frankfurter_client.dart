@@ -6,7 +6,7 @@ import '/src/network/api_client.dart';
 import 'package:dio/dio.dart';
 
 class FrankfurterClient implements ApiClient {
-  FrankfurterClient({required Dio dio}) : _dio = dio {
+  FrankfurterClient({required this._dio}) {
     _dio.options.baseUrl = 'https://api.frankfurter.dev/v1';
   }
 

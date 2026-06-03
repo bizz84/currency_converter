@@ -3,5 +3,10 @@ include: package:flutter_lints/flutter.yaml
 formatter:
   trailing_commas: preserve
 
+analyzer:
+  enable-experiment:
+    - primary-constructors
+
 linter:
   rules:
+    prefer_const_constructors_in_immutables: false
