@@ -138,7 +138,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                       );
                     },
                     itemCount: targetCurrencies.length,
-                    onReorder: (oldIndex, newIndex) {
+                    onReorderItem: (oldIndex, newIndex) {
                       HapticFeedback.mediumImpact();
                       _reorderCurrencies(oldIndex, newIndex);
                     },
