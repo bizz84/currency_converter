@@ -61,3 +61,6 @@ rest-api/.env
 
 # AI code reviews (temporary analysis)
 ai_reviews/
+
+# Worktrees
+worktrees/
