@@ -6,3 +6,9 @@ formatter:
 analyzer:
   enable-experiment:
     - primary-constructors
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - macos/**
