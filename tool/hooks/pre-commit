@@ -1,6 +1,7 @@
 #!/bin/sh
-# When pubspec.lock is staged, re-resolve CocoaPods for each Apple platform so
-# Podfile.lock drift fails at commit time instead of at app launch.
+# When pubspec.lock is staged, re-resolve Swift Package Manager dependencies for
+# each Apple platform so Package.resolved drift fails at commit time instead of
+# showing up as an unexpected diff after the next build.
 # Enable once per clone: git config core.hooksPath tool/hooks
 
 git diff --cached --name-only | grep -qx 'pubspec.lock' || exit 0
@@ -8,19 +9,20 @@ git diff --cached --name-only | grep -qx 'pubspec.lock' || exit 0
 root=$(git rev-parse --show-toplevel)
 cd "$root" || exit 1
 
-# Regenerates the plugin symlinks and Generated.xcconfig that the Podfiles read.
+# Regenerates FlutterGeneratedPluginSwiftPackage, which the Xcode projects depend on.
 flutter pub get >/dev/null || { echo "pre-commit: flutter pub get failed"; exit 1; }
 
 for platform in ios macos; do
-  [ -f "$platform/Podfile" ] || continue
-  echo "pre-commit: pod install in $platform/"
-  if ! out=$(cd "$platform" && pod install 2>&1); then
+  resolved="$platform/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+  [ -f "$resolved" ] || continue
+  echo "pre-commit: resolving Swift packages in $platform/"
+  if ! out=$(xcodebuild -resolvePackageDependencies -workspace "$platform/Runner.xcworkspace" -scheme Runner 2>&1); then
     echo "$out" | tail -20
-    echo "pre-commit: pod install failed in $platform/. Try: cd $platform && pod repo update && pod update <PodName>"
+    echo "pre-commit: Swift package resolution failed in $platform/. Try: flutter build $platform --debug"
     exit 1
   fi
-  if ! git diff --quiet -- "$platform/Podfile.lock"; then
-    echo "pre-commit: $platform/Podfile.lock changed after pod install. Review and stage it."
+  if ! git diff --quiet -- "$platform"/Runner.xcworkspace/xcshareddata/swiftpm "$platform"/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm; then
+    echo "pre-commit: $resolved changed after resolving packages. Review and stage it."
     exit 1
   fi
 done
