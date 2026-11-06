@@ -1,0 +1,26 @@
+#!/bin/sh
+# When pubspec.lock is staged, re-resolve CocoaPods for each Apple platform so
+# Podfile.lock drift fails at commit time instead of at app launch.
+# Enable once per clone: git config core.hooksPath tool/hooks
+
+git diff --cached --name-only | grep -qx 'pubspec.lock' || exit 0
+
+root=$(git rev-parse --show-toplevel)
+cd "$root" || exit 1
+
+# Regenerates the plugin symlinks and Generated.xcconfig that the Podfiles read.
+flutter pub get >/dev/null || { echo "pre-commit: flutter pub get failed"; exit 1; }
+
+for platform in ios macos; do
+  [ -f "$platform/Podfile" ] || continue
+  echo "pre-commit: pod install in $platform/"
+  if ! out=$(cd "$platform" && pod install 2>&1); then
+    echo "$out" | tail -20
+    echo "pre-commit: pod install failed in $platform/. Try: cd $platform && pod repo update && pod update <PodName>"
+    exit 1
+  fi
+  if ! git diff --quiet -- "$platform/Podfile.lock"; then
+    echo "pre-commit: $platform/Podfile.lock changed after pod install. Review and stage it."
+    exit 1
+  fi
+done
