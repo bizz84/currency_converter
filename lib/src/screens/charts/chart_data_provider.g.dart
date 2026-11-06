@@ -10,7 +10,7 @@ part of 'chart_data_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(chartData)
-const chartDataProvider = ChartDataProvider._();
+final chartDataProvider = ChartDataProvider._();
 
 final class ChartDataProvider
     extends
@@ -22,7 +22,7 @@ final class ChartDataProvider
     with
         $FutureModifier<List<ChartDataPoint>>,
         $FutureProvider<List<ChartDataPoint>> {
-  const ChartDataProvider._()
+  ChartDataProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,4 +48,4 @@ final class ChartDataProvider
   }
 }
 
-String _$chartDataHash() => r'886d2da9ef1c210b13329f5ec6c130ed1e51ae34';
+String _$chartDataHash() => r'62fb15622944cf4c2b3a77fdffe84042385f0286';

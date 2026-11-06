@@ -10,12 +10,12 @@ part of 'api_client.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(apiClient)
-const apiClientProvider = ApiClientProvider._();
+final apiClientProvider = ApiClientProvider._();
 
 final class ApiClientProvider
     extends $FunctionalProvider<ApiClient, ApiClient, ApiClient>
     with $Provider<ApiClient> {
-  const ApiClientProvider._()
+  ApiClientProvider._()
     : super(
         from: null,
         argument: null,
@@ -51,7 +51,7 @@ final class ApiClientProvider
 String _$apiClientHash() => r'89bf72bf50edb59aee26d6b8665a94eea54e0810';
 
 @ProviderFor(availableCurrencies)
-const availableCurrenciesProvider = AvailableCurrenciesProvider._();
+final availableCurrenciesProvider = AvailableCurrenciesProvider._();
 
 final class AvailableCurrenciesProvider
     extends
@@ -61,7 +61,7 @@ final class AvailableCurrenciesProvider
           FutureOr<Currencies>
         >
     with $FutureModifier<Currencies>, $FutureProvider<Currencies> {
-  const AvailableCurrenciesProvider._()
+  AvailableCurrenciesProvider._()
     : super(
         from: null,
         argument: null,
@@ -90,7 +90,7 @@ String _$availableCurrenciesHash() =>
     r'398cb0c12b43905cd6d041405431ee60a0e58217';
 
 @ProviderFor(latestRates)
-const latestRatesProvider = LatestRatesFamily._();
+final latestRatesProvider = LatestRatesFamily._();
 
 final class LatestRatesProvider
     extends
@@ -100,7 +100,7 @@ final class LatestRatesProvider
           FutureOr<CurrencyRates>
         >
     with $FutureModifier<CurrencyRates>, $FutureProvider<CurrencyRates> {
-  const LatestRatesProvider._({
+  LatestRatesProvider._({
     required LatestRatesFamily super.from,
     required Currency super.argument,
   }) : super(
@@ -148,7 +148,7 @@ String _$latestRatesHash() => r'6efc2e0fdcc9555c2dc7f23f7cdc11a08e838eb8';
 
 final class LatestRatesFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<CurrencyRates>, Currency> {
-  const LatestRatesFamily._()
+  LatestRatesFamily._()
     : super(
         retry: null,
         name: r'latestRatesProvider',
@@ -165,12 +165,12 @@ final class LatestRatesFamily extends $Family
 }
 
 @ProviderFor(exchangeRate)
-const exchangeRateProvider = ExchangeRateFamily._();
+final exchangeRateProvider = ExchangeRateFamily._();
 
 final class ExchangeRateProvider
     extends $FunctionalProvider<double, double, double>
     with $Provider<double> {
-  const ExchangeRateProvider._({
+  ExchangeRateProvider._({
     required ExchangeRateFamily super.from,
     required (Currency, Currency) super.argument,
   }) : super(
@@ -221,11 +221,11 @@ final class ExchangeRateProvider
   }
 }
 
-String _$exchangeRateHash() => r'14a38a425c7db9ad29d8000e544e0a97ebda8936';
+String _$exchangeRateHash() => r'17be7bbee515d5888b476ecaa8f9c4e78f6fce94';
 
 final class ExchangeRateFamily extends $Family
     with $FunctionalFamilyOverride<double, (Currency, Currency)> {
-  const ExchangeRateFamily._()
+  ExchangeRateFamily._()
     : super(
         retry: null,
         name: r'exchangeRateProvider',
