@@ -10,11 +10,11 @@ part of 'recent_currencies_storage.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(RecentCurrenciesStorage)
-const recentCurrenciesStorageProvider = RecentCurrenciesStorageProvider._();
+final recentCurrenciesStorageProvider = RecentCurrenciesStorageProvider._();
 
 final class RecentCurrenciesStorageProvider
     extends $NotifierProvider<RecentCurrenciesStorage, List<Currency>> {
-  const RecentCurrenciesStorageProvider._()
+  RecentCurrenciesStorageProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,8 +48,7 @@ abstract class _$RecentCurrenciesStorage extends $Notifier<List<Currency>> {
   List<Currency> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<List<Currency>, List<Currency>>;
     final element =
         ref.element
@@ -59,6 +58,6 @@ abstract class _$RecentCurrenciesStorage extends $Notifier<List<Currency>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

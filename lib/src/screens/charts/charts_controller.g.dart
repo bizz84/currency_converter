@@ -10,11 +10,11 @@ part of 'charts_controller.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ChartsController)
-const chartsControllerProvider = ChartsControllerProvider._();
+final chartsControllerProvider = ChartsControllerProvider._();
 
 final class ChartsControllerProvider
     extends $NotifierProvider<ChartsController, ChartsState> {
-  const ChartsControllerProvider._()
+  ChartsControllerProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,8 +47,7 @@ abstract class _$ChartsController extends $Notifier<ChartsState> {
   ChartsState build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<ChartsState, ChartsState>;
     final element =
         ref.element
@@ -58,16 +57,16 @@ abstract class _$ChartsController extends $Notifier<ChartsState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(ChartSelectedPoint)
-const chartSelectedPointProvider = ChartSelectedPointProvider._();
+final chartSelectedPointProvider = ChartSelectedPointProvider._();
 
 final class ChartSelectedPointProvider
     extends $NotifierProvider<ChartSelectedPoint, ChartDataPoint?> {
-  const ChartSelectedPointProvider._()
+  ChartSelectedPointProvider._()
     : super(
         from: null,
         argument: null,
@@ -101,8 +100,7 @@ abstract class _$ChartSelectedPoint extends $Notifier<ChartDataPoint?> {
   ChartDataPoint? build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<ChartDataPoint?, ChartDataPoint?>;
     final element =
         ref.element
@@ -112,6 +110,6 @@ abstract class _$ChartSelectedPoint extends $Notifier<ChartDataPoint?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

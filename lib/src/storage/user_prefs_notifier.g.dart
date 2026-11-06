@@ -10,11 +10,11 @@ part of 'user_prefs_notifier.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserPrefsNotifier)
-const userPrefsProvider = UserPrefsNotifierProvider._();
+final userPrefsProvider = UserPrefsNotifierProvider._();
 
 final class UserPrefsNotifierProvider
     extends $NotifierProvider<UserPrefsNotifier, UserPrefs> {
-  const UserPrefsNotifierProvider._()
+  UserPrefsNotifierProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,8 +47,7 @@ abstract class _$UserPrefsNotifier extends $Notifier<UserPrefs> {
   UserPrefs build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<UserPrefs, UserPrefs>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$UserPrefsNotifier extends $Notifier<UserPrefs> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
